@@ -1,0 +1,70 @@
+v1.5
+-	Add Amphetamines (draws mana regen for stamina; Fast Clock + Frog + Scorpion + Living Fire Blocks)
+-	Add Steroids (draws health regen for stamina; Vitamins + Pink Gel + Stingers)
+-	Add Strength Belt (increases max stamina; Anklet + Leather + Bones + Feathers)
+-	Set minimum 15% fatigue before exercise occurs
+-	Set energy potion to remove some fatigue
+-	Set well fed buff to remove some fatigue, but accelerate buff drain
+-	Set water bottle to remove more fatigue (tweak tooltip)
+
+v1.4
+-	Add override for positioning stamina bar
+-	Set water bottle drinking to recover fatigue
+-	Add text popup indicator of exercize
+-	Add color indicator of exercise
+-	Display stamina as number overlay
+-	Add excersize (empty + refill fatigue completely)
+-	Add fatigue
+	-	Recover 1 point fatigue every 10 seconds at full stamina
+	-	Render grey bar against stamina bar and subtract from max stamina
+	-	Animate numeric drops on fatigue gain/remove
+	-	On exhaustion increase fatigue
+-	Improve energy potion buff icon
+-	Further reduce jump drain
+-	Alter Energy Potion recipe (bad mushroom + Jungle Seed - Firefly)
+-	Set gravitation potion to reduce stamina regen
+-	Get small stamina bursts from damage
+-	Set magic weapons to use half stamina
+v1.3
+-	Make sweat FX less silly
+-	Lower max stamina
+-	Tone down jump drain
+-	Tone down energy potion regen
+-	Check OnEnterWorld applies only for current player
+-	Adjust JsonConfig.Load to NOT use ModPlayer.Initialize
+-	Check that configs are updating fields with each new version
+-	Change Energy Potion recipe to use something other than Pink Gels
+v1.2
+-	Release
+-	Animate exhausion FX
+-	Nerf Energized buff
+-	Give indicator of low stamina
+-	Stop drain from flight slow fall
+-	//Use for exhaustion: Main.buffNoTimeDisplay[buffID] = true;
+v1.1
+-	Release!
+-	Modify stars to recover stamina
+-	Add Energized buff
+-	Add Energy Potion (recovers stamina, small potion sickness)
+	-	Define potion (recipe: Water bottle, Pink gel, Purification powder, Star)
+-	Disable flight when stamina empty
+-	Add a start-of-jump stamina drain
+-	Migrate logic code into a StaminaLogic class
+-	Increase sprint stamina drain default
+v1
+-	Release!
+-	Fix pulley bug
+-	Revise to consume stamina only when simply 'controlling' an item
+-	Fix high stamina consumption for some types of melee
+-	Update durability mod for compatibility
+-	Implement low-stamina debuff
+-	Implement stamina drains
+	-	Item use
+	-	Grappling
+	-	Flying
+	-	N-jumping
+	-	Jumping
+	-	Dashing
+	-	Sprinting
+-	Implement stamina recharge (lingers momentarily when empty)
+-	Implement stamina bar rendering (beneath health bar)

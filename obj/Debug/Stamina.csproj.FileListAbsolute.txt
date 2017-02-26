@@ -1,0 +1,7 @@
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Debug\Stamina.dll
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Debug\Stamina.pdb
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Debug\Libraries.JSON.NET.Newtonsoft.Json.dll
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Debug\Terraria.exe
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\obj\Debug\Stamina.csprojResolveAssemblyReference.cache
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\obj\Debug\Stamina.dll
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\obj\Debug\Stamina.pdb
