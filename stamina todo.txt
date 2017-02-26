@@ -1,5 +1,5 @@
 v1.5
--	Add Amphetamines (draws mana regen for stamina; Fast Clock + Frog + Scorpion + Living Fire Blocks)
+-	Add Stimulants (draws mana regen for stamina; Fast Clock + Frog + Scorpion + Living Fire Blocks)
 -	Add Steroids (draws health regen for stamina; Vitamins + Pink Gel + Stingers)
 -	Add Strength Belt (increases max stamina; Anklet + Leather + Bones + Feathers)
 -	Set minimum 15% fatigue before exercise occurs
