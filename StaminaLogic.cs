@@ -70,7 +70,7 @@ namespace Stamina {
 					}
 				}
 
-				if( this.Fatigue >= this.MaxStamina ) {
+				if( this.Fatigue >= this.MaxStamina - 25 ) {
 					this.IsExercising = true;
 				}
 			} else {
@@ -78,7 +78,8 @@ namespace Stamina {
 					this.IsExercising = false;
 					if( this.MaxStamina < StaminaMod.Config.Data.MaxStaminaAmount ) {
 						this.MaxStamina += StaminaMod.Config.Data.ExerciseGrowthAmount;
-						UIHelper.AddPlayerLabel( this.Player, "+" + StaminaMod.Config.Data.ExerciseGrowthAmount, Color.Chartreuse, 60*7, true );
+						string msg = "+" + StaminaMod.Config.Data.ExerciseGrowthAmount + " Max Stamina";
+						UIHelper.AddPlayerLabel( this.Player, msg, Color.Chartreuse, 60*5, true );
 					}
 				}
 			}

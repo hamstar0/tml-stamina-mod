@@ -57,14 +57,15 @@ namespace Utils {
 					pos.Y -= txt.StartDuration - txt.Duration;
 
 					float scale = (float)txt.Duration / (float)txt.StartDuration;
-					txt.Color.R = (byte)((float)txt.Color.R * scale);
-					txt.Color.G = (byte)((float)txt.Color.G * scale);
-					txt.Color.B = (byte)((float)txt.Color.B * scale);
-					txt.Color.A = (byte)((float)txt.Color.A * scale);
+					color.R = (byte)((float)color.R * scale);
+					color.G = (byte)((float)color.G * scale);
+					color.B = (byte)((float)color.B * scale);
+					color.A = (byte)((float)color.A * scale);
 				}
 				pos.X -= (Main.fontItemStack.MeasureString( txt.Text ).X * 1.5f) / 2f;
 				
-				sb.DrawString( Main.fontItemStack, txt.Text, pos, txt.Color, 0f, new Vector2(), 1.5f, SpriteEffects.None, 1f );
+//DebugHelper.Display["execise"] = pos.ToString()+" "+txt.Text+" "+ color.ToString();
+				sb.DrawString( Main.fontItemStack, txt.Text, pos, color, 0f, new Vector2(), 1.5f, SpriteEffects.None, 1f );
 			}
 		}
 	}

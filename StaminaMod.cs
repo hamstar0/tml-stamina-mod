@@ -36,11 +36,11 @@ namespace Stamina {
 		public bool CraftableEnergyDrinks = true;
 		public bool ConsumableStars = true;
 		public int StarStaminaHeal = 50;
-		public int BottledWaterFatigueHeal = 35;
+		public int BottledWaterFatigueHeal = 50;
 
 		public float PercentOfDamageAdrenalineBurst = 0.08f;
 
-		public float FatigueAmount = 8f;
+		public float FatigueAmount = 12f;
 		public int FatigueRecoverDuration = 60;
 
 		public int CustomStaminaBarPositionX = -1;
@@ -50,7 +50,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 0 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 1 );
 		public static JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -88,9 +88,13 @@ namespace Stamina {
 					}
 					if( vers_since < new Version( 1, 3, 4 ) ) {
 						StaminaMod.Config.Data.StarStaminaHeal = new ConfigurationData().StarStaminaHeal;
-						StaminaMod.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
 					}
-					
+					if( vers_since < new Version( 1, 4, 1 ) ) {
+						StaminaMod.Config.Data.FatigueAmount = new ConfigurationData().FatigueAmount;
+						StaminaMod.Config.Data.BottledWaterFatigueHeal = new ConfigurationData().BottledWaterFatigueHeal;
+					}
+					StaminaMod.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
+
 					StaminaMod.Config.Save();
 				}
 			}
@@ -131,12 +135,14 @@ namespace Stamina {
 				StaminaUI.DrawStaminaBar( sb, x, y, stamina, max_stamina, (int)fatigue, modplayer.IsExercising(), alpha, 1f );
 
 				if( DebugHelper.DEBUGMODE ) {
-					this.PrintOutput(sb, modplayer);
+					this.PrintStaminaDrainers(sb, modplayer);
 				}
 			}
+
+			DebugHelper.PrintToBatch( sb );
 		}
 
-		private void PrintOutput( SpriteBatch sb, StaminaPlayer modplayer ) {
+		private void PrintStaminaDrainers( SpriteBatch sb, StaminaPlayer modplayer ) {
 			var dict = modplayer.GetCurrentDrainTypes();
 			int i = 0;
 

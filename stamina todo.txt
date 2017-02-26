@@ -5,8 +5,9 @@ v1.5
 -	Set minimum 15% fatigue before exercise occurs
 -	Set energy potion to remove some fatigue
 -	Set well fed buff to remove some fatigue, but accelerate buff drain
--	Set water bottle to remove more fatigue (tweak tooltip)
 
+v1.4.1
+-	Set water bottle to remove more fatigue (tweak tooltip)
 v1.4
 -	Add override for positioning stamina bar
 -	Set water bottle drinking to recover fatigue
