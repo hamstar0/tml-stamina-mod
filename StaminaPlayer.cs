@@ -218,6 +218,10 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
 			return this.Logic.CurrentDrainTypes;
 		}
+		public int GetExerciseThreshold() {
+			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
+			return this.Logic.GetExerciseThreshold();
+		}
 		public bool IsExercising() {
 			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
 			return this.Logic.IsExercising;

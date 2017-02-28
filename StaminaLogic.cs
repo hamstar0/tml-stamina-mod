@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Utils;
 
 namespace Stamina {
@@ -58,6 +59,14 @@ namespace Stamina {
 
 		////////////////
 
+		public int GetExerciseThreshold() {
+			int threshold = (int)((float)this.MaxStamina * StaminaMod.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina);
+			threshold -= StaminaMod.Config.Data.FatigueExerciseThresholdAmountRemoved;
+			return threshold;
+		}
+		
+		////////////////
+
 		public void PassiveFatigueRecover() {
 			if( this.Fatigue > 0 ) {
 				if( (this.MaxStamina - this.Stamina) <= this.Fatigue ) {
@@ -69,8 +78,8 @@ namespace Stamina {
 						this.Fatigue--;
 					}
 				}
-
-				if( this.Fatigue >= this.MaxStamina - 25 ) {
+				
+				if( this.Fatigue >= this.GetExerciseThreshold() ) {
 					this.IsExercising = true;
 				}
 			} else {
@@ -78,8 +87,11 @@ namespace Stamina {
 					this.IsExercising = false;
 					if( this.MaxStamina < StaminaMod.Config.Data.MaxStaminaAmount ) {
 						this.MaxStamina += StaminaMod.Config.Data.ExerciseGrowthAmount;
-						string msg = "+" + StaminaMod.Config.Data.ExerciseGrowthAmount + " Max Stamina";
-						UIHelper.AddPlayerLabel( this.Player, msg, Color.Chartreuse, 60*5, true );
+
+						string msg = "+" + StaminaMod.Config.Data.ExerciseGrowthAmount + " Stamina";
+						UIHelper.AddPlayerLabel( this.Player, msg, Color.Chartreuse, 60*3, true );
+
+						Main.PlaySound( SoundID.Item47.WithVolume(0.5f) );
 					}
 				}
 			}

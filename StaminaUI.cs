@@ -2,9 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
+
 namespace Stamina {
 	public static class StaminaUI {
-		public static void DrawStaminaBar( SpriteBatch sb, float x, float y, int stamina, int max_stamina, int fatigue, bool is_exercising, float alpha, float scale = 1f ) {
+		public static void DrawStaminaBar( SpriteBatch sb, float x, float y, int stamina, int max_stamina, int fatigue, int exercise_threshold, bool is_exercising, float alpha, float scale = 1f ) {
 			Texture2D bar = Main.hbTexture1;
 			Texture2D maxbar = Main.hbTexture2;
 			int width = 256;
@@ -103,7 +104,7 @@ namespace Stamina {
 			// Fatigue bar (stamina)
 			if( fatigue > 0 ) {
 				Color fat_color = Color.Gray;
-				if( is_exercising ) { fat_color = new Color(128, 192, 128); }
+				if( is_exercising ) { fat_color = new Color(128, 255, 128); }
 				float fat_ratio = (float)fatigue / (float)max_stamina;
 				if( fat_ratio > 1f ) { fat_ratio = 1f; }
 				int fat_bar_length = (int)( (float)width * fat_ratio );
@@ -133,6 +134,17 @@ namespace Stamina {
 					var rect = new Rectangle( 0, 0, 4, bar.Height );
 					sb.Draw( bar, pos, new Rectangle?( rect ), fat_color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
 				}
+			}
+
+			// Exercise tick
+			if( !is_exercising && exercise_threshold > 0 ) {
+				float offset_exercise = ((float)(max_stamina - exercise_threshold) / (float)max_stamina) * (float)width;
+				var pos = new Vector2( offset_x, offset_y );
+				pos.X += offset_exercise - 2f;
+				var rect = new Rectangle( 2, 0, 2, bar.Height );
+				var ex_color = new Color( Main.DiscoR, Main.DiscoG, Main.DiscoB );
+				
+				sb.Draw( bar, pos, new Rectangle?(rect), ex_color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
 			}
 
 			// Text overlay

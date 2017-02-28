@@ -42,6 +42,8 @@ namespace Stamina {
 
 		public float FatigueAmount = 12f;
 		public int FatigueRecoverDuration = 60;
+		public int FatigueExerciseThresholdAmountRemoved = 0;
+		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.36f;
 
 		public int CustomStaminaBarPositionX = -1;
 		public int CustomStaminaBarPositionY = -1;
@@ -50,7 +52,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 1 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 2 );
 		public static JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -124,6 +126,8 @@ namespace Stamina {
 				int stamina = (int)modplayer.GetStamina();
 				int max_stamina = modplayer.GetMaxStamina();
 				float fatigue = modplayer.GetFatigue();
+				bool is_exercising = modplayer.IsExercising();
+				int threshold = fatigue > 0 ? modplayer.GetExerciseThreshold() : -1;
 
 				if( StaminaMod.Config.Data.CustomStaminaBarPositionX >= 0 ) {
 					x = StaminaMod.Config.Data.CustomStaminaBarPositionX;
@@ -132,7 +136,7 @@ namespace Stamina {
 					y = StaminaMod.Config.Data.CustomStaminaBarPositionY;
 				}
 
-				StaminaUI.DrawStaminaBar( sb, x, y, stamina, max_stamina, (int)fatigue, modplayer.IsExercising(), alpha, 1f );
+				StaminaUI.DrawStaminaBar( sb, x, y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
 
 				if( DebugHelper.DEBUGMODE ) {
 					this.PrintStaminaDrainers(sb, modplayer);

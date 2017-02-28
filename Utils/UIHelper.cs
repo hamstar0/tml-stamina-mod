@@ -61,6 +61,8 @@ namespace Utils {
 					color.G = (byte)((float)color.G * scale);
 					color.B = (byte)((float)color.B * scale);
 					color.A = (byte)((float)color.A * scale);
+
+
 				}
 				pos.X -= (Main.fontItemStack.MeasureString( txt.Text ).X * 1.5f) / 2f;
 				

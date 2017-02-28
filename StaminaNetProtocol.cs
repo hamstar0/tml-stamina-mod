@@ -73,6 +73,8 @@ namespace Stamina {
 			packet.Write( (float)StaminaMod.Config.Data.PercentOfDamageAdrenalineBurst );
 			packet.Write( (float)StaminaMod.Config.Data.FatigueAmount );
 			packet.Write( (int)StaminaMod.Config.Data.FatigueRecoverDuration );
+			packet.Write( (int)StaminaMod.Config.Data.FatigueExerciseThresholdAmountRemoved );
+			packet.Write( (int)StaminaMod.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina );
 			packet.Write( (int)StaminaMod.Config.Data.ExerciseGrowthAmount );
 			packet.Write( (int)StaminaMod.Config.Data.MaxStaminaAmount );
 			packet.Write( (int)StaminaMod.Config.Data.BottledWaterFatigueHeal );
@@ -109,6 +111,8 @@ namespace Stamina {
 			StaminaMod.Config.Data.PercentOfDamageAdrenalineBurst = (float)reader.ReadSingle();
 			StaminaMod.Config.Data.FatigueAmount = (float)reader.ReadSingle();
 			StaminaMod.Config.Data.FatigueRecoverDuration = (int)reader.ReadInt32();
+			StaminaMod.Config.Data.FatigueExerciseThresholdAmountRemoved = (int)reader.ReadInt32();
+			StaminaMod.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina = (int)reader.ReadInt32();
 			StaminaMod.Config.Data.ExerciseGrowthAmount = (int)reader.ReadInt32();
 			StaminaMod.Config.Data.MaxStaminaAmount = (int)reader.ReadInt32();
 			StaminaMod.Config.Data.BottledWaterFatigueHeal = (int)reader.ReadInt32();
