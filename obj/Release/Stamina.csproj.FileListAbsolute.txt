@@ -1,0 +1,13 @@
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Release\Stamina.dll
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Release\Stamina.pdb
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Release\Libraries.JSON.NET.Newtonsoft.Json.dll
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\bin\Release\Terraria.exe
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\obj\Release\Stamina.csprojResolveAssemblyReference.cache
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\obj\Release\Stamina.dll
+C:\Projects\DotNET\Projects\Terraria Mods\Stamina\obj\Release\Stamina.pdb
+C:\Projects\DotNET\Projects\Stamina\bin\Release\Stamina.dll
+C:\Projects\DotNET\Projects\Stamina\bin\Release\Stamina.pdb
+C:\Projects\DotNET\Projects\Stamina\bin\Release\Terraria.exe
+C:\Projects\DotNET\Projects\Stamina\obj\Release\Stamina.csprojResolveAssemblyReference.cache
+C:\Projects\DotNET\Projects\Stamina\obj\Release\Stamina.dll
+C:\Projects\DotNET\Projects\Stamina\obj\Release\Stamina.pdb
