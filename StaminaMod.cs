@@ -15,7 +15,7 @@ namespace Stamina {
 
 		public int InitialStamina = 100;
 		public int MaxStaminaAmount = 400;
-		public int ExerciseGrowthAmount = 2;
+		public int ExerciseGrowthAmount = 1;
 		public float ScaleAllStaminaRates = 1f;
 
 		public float RechargeRate = 0.45f;
@@ -94,6 +94,9 @@ namespace Stamina {
 					if( vers_since < new Version( 1, 4, 1 ) ) {
 						StaminaMod.Config.Data.FatigueAmount = new ConfigurationData().FatigueAmount;
 						StaminaMod.Config.Data.BottledWaterFatigueHeal = new ConfigurationData().BottledWaterFatigueHeal;
+					}
+					if( vers_since < new Version( 1, 4, 2 ) ) {
+						StaminaMod.Config.Data.ExerciseGrowthAmount = new ConfigurationData().ExerciseGrowthAmount;
 					}
 					StaminaMod.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
 
