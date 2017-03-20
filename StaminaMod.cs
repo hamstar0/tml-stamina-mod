@@ -43,7 +43,7 @@ namespace Stamina {
 		public float FatigueAmount = 12f;
 		public int FatigueRecoverDuration = 60;
 		public int FatigueExerciseThresholdAmountRemoved = 0;
-		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.64f;
+		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.32f;
 
 		public int CustomStaminaBarPositionX = -1;
 		public int CustomStaminaBarPositionY = -1;
@@ -52,7 +52,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 2 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 3 );
 		public static JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -97,6 +97,9 @@ namespace Stamina {
 					}
 					if( vers_since < new Version( 1, 4, 2 ) ) {
 						StaminaMod.Config.Data.ExerciseGrowthAmount = new ConfigurationData().ExerciseGrowthAmount;
+					}
+					if( vers_since < new Version( 1, 4, 3 ) ) {
+						StaminaMod.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina = new ConfigurationData().FatigueExerciseThresholdPercentOfMaxStamina;
 					}
 					StaminaMod.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
 
