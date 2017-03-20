@@ -1,4 +1,4 @@
 .vs/
 bin/
 obj/
-!bin/Release/Libraries.JSON.NET.Newtonsoft.Json.dll
+Properties/

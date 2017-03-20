@@ -43,7 +43,7 @@ namespace Stamina {
 		public float FatigueAmount = 12f;
 		public int FatigueRecoverDuration = 60;
 		public int FatigueExerciseThresholdAmountRemoved = 0;
-		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.42f;
+		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.64f;
 
 		public int CustomStaminaBarPositionX = -1;
 		public int CustomStaminaBarPositionY = -1;

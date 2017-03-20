@@ -2,4 +2,4 @@ Adds stamina.  Running, jumping, and other activities now require pacing.
 - Fallen Stars recover small stamina amount
 - Craftable Energy Potions - Fully recovers stamina
 - NEW (1.4) Fatigue and exercise!
-- Config file in Documents/My Games/Terraria/ModLoader/stamina config.json
+- Config file in Documents/My Games/Terraria/ModLoader/Stamina Config.json
