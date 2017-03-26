@@ -32,7 +32,7 @@ namespace Stamina {
 		// Senders (Client)
 		////////////////////////////////
 
-		public static void RequestSettingsFromServer( Mod mod, Player player ) {
+		public static void SendSettingsRequestFromClient( Mod mod, Player player ) {
 			if( Main.netMode != 1 ) { return; } // Client only
 
 			ModPacket packet = mod.GetPacket();

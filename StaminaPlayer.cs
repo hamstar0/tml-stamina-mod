@@ -38,13 +38,15 @@ namespace Stamina {
 		}
 
 		public override void OnEnterWorld( Player player ) {
-			if( Main.netMode == 1 ) {   // Client
-				if( player.whoAmI == this.player.whoAmI ) {	// Current player
+			if( player.whoAmI == this.player.whoAmI ) { // Current player
+				if( Main.netMode != 2 ) {   // Not server
 					if( !StaminaMod.Config.Load() ) {
 						StaminaMod.Config.Save();
 					}
+				}
 
-					StaminaNetProtocol.RequestSettingsFromServer( this.mod, player );
+				if( Main.netMode == 1 ) {   // Client
+					StaminaNetProtocol.SendSettingsRequestFromClient( this.mod, player );
 				}
 			}
 		}
