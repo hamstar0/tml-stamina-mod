@@ -38,10 +38,12 @@ namespace Stamina {
 		}
 
 		public override void OnEnterWorld( Player player ) {
+			var mymod = (StaminaMod)this.mod;
+
 			if( player.whoAmI == this.player.whoAmI ) { // Current player
 				if( Main.netMode != 2 ) {   // Not server
-					if( !StaminaMod.Config.Load() ) {
-						StaminaMod.Config.Save();
+					if( !mymod.Config.LoadFile() ) {
+						mymod.Config.SaveFile();
 					}
 				}
 
@@ -65,14 +67,15 @@ namespace Stamina {
 
 		public override void Load( TagCompound tags ) {
 			this.Initialize();
+			var mymod = (StaminaMod)this.mod;
 
-			if( !StaminaMod.Config.Load() ) {
-				StaminaMod.Config.Save();
+			if( !mymod.Config.LoadFile() ) {
+				mymod.Config.SaveFile();
 			}
 
-			int max = StaminaMod.Config.Data.InitialStamina;
+			int max = mymod.Config.Data.InitialStamina;
 			bool has = true;
-			if( tags.HasTag("max_stamina") && tags.HasTag("has_stamina") ) {
+			if( tags.ContainsKey("max_stamina") && tags.ContainsKey( "has_stamina") ) {
 				max = tags.GetInt( "max_stamina" );
 				has = tags.GetBool( "has_stamina" );
 			}
@@ -100,10 +103,12 @@ namespace Stamina {
 
 			if( this.Logic != null ) {
 				if( !this.player.dead ) {
-					this.Logic.PassiveFatigueRecover();
-					this.Logic.PassiveStaminaRegen();
-					this.Logic.GatherPassiveStaminaDrains();
-					this.Logic.CommitStaminaDrains();
+					var mymod = (StaminaMod)this.mod;
+
+					this.Logic.PassiveFatigueRecover( mymod );
+					this.Logic.PassiveStaminaRegen( mymod );
+					this.Logic.GatherPassiveStaminaDrains( mymod );
+					this.Logic.CommitStaminaDrains( mymod );
 					if( this.Logic.Stamina == 0 ) {
 						this.ApplyDebuffs();
 					}
@@ -119,7 +124,7 @@ namespace Stamina {
 			if( this.Logic == null ) { return; }
 
 			if( !this.player.dead ) {
-				this.Logic.GatherActivityStaminaDrains();
+				this.Logic.GatherActivityStaminaDrains( (StaminaMod)this.mod );
 
 				if( this.WillApplyExhaustion ) {
 					this.ApplyExhaustion();
@@ -132,9 +137,10 @@ namespace Stamina {
 
 		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
 			if( quiet ) { return; }
+			var mymod = (StaminaMod)this.mod;
+			float yike = (float)damage * mymod.Config.Data.PercentOfDamageAdrenalineBurst * (crit ? 2f : 1f);
 
-			float yike = (float)damage * StaminaMod.Config.Data.PercentOfDamageAdrenalineBurst * (crit ? 2f : 1f);
-			this.Logic.AddStamina( yike );
+			this.Logic.AddStamina( mymod, yike );
 		}
 
 
@@ -187,12 +193,14 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 		////////////////
 
 		private void ApplyDebuffs() {
+			var mymod = (StaminaMod)this.mod;
 			int buffid = this.mod.BuffType( "ExhaustionBuff" );
-			this.player.AddBuff( buffid, (int)(StaminaMod.Config.Data.ExhaustionDuration - this.Logic.TiredTimer) );
+
+			this.player.AddBuff( buffid, (int)(mymod.Config.Data.ExhaustionDuration - this.Logic.TiredTimer) );
 		}
 
 		private void ApplyExhaustion() {
-			ExhaustionBuff.ApplyMovementExhaustion(this.player);
+			ExhaustionBuff.ApplyMovementExhaustion( (StaminaMod)this.mod, this.player );
 			this.player.dashDelay = 1;
 			this.player.rocketTime = 0;
 			this.player.wingTime = 0;
@@ -222,7 +230,7 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 		}
 		public int GetExerciseThreshold() {
 			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			return this.Logic.GetExerciseThreshold();
+			return this.Logic.GetExerciseThreshold( (StaminaMod)this.mod );
 		}
 		public bool IsExercising() {
 			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
@@ -235,7 +243,7 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 		}
 		public void AddStamina( float amt ) {
 			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			this.Logic.AddStamina( amt );
+			this.Logic.AddStamina( (StaminaMod)this.mod, amt );
 		}
 		public void AddFatigue( float amt ) {
 			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }

@@ -49,7 +49,8 @@ namespace Stamina {
 			this.HasStaminaSet = has_stamina;
 
 			if( !this.HasStaminaSet ) {
-				this.MaxStamina = StaminaMod.Config.Data.InitialStamina;
+				var mymod = (StaminaMod)modplayer.mod;
+				this.MaxStamina = mymod.Config.Data.InitialStamina;
 				this.HasStaminaSet = true;
 			}
 
@@ -59,19 +60,18 @@ namespace Stamina {
 
 		////////////////
 
-		public int GetExerciseThreshold() {
-			int threshold = (int)((float)this.MaxStamina * StaminaMod.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina);
-			threshold -= StaminaMod.Config.Data.FatigueExerciseThresholdAmountRemoved;
-			return threshold;
+		public int GetExerciseThreshold( StaminaMod mymod ) {
+			int threshold = (int)((float)this.MaxStamina * mymod.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina);
+			return threshold - mymod.Config.Data.FatigueExerciseThresholdAmountRemoved;
 		}
 		
 		////////////////
 
-		public void PassiveFatigueRecover() {
+		public void PassiveFatigueRecover( StaminaMod mymod ) {
 			if( this.Fatigue > 0 ) {
 				if( (this.MaxStamina - this.Stamina) <= this.Fatigue ) {
 					this.FatigueRecoverTimer++;
-					int duration = StaminaMod.Config.Data.FatigueRecoverDuration;
+					int duration = mymod.Config.Data.FatigueRecoverDuration;
 
 					if( this.FatigueRecoverTimer >= duration ) {
 						this.FatigueRecoverTimer = 0;
@@ -79,16 +79,16 @@ namespace Stamina {
 					}
 				}
 				
-				if( this.Fatigue >= this.GetExerciseThreshold() ) {
+				if( this.Fatigue >= this.GetExerciseThreshold( mymod ) ) {
 					this.IsExercising = true;
 				}
 			} else {
 				if( this.IsExercising ) {
 					this.IsExercising = false;
-					if( this.MaxStamina < StaminaMod.Config.Data.MaxStaminaAmount ) {
-						this.MaxStamina += StaminaMod.Config.Data.ExerciseGrowthAmount;
+					if( this.MaxStamina < mymod.Config.Data.MaxStaminaAmount ) {
+						this.MaxStamina += mymod.Config.Data.ExerciseGrowthAmount;
 
-						string msg = "+" + StaminaMod.Config.Data.ExerciseGrowthAmount + " Stamina";
+						string msg = "+" + mymod.Config.Data.ExerciseGrowthAmount + " Stamina";
 						UIHelper.AddPlayerLabel( this.Player, msg, Color.Chartreuse, 60*3, true );
 
 						Main.PlaySound( SoundID.Item47.WithVolume(0.5f) );
@@ -97,11 +97,11 @@ namespace Stamina {
 			}
 		}
 
-		public void PassiveStaminaRegen() {
+		public void PassiveStaminaRegen( StaminaMod mymod ) {
 			//if( this.Player.suffocating || this.Player.breath <= 0 ) { return; }
 
 			if( this.Stamina > 0 ) {
-				float rate = StaminaMod.Config.Data.RechargeRate * StaminaMod.Config.Data.ScaleAllStaminaRates;
+				float rate = mymod.Config.Data.RechargeRate * mymod.Config.Data.ScaleAllStaminaRates;
 
 				if( this.Player.FindBuffIndex(18) == -1 ) {	// Gravitation Potion
 					this.Stamina += rate;
@@ -110,9 +110,9 @@ namespace Stamina {
 				}
 				this.TiredTimer = 0d;
 			} else {
-				if( this.TiredTimer >= StaminaMod.Config.Data.ExhaustionDuration ) {
+				if( this.TiredTimer >= mymod.Config.Data.ExhaustionDuration ) {
 					this.TiredTimer = 0d;
-					this.Stamina = StaminaMod.Config.Data.ExhaustionRecover;
+					this.Stamina = mymod.Config.Data.ExhaustionRecover;
 				}
 				this.TiredTimer += 1d;
 			}
@@ -126,10 +126,10 @@ namespace Stamina {
 
 		////////////////
 
-		public void GatherPassiveStaminaDrains() {
+		public void GatherPassiveStaminaDrains( StaminaMod mymod ) {
 			// Is grappling?
 			if( this.Player.grappling[0] >= 0 ) {
-				this.DrainStamina( StaminaMod.Config.Data.GrappleRate, "grapple" );
+				this.DrainStamina( mymod.Config.Data.GrappleRate, "grapple" );
 			}
 
 			if( this.ItemUseDuration > 0 ) {
@@ -138,16 +138,16 @@ namespace Stamina {
 				Item curr_item = this.Player.inventory[this.Player.selectedItem];
 				if( curr_item != null && !curr_item.IsAir ) {
 					if( curr_item.magic ) {
-						this.DrainStamina( StaminaMod.Config.Data.MagicItemUseRate, "magic item use" );
+						this.DrainStamina( mymod.Config.Data.MagicItemUseRate, "magic item use" );
 					} else {
-						this.DrainStamina( StaminaMod.Config.Data.ItemUseRate, "item use" );
+						this.DrainStamina( mymod.Config.Data.ItemUseRate, "item use" );
 					}
 				}
 				//Main.NewText("GatherPassiveStaminaDrains " + StaminaMod.Config.Data.ItemUseRate + ", " + this.ItemUseDuration);
 			}
 		}
 
-		public void GatherActivityStaminaDrains() {
+		public void GatherActivityStaminaDrains( StaminaMod mymod ) {
 			// Is sprinting?
 			if( !this.Player.mount.Active && this.Player.velocity.Y == 0f && this.Player.dashDelay >= 0 ) {
 				float runMin = PlayerHelper.MinimumRunSpeed(this.Player);
@@ -157,14 +157,14 @@ namespace Stamina {
 				if( (this.Player.controlRight && velX > runMin && velX < acc) ||
 					(this.Player.controlLeft && velX < -runMin && velX > -acc) ) {
 //Main.NewText("runMin:"+ runMin+ ",acc:"+ acc+ ",velX:"+ velX+",maxRunSpeed:"+ this.Player.maxRunSpeed);
-					this.DrainStamina( StaminaMod.Config.Data.SprintRate, "sprint" );
+					this.DrainStamina( mymod.Config.Data.SprintRate, "sprint" );
 				}
 			}
 
 			// Is dashing?
 			if( !this.ModPlayer.IsDashing ) {
 				if( this.Player.dash != 0 && this.Player.dashDelay == -1 ) {
-					this.DrainStamina( StaminaMod.Config.Data.DashRate, "dash" );
+					this.DrainStamina( mymod.Config.Data.DashRate, "dash" );
 					this.ModPlayer.IsDashing = true;
 				}
 			} else if( this.Player.dashDelay != -1 ) {
@@ -174,12 +174,12 @@ namespace Stamina {
 			// Is (attempting) jump?
 			if( this.Player.controlJump ) {
 				if( !this.ModPlayer.IsJumping && !PlayerHelper.IsFlying(this.Player) ) {
-					this.DrainStamina( StaminaMod.Config.Data.JumpBegin, "jump" );
+					this.DrainStamina( mymod.Config.Data.JumpBegin, "jump" );
 					this.ModPlayer.IsJumping = true;
 				}
 
 				if( this.Player.jump > 0 || PlayerHelper.IsFlying( this.Player ) ) {
-					this.DrainStamina( StaminaMod.Config.Data.JumpHoldRate, "jump hold" );
+					this.DrainStamina( mymod.Config.Data.JumpHoldRate, "jump hold" );
 				}
 			} else if( this.ModPlayer.IsJumping ) {
 				this.ModPlayer.IsJumping = false;
@@ -188,8 +188,8 @@ namespace Stamina {
 
 		////////////////
 
-		public void AddStamina( float amt ) {
-			float add = amt * StaminaMod.Config.Data.ScaleAllStaminaRates;
+		public void AddStamina( StaminaMod mymod, float amt ) {
+			float add = amt * mymod.Config.Data.ScaleAllStaminaRates;
 			if( this.Stamina == 0 ) {
 				this.TiredTimer += add / 2;
 			} else {
@@ -212,7 +212,7 @@ namespace Stamina {
 
 		////////////////
 
-		public void CommitStaminaDrains() {
+		public void CommitStaminaDrains( StaminaMod mymod ) {
 			if( this.CurrentDrainCount == 0 ) {
 				this.DrainingFX = false;
 				return;
@@ -223,11 +223,11 @@ namespace Stamina {
 			if( this.Stamina == 0 ) {
 				this.TiredTimer = (int)drain > this.TiredTimer ? 0d : this.TiredTimer - drain;
 			} else {
-				this.Stamina -= drain * StaminaMod.Config.Data.ScaleAllStaminaRates;
+				this.Stamina -= drain * mymod.Config.Data.ScaleAllStaminaRates;
 
 				// If newly exhausted, also add a bit to fatigue
 				if( this.Stamina <= 0 ) {
-					this.AddFatigue( StaminaMod.Config.Data.FatigueAmount );
+					this.AddFatigue( mymod.Config.Data.FatigueAmount );
 				}
 			}
 

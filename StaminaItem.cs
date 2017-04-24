@@ -13,10 +13,13 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			return base.UseItem( item, player );
 		}*/
 
-		public override void WingUpdate( int wings, Player player, bool inUse ) {
-			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>( this.mod );
-			info.IsFlying = inUse;
-			info.HasCheckedFlying = true;
+		public override bool NewWingUpdate( int wings, Player player, bool in_use ) {
+			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
+
+			modplayer.IsFlying = in_use;
+			modplayer.HasCheckedFlying = true;
+
+			return false;
 		}
 
 		public override void SetDefaults( Item item ) {
@@ -33,12 +36,14 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 		public static int[] StarUseCooldown = new int[Main.player.Length];
 
 		public override bool UseItem( Item item, Player player ) {
-			if( item.type == 75 && item.stack > 0 && StaminaMod.Config.Data.ConsumableStars ) {
+			var mymod = (StaminaMod)this.mod;
+
+			if( item.type == 75 && item.stack > 0 && mymod.Config.Data.ConsumableStars ) {
 				if( StaminaItem.StarUseCooldown[player.whoAmI] == 0 ) {
 					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 
 					if( modplayer.GetStamina() < modplayer.GetMaxStamina() ) {
-						modplayer.AddStamina( StaminaMod.Config.Data.StarStaminaHeal );
+						modplayer.AddStamina( mymod.Config.Data.StarStaminaHeal );
 
 						if( --item.stack <= 0 ) {
 							ItemHelper.DestroyItem(item);
@@ -55,11 +60,13 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 
 		public override bool ConsumeItem( Item item, Player player ) {
+			var mymod = (StaminaMod)this.mod;
+
 			bool can_consume = base.ConsumeItem( item, player );
 			if( can_consume && item.type == 126 ) {	// Bottled Water
 				var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
-				modplayer.AddFatigue( -StaminaMod.Config.Data.BottledWaterFatigueHeal );
-				modplayer.AddStamina( (float)StaminaMod.Config.Data.BottledWaterFatigueHeal * StaminaMod.Config.Data.ScaleAllStaminaRates );
+				modplayer.AddFatigue( -mymod.Config.Data.BottledWaterFatigueHeal );
+				modplayer.AddStamina( (float)mymod.Config.Data.BottledWaterFatigueHeal * mymod.Config.Data.ScaleAllStaminaRates );
 			}
 			return can_consume;
 		}

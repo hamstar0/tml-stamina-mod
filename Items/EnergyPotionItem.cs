@@ -67,7 +67,8 @@ namespace Stamina.Items {
 		}
 
 		public override bool RecipeAvailable() {
-			return StaminaMod.Config.Data.CraftableEnergyDrinks;
+			var mymod = (StaminaMod)this.mod;
+			return mymod.Config.Data.CraftableEnergyDrinks;
 		}
 	}
 }

@@ -141,9 +141,11 @@ namespace Stamina {
 				float offset_exercise = ((float)(max_stamina - exercise_threshold) / (float)max_stamina) * (float)width;
 				var pos = new Vector2( offset_x, offset_y );
 				pos.X += offset_exercise - 2f;
-				var rect = new Rectangle( 2, 0, 4, bar.Height );
+				var rect = new Rectangle( 2, 0, 2, bar.Height );
 				var ex_color = new Color( Main.DiscoR, Main.DiscoG, Main.DiscoB );
 				
+				sb.Draw( bar, pos, new Rectangle?(rect), ex_color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
+				pos.X += 2f;
 				sb.Draw( bar, pos, new Rectangle?(rect), ex_color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
 			}
 

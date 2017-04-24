@@ -1,5 +1,5 @@
 author = hamstar
-version = 1.4.4
+version = 1.4.5
 displayName = Stamina
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includePDB = false

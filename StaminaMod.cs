@@ -23,15 +23,18 @@ namespace Stamina {
 
 		public float SingularExertionRate = 12f;
 		public float ItemUseRate = 0.525f;
-		public float MagicItemUseRate = 0.525f / 2f;
+		public float MagicItemUseRate = 0.1f;
 		public float GrappleRate = 0.45f;
 		public float SprintRate = 0.525f;
-		public float JumpBegin = 6f;
+		public float JumpBegin = 5f;
 		public float JumpHoldRate = 0.75f;
 		public float DashRate = 28f;
 
 		public int ExhaustionDuration = 180;
 		public float ExhaustionRecover = 18f;
+		public bool ExhaustionLowersDefense = true;
+		public bool ExhaustionBlocksItems = true;
+		public bool ExhaustionSlowsMovement = true;
 
 		public bool CraftableEnergyDrinks = true;
 		public bool ConsumableStars = true;
@@ -52,8 +55,8 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 3 );
-		public static JsonConfig<ConfigurationData> Config { get; private set; }
+		public readonly static Version ConfigVersion = new Version( 1, 4, 5 );
+		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 
 		public StaminaMod() : base() {
@@ -62,49 +65,57 @@ namespace Stamina {
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
-
-			//string filename = "Stamina " + this.Version + ".json";
+			
 			string filename = "Stamina Config.json";
-			StaminaMod.Config = new JsonConfig<ConfigurationData>( filename, new ConfigurationData() );
+			this.Config = new JsonConfig<ConfigurationData>( filename, "Mod Configs", new ConfigurationData() );
 		}
 
 		public override void Load() {
-			if( !StaminaMod.Config.Load() ) {
-				StaminaMod.Config.Save();
-			} else {
-				Version vers_since = StaminaMod.Config.Data.VersionSinceUpdate != "" ?
-					new Version( StaminaMod.Config.Data.VersionSinceUpdate ) :
-					new Version();
+			var old_config = new JsonConfig<ConfigurationData>( this.Config.FileName, "", new ConfigurationData() );
+			// Update old config to new location
+			if( old_config.LoadFile() ) {
+				old_config.DestroyFile();
+				old_config.SetFilePath( this.Config.FileName, "Mod Configs" );
+				this.Config = old_config;
+			} else if( !this.Config.LoadFile() ) {
+				this.Config.SaveFile();
+			}
+			
+			Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
+				new Version( this.Config.Data.VersionSinceUpdate ) :
+				new Version();
 
-				if( vers_since < StaminaMod.ConfigVersion ) {
-					ErrorLogger.Log( "Stamina config updated to " + StaminaMod.ConfigVersion.ToString() );
+			if( vers_since < StaminaMod.ConfigVersion ) {
+				ErrorLogger.Log( "Stamina config updated to " + StaminaMod.ConfigVersion.ToString() );
 
-					if( vers_since < new Version(1, 3, 3) ) {
-						StaminaMod.Config.Data.ItemUseRate = new ConfigurationData().ItemUseRate;
-						StaminaMod.Config.Data.GrappleRate = new ConfigurationData().GrappleRate;
-						StaminaMod.Config.Data.SprintRate = new ConfigurationData().SprintRate;
-						StaminaMod.Config.Data.JumpBegin = new ConfigurationData().JumpBegin;
-						StaminaMod.Config.Data.JumpHoldRate = new ConfigurationData().JumpHoldRate;
-						StaminaMod.Config.Data.DashRate = new ConfigurationData().DashRate;
-						StaminaMod.Config.Data.ExhaustionRecover = new ConfigurationData().ExhaustionRecover;
-					}
-					if( vers_since < new Version( 1, 3, 4 ) ) {
-						StaminaMod.Config.Data.StarStaminaHeal = new ConfigurationData().StarStaminaHeal;
-					}
-					if( vers_since < new Version( 1, 4, 1 ) ) {
-						StaminaMod.Config.Data.FatigueAmount = new ConfigurationData().FatigueAmount;
-						StaminaMod.Config.Data.BottledWaterFatigueHeal = new ConfigurationData().BottledWaterFatigueHeal;
-					}
-					if( vers_since < new Version( 1, 4, 2 ) ) {
-						StaminaMod.Config.Data.ExerciseGrowthAmount = new ConfigurationData().ExerciseGrowthAmount;
-					}
-					if( vers_since < new Version( 1, 4, 3 ) ) {
-						StaminaMod.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina = new ConfigurationData().FatigueExerciseThresholdPercentOfMaxStamina;
-					}
-					StaminaMod.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
-
-					StaminaMod.Config.Save();
+				if( vers_since < new Version(1, 3, 3) ) {
+					this.Config.Data.ItemUseRate = new ConfigurationData().ItemUseRate;
+					this.Config.Data.GrappleRate = new ConfigurationData().GrappleRate;
+					this.Config.Data.SprintRate = new ConfigurationData().SprintRate;
+					this.Config.Data.JumpHoldRate = new ConfigurationData().JumpHoldRate;
+					this.Config.Data.DashRate = new ConfigurationData().DashRate;
+					this.Config.Data.ExhaustionRecover = new ConfigurationData().ExhaustionRecover;
 				}
+				if( vers_since < new Version( 1, 3, 4 ) ) {
+					this.Config.Data.StarStaminaHeal = new ConfigurationData().StarStaminaHeal;
+				}
+				if( vers_since < new Version( 1, 4, 1 ) ) {
+					this.Config.Data.FatigueAmount = new ConfigurationData().FatigueAmount;
+					this.Config.Data.BottledWaterFatigueHeal = new ConfigurationData().BottledWaterFatigueHeal;
+				}
+				if( vers_since < new Version( 1, 4, 2 ) ) {
+					this.Config.Data.ExerciseGrowthAmount = new ConfigurationData().ExerciseGrowthAmount;
+				}
+				if( vers_since < new Version( 1, 4, 3 ) ) {
+					this.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina = new ConfigurationData().FatigueExerciseThresholdPercentOfMaxStamina;
+				}
+				if( vers_since < new Version( 1, 4, 5 ) ) {
+					this.Config.Data.MagicItemUseRate = new ConfigurationData().MagicItemUseRate;
+					this.Config.Data.JumpBegin = new ConfigurationData().JumpBegin;
+				}
+
+				this.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
+				this.Config.SaveFile();
 			}
 		}
 
@@ -135,11 +146,11 @@ namespace Stamina {
 				bool is_exercising = modplayer.IsExercising();
 				int threshold = fatigue > 0 ? modplayer.GetExerciseThreshold() : -1;
 
-				if( StaminaMod.Config.Data.CustomStaminaBarPositionX >= 0 ) {
-					x = StaminaMod.Config.Data.CustomStaminaBarPositionX;
+				if( this.Config.Data.CustomStaminaBarPositionX >= 0 ) {
+					x = this.Config.Data.CustomStaminaBarPositionX;
 				}
-				if( StaminaMod.Config.Data.CustomStaminaBarPositionY >= 0 ) {
-					y = StaminaMod.Config.Data.CustomStaminaBarPositionY;
+				if( this.Config.Data.CustomStaminaBarPositionY >= 0 ) {
+					y = this.Config.Data.CustomStaminaBarPositionY;
 				}
 
 				StaminaUI.DrawStaminaBar( sb, x, y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
