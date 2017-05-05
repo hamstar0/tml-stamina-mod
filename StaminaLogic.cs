@@ -103,11 +103,12 @@ namespace Stamina {
 			if( this.Stamina > 0 ) {
 				float rate = mymod.Config.Data.RechargeRate * mymod.Config.Data.ScaleAllStaminaRates;
 
-				if( this.Player.FindBuffIndex(18) == -1 ) {	// Gravitation Potion
-					this.Stamina += rate;
-				} else {
-					this.Stamina += rate / 2;
+				// Gravitation Potion
+				if( this.Player.FindBuffIndex(18) >= 0 ) {
+					this.Stamina -= mymod.Config.Data.GravitationPotionDrainRate;
 				}
+
+				this.Stamina += rate;
 				this.TiredTimer = 0d;
 			} else {
 				if( this.TiredTimer >= mymod.Config.Data.ExhaustionDuration ) {

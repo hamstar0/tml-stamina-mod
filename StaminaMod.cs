@@ -29,6 +29,7 @@ namespace Stamina {
 		public float JumpBegin = 5f;
 		public float JumpHoldRate = 0.75f;
 		public float DashRate = 28f;
+		public float GravitationPotionDrainRate = 0.1f;
 
 		public int ExhaustionDuration = 180;
 		public float ExhaustionRecover = 18f;
@@ -55,7 +56,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 6 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 7 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 
