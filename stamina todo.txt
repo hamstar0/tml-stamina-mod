@@ -6,6 +6,10 @@ v1.5
 -	Set energy potion to remove some fatigue
 -	Set well fed buff to remove some fatigue, but accelerate buff drain
 
+v1.4.8
+-	Tone down drain from item use slightly
+-	Remove Jungle Grass Seeds from Energy Potion recipe
+-	Remove old config (Stamina 1.2.0.json)
 v1.4.1
 -	Set water bottle to remove more fatigue (tweak tooltip)
 v1.4

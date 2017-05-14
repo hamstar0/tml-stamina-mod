@@ -20,12 +20,12 @@ namespace Stamina {
 
 		public float RechargeRate = 0.45f;
 		public float EnergizedRate = 0.25f;
-
+		
 		public float SingularExertionRate = 12f;
-		public float ItemUseRate = 0.525f;
+		public float ItemUseRate = 0.5f;
 		public float MagicItemUseRate = 0.2f;
 		public float GrappleRate = 0.45f;
-		public float SprintRate = 0.525f;
+		public float SprintRate = 0.5f;
 		public float JumpBegin = 5f;
 		public float JumpHoldRate = 0.75f;
 		public float DashRate = 28f;
@@ -56,7 +56,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 7 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 8 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -72,7 +72,7 @@ namespace Stamina {
 		}
 
 		public override void Load() {
-			var old_config = new JsonConfig<ConfigurationData>( this.Config.FileName, "", new ConfigurationData() );
+			var old_config = new JsonConfig<ConfigurationData>( "Stamina 1.2.0.json", "", new ConfigurationData() );
 			// Update old config to new location
 			if( old_config.LoadFile() ) {
 				old_config.DestroyFile();
@@ -91,9 +91,7 @@ namespace Stamina {
 				ErrorLogger.Log( "Stamina config updated to " + StaminaMod.ConfigVersion.ToString() );
 
 				if( vers_since < new Version(1, 3, 3) ) {
-					this.Config.Data.ItemUseRate = new_config.ItemUseRate;
 					this.Config.Data.GrappleRate = new_config.GrappleRate;
-					this.Config.Data.SprintRate = new_config.SprintRate;
 					this.Config.Data.JumpHoldRate = new_config.JumpHoldRate;
 					this.Config.Data.DashRate = new_config.DashRate;
 					this.Config.Data.ExhaustionRecover = new_config.ExhaustionRecover;
@@ -115,7 +113,11 @@ namespace Stamina {
 					this.Config.Data.MagicItemUseRate = new_config.MagicItemUseRate;
 					this.Config.Data.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
 				}
-
+				if( vers_since < new Version( 1, 4, 8 ) ) {
+					this.Config.Data.ItemUseRate = new_config.ItemUseRate;
+					this.Config.Data.SprintRate = new_config.SprintRate;
+				}
+				
 				this.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
 				this.Config.SaveFile();
 			}

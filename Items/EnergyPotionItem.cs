@@ -51,7 +51,8 @@ namespace Stamina.Items {
 	class EnergyPotionRecipe : ModRecipe {
 		public EnergyPotionRecipe( EnergyPotionItem moditem ) : base( moditem.mod ) {
 			this.AddIngredient( "Bottled Honey", 1 );
-			this.AddIngredient( "Jungle Grass Seeds", 1 );
+			this.AddIngredient( "Swiftness Potion", 1 );
+			//this.AddIngredient( "Jungle Grass Seeds", 1 );
 			//this.AddIngredient( "Pink Gel", 1 );
 			//this.AddIngredient( "Jungle Spore", 1 );
 			this.AddIngredient( "Daybloom", 1 );
