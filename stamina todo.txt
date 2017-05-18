@@ -5,6 +5,7 @@ v1.5
 -	Set minimum 15% fatigue before exercise occurs
 -	Set energy potion to remove some fatigue
 -	Set well fed buff to remove some fatigue, but accelerate buff drain
+-	Give better indication of stamina fully drained
 
 v1.4.8
 -	Tone down drain from item use slightly

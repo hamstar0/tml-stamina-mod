@@ -22,7 +22,7 @@ namespace Stamina {
 		public float EnergizedRate = 0.25f;
 		
 		public float SingularExertionRate = 12f;
-		public float ItemUseRate = 0.5f;
+		public float ItemUseRate = 0.51f;
 		public float MagicItemUseRate = 0.2f;
 		public float GrappleRate = 0.45f;
 		public float SprintRate = 0.5f;
@@ -56,7 +56,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 8 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 9 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -114,10 +114,12 @@ namespace Stamina {
 					this.Config.Data.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
 				}
 				if( vers_since < new Version( 1, 4, 8 ) ) {
-					this.Config.Data.ItemUseRate = new_config.ItemUseRate;
 					this.Config.Data.SprintRate = new_config.SprintRate;
 				}
-				
+				if( vers_since < new Version( 1, 4, 9 ) ) {
+					this.Config.Data.ItemUseRate = new_config.ItemUseRate;
+				}
+
 				this.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
 				this.Config.SaveFile();
 			}

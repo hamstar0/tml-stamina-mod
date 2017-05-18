@@ -56,7 +56,7 @@ namespace Stamina.Items {
 			//this.AddIngredient( "Pink Gel", 1 );
 			//this.AddIngredient( "Jungle Spore", 1 );
 			this.AddIngredient( "Daybloom", 1 );
-			this.AddIngredient( "Deathweed", 1 );
+			//this.AddIngredient( "Deathweed", 1 );
 			this.AddIngredient( "Fallen Star", 1 );
 			//this.AddIngredient( "Firefly", 1 );
 			//this.AddIngredient( "Mushroom Grass Seeds", 1 );
