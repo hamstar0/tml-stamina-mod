@@ -13,6 +13,8 @@ namespace Stamina {
 	public class ConfigurationData {
 		public string VersionSinceUpdate = "";
 
+		public bool Enabled = true;
+
 		public int InitialStamina = 100;
 		public int MaxStaminaAmount = 400;
 		public int ExerciseGrowthAmount = 2;
@@ -56,7 +58,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 9 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 10 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -80,48 +82,48 @@ namespace Stamina {
 				this.Config = old_config;
 			} else if( !this.Config.LoadFile() ) {
 				this.Config.SaveFile();
-			}
-			
-			Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
-				new Version( this.Config.Data.VersionSinceUpdate ) :
-				new Version();
+			} else {
+				Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
+					new Version( this.Config.Data.VersionSinceUpdate ) :
+					new Version();
 
-			if( vers_since < StaminaMod.ConfigVersion ) {
-				var new_config = new ConfigurationData();
-				ErrorLogger.Log( "Stamina config updated to " + StaminaMod.ConfigVersion.ToString() );
+				if( vers_since < StaminaMod.ConfigVersion ) {
+					var new_config = new ConfigurationData();
+					ErrorLogger.Log( "Stamina config updated to " + StaminaMod.ConfigVersion.ToString() );
 
-				if( vers_since < new Version(1, 3, 3) ) {
-					this.Config.Data.GrappleRate = new_config.GrappleRate;
-					this.Config.Data.JumpHoldRate = new_config.JumpHoldRate;
-					this.Config.Data.DashRate = new_config.DashRate;
-					this.Config.Data.ExhaustionRecover = new_config.ExhaustionRecover;
-				}
-				if( vers_since < new Version( 1, 3, 4 ) ) {
-					this.Config.Data.StarStaminaHeal = new_config.StarStaminaHeal;
-				}
-				if( vers_since < new Version( 1, 4, 1 ) ) {
-					this.Config.Data.FatigueAmount = new_config.FatigueAmount;
-					this.Config.Data.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
-				}
-				if( vers_since < new Version( 1, 4, 3 ) ) {
-					this.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina = new_config.FatigueExerciseThresholdPercentOfMaxStamina;
-				}
-				if( vers_since < new Version( 1, 4, 5 ) ) {
-					this.Config.Data.JumpBegin = new_config.JumpBegin;
-				}
-				if( vers_since < new Version( 1, 4, 6 ) ) {
-					this.Config.Data.MagicItemUseRate = new_config.MagicItemUseRate;
-					this.Config.Data.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
-				}
-				if( vers_since < new Version( 1, 4, 8 ) ) {
-					this.Config.Data.SprintRate = new_config.SprintRate;
-				}
-				if( vers_since < new Version( 1, 4, 9 ) ) {
-					this.Config.Data.ItemUseRate = new_config.ItemUseRate;
-				}
+					if( vers_since < new Version( 1, 3, 3 ) ) {
+						this.Config.Data.GrappleRate = new_config.GrappleRate;
+						this.Config.Data.JumpHoldRate = new_config.JumpHoldRate;
+						this.Config.Data.DashRate = new_config.DashRate;
+						this.Config.Data.ExhaustionRecover = new_config.ExhaustionRecover;
+					}
+					if( vers_since < new Version( 1, 3, 4 ) ) {
+						this.Config.Data.StarStaminaHeal = new_config.StarStaminaHeal;
+					}
+					if( vers_since < new Version( 1, 4, 1 ) ) {
+						this.Config.Data.FatigueAmount = new_config.FatigueAmount;
+						this.Config.Data.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
+					}
+					if( vers_since < new Version( 1, 4, 3 ) ) {
+						this.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina = new_config.FatigueExerciseThresholdPercentOfMaxStamina;
+					}
+					if( vers_since < new Version( 1, 4, 5 ) ) {
+						this.Config.Data.JumpBegin = new_config.JumpBegin;
+					}
+					if( vers_since < new Version( 1, 4, 6 ) ) {
+						this.Config.Data.MagicItemUseRate = new_config.MagicItemUseRate;
+						this.Config.Data.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
+					}
+					if( vers_since < new Version( 1, 4, 8 ) ) {
+						this.Config.Data.SprintRate = new_config.SprintRate;
+					}
+					if( vers_since < new Version( 1, 4, 9 ) ) {
+						this.Config.Data.ItemUseRate = new_config.ItemUseRate;
+					}
 
-				this.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
-				this.Config.SaveFile();
+					this.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
+					this.Config.SaveFile();
+				}
 			}
 		}
 
@@ -137,6 +139,8 @@ namespace Stamina {
 		////////////////
 
 		public override void PostDrawInterface( SpriteBatch sb ) {
+			if( !this.Config.Data.Enabled ) { return; }
+
 			Player player = Main.player[ Main.myPlayer ];
 			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this );
 
@@ -168,6 +172,7 @@ namespace Stamina {
 
 			DebugHelper.PrintToBatch( sb );
 		}
+
 
 		private void PrintStaminaDrainers( SpriteBatch sb, StaminaPlayer modplayer ) {
 			var dict = modplayer.GetCurrentDrainTypes();

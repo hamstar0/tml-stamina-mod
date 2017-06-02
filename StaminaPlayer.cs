@@ -97,14 +97,15 @@ namespace Stamina {
 		////////////////
 
 		public override void PreUpdate() {
+			var mymod = (StaminaMod)this.mod;
+			if( !mymod.Config.Data.Enabled ) { return; }
+
 			if( this.player.whoAmI == Main.myPlayer ) {
 				UIHelper.UpdatePlayerLabels();
 			}
 
 			if( this.Logic != null ) {
 				if( !this.player.dead ) {
-					var mymod = (StaminaMod)this.mod;
-
 					this.Logic.PassiveFatigueRecover( mymod );
 					this.Logic.PassiveStaminaRegen( mymod );
 					this.Logic.GatherPassiveStaminaDrains( mymod );
@@ -121,6 +122,9 @@ namespace Stamina {
 		}
 
 		public override void PostUpdateRunSpeeds() {
+			var mymod = (StaminaMod)this.mod;
+			if( !mymod.Config.Data.Enabled ) { return; }
+
 			if( this.Logic == null ) { return; }
 
 			if( !this.player.dead ) {
@@ -136,8 +140,10 @@ namespace Stamina {
 		////////////////
 
 		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
-			if( quiet ) { return; }
 			var mymod = (StaminaMod)this.mod;
+			if( !mymod.Config.Data.Enabled ) { return; }
+			if( quiet ) { return; }
+
 			float yike = (float)damage * mymod.Config.Data.PercentOfDamageAdrenalineBurst * (crit ? 2f : 1f);
 
 			this.Logic.AddStamina( mymod, yike );
@@ -145,7 +151,9 @@ namespace Stamina {
 
 
 		public override bool PreItemCheck() {
+			var mymod = (StaminaMod)this.mod;
 			bool prechecked = base.PreItemCheck();
+			if( !mymod.Config.Data.Enabled ) { return prechecked; }
 			if( this.Logic == null ) { return prechecked; }
 
 			Item item = this.player.inventory[this.player.selectedItem ];
@@ -167,6 +175,8 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 		////////////////
 
 		public override void DrawEffects( PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright ) {
+			var mymod = (StaminaMod)this.mod;
+			if( !mymod.Config.Data.Enabled ) { return; }
 			if( this.Logic == null ) { return; }
 			if( this.Logic.Stamina > 0 ) { return; }
 

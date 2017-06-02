@@ -4,8 +4,10 @@ v1.5
 -	Add Strength Belt (increases max stamina; Anklet + Leather + Bones + Feathers)
 -	Set minimum 15% fatigue before exercise occurs
 -	Set energy potion to remove some fatigue
--	Set well fed buff to remove some fatigue, but accelerate buff drain
+-	Set well fed buff to remove some fatigue, but reduce accelerate the buff's time
 -	Give better indication of stamina fully drained
+-	Set bar to layer the same as health and mana
+-	Add more recovery stamina after drain
 
 v1.4.8
 -	Tone down drain from item use slightly

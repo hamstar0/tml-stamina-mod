@@ -29,7 +29,7 @@ namespace Utils {
 			};
 		}
 
-		public static void UpdatePlayerLabels() {
+		public static void UpdatePlayerLabels() {	// Called from an Update function
 			foreach( int i in UIHelper.PlayerTexts.Keys.ToArray() ) {
 				Player player = Main.player[i];
 				if( player == null || !player.active || player.dead ) {
@@ -44,7 +44,7 @@ namespace Utils {
 			}
 		}
 
-		public static void DrawPlayerLabels( SpriteBatch sb ) {
+		public static void DrawPlayerLabels( SpriteBatch sb ) {	// Called from a Draw function
 			foreach( int i in UIHelper.PlayerTexts.Keys ) {
 				Player player = Main.player[i];
 				if( player == null || !player.active || player.dead ) { continue; }

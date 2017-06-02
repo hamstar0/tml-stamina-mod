@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace Stamina.Items {
 	public class EnergyPotionItem : ModItem {
 		public override void SetDefaults() {
@@ -18,7 +19,8 @@ namespace Stamina.Items {
 			//item.potion = true;
 			this.item.buffType = this.mod.BuffType("EnergizedBuff");
 			this.item.buffTime = 30 * 60;
-			this.item.toolTip = "It's got electrolytes!";
+			this.item.toolTip = "Gives 30 seconds of stamina regeneration";
+			this.item.toolTip2 = "It's got electrolytes!";
 			this.item.value = 1000;
 			this.item.rare = 1;
 		}
@@ -41,15 +43,15 @@ namespace Stamina.Items {
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new EnergyPotionRecipe( this );
+			ModRecipe recipe = new EnergyPotionItemRecipe( this );
 			recipe.AddRecipe();
 		}
 	}
 
 
 
-	class EnergyPotionRecipe : ModRecipe {
-		public EnergyPotionRecipe( EnergyPotionItem moditem ) : base( moditem.mod ) {
+	class EnergyPotionItemRecipe : ModRecipe {
+		public EnergyPotionItemRecipe( EnergyPotionItem moditem ) : base( moditem.mod ) {
 			this.AddIngredient( "Bottled Honey", 1 );
 			this.AddIngredient( "Swiftness Potion", 1 );
 			//this.AddIngredient( "Jungle Grass Seeds", 1 );
@@ -69,7 +71,7 @@ namespace Stamina.Items {
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			return mymod.Config.Data.CraftableEnergyDrinks;
+			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableEnergyDrinks;
 		}
 	}
 }

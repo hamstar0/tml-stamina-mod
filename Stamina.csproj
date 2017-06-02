@@ -59,8 +59,7 @@
     <Compile Include="StaminaNetProtocol.cs" />
     <Compile Include="StaminaPlayer.cs" />
     <Compile Include="StaminaProjectile.cs" />
-    <Compile Include="Utils\CustomHooks.cs" />
-    <Compile Include="Utils\Debug.cs" />
+    <Compile Include="Utils\DebugHelper.cs" />
     <Compile Include="Utils\ItemHelper.cs" />
     <Compile Include="Utils\JsonConfig.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />
