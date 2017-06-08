@@ -1,4 +1,5 @@
-﻿using Stamina.Utils;
+﻿using HamstarHelpers.ItemHelpers;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -13,7 +14,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			return base.UseItem( item, player );
 		}*/
 
-		public override bool NewWingUpdate( int wings, Player player, bool in_use ) {
+		public override bool WingUpdate( int wings, Player player, bool in_use ) {
 			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 
 			modplayer.IsFlying = in_use;
@@ -21,16 +22,16 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 			return false;
 		}
-
-		public override void SetDefaults( Item item ) {
+		
+		public override void ModifyTooltips( Item item, List<TooltipLine> tooltips ) {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return; }
 
-			if( item.type == 75 ) {	// Fallen Star
-				this.AddTooltip2(item, "Recovers some stamina on use.");
+			if( item.type == 75 ) { // Fallen Star
+				tooltips.Add( new TooltipLine( mymod, "StaminaPurpose", "Recovers some stamina on use" ) );
 			}
-			if( item.type == 126 ) {	// Bottled Water
-				this.AddTooltip2( item, "Recovers some fatigue on use." );
+			if( item.type == 126 ) {    // Bottled Water
+				tooltips.Add( new TooltipLine( mymod, "StaminaPurpose", "Recovers some fatigue on use" ) );
 			}
 		}
 
@@ -49,7 +50,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 						modplayer.AddStamina( mymod.Config.Data.StarStaminaHeal );
 
 						if( --item.stack <= 0 ) {
-							ItemHelper.DestroyItem(item);
+							ItemHelpers.DestroyItem(item);
 						}
 					}
 

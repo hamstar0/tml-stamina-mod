@@ -1,11 +1,13 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
+
 namespace Stamina.Buffs {
 	public class ExhaustionBuff : ModBuff {
 		public override void SetDefaults() {
-			Main.buffName[this.Type] = "Exhaustion";
-			Main.buffTip[this.Type] = "You're out of steam";
+			this.DisplayName.SetDefault( "Exhaustion" );
+			this.Description.SetDefault( "You're out of steam" );
+			
 			Main.debuff[this.Type] = true;
 		}
 

@@ -5,8 +5,13 @@ using Terraria.ModLoader;
 
 namespace Stamina.Items {
 	public class EnergyPotionItem : ModItem {
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Energy Potion" );
+			this.Tooltip.SetDefault( "Gives 30 seconds of stamina regeneration"+'\n'
+				+ "It's got electrolytes!" );
+		}
+
 		public override void SetDefaults() {
-			this.item.name = "Energy Potion";
 			this.item.UseSound = SoundID.Item3;
 			this.item.useStyle = 2;
 			this.item.useTurn = true;
@@ -19,8 +24,6 @@ namespace Stamina.Items {
 			//item.potion = true;
 			this.item.buffType = this.mod.BuffType("EnergizedBuff");
 			this.item.buffTime = 30 * 60;
-			this.item.toolTip = "Gives 30 seconds of stamina regeneration";
-			this.item.toolTip2 = "It's got electrolytes!";
 			this.item.value = 1000;
 			this.item.rare = 1;
 		}
@@ -52,17 +55,17 @@ namespace Stamina.Items {
 
 	class EnergyPotionItemRecipe : ModRecipe {
 		public EnergyPotionItemRecipe( EnergyPotionItem moditem ) : base( moditem.mod ) {
-			this.AddIngredient( "Bottled Honey", 1 );
-			this.AddIngredient( "Swiftness Potion", 1 );
-			//this.AddIngredient( "Jungle Grass Seeds", 1 );
-			//this.AddIngredient( "Pink Gel", 1 );
-			//this.AddIngredient( "Jungle Spore", 1 );
-			this.AddIngredient( "Daybloom", 1 );
-			//this.AddIngredient( "Deathweed", 1 );
-			this.AddIngredient( "Fallen Star", 1 );
-			//this.AddIngredient( "Firefly", 1 );
-			//this.AddIngredient( "Mushroom Grass Seeds", 1 );
-			this.AddIngredient( "Purification Powder", 1 );
+			this.AddIngredient( ItemID.BottledHoney, 1 );
+			this.AddIngredient( ItemID.SwiftnessPotion, 1 );
+			//this.AddIngredient( ItemID.JungleGrassSeeds, 1 );
+			//this.AddIngredient( ItemID.PinkGel, 1 );
+			//this.AddIngredient( ItemID.JungleSpore, 1 );
+			this.AddIngredient( ItemID.Daybloom, 1 );
+			//this.AddIngredient( ItemID.Deathweed, 1 );
+			this.AddIngredient( ItemID.FallenStar, 1 );
+			//this.AddIngredient( ItemID.Firefly, 1 );
+			//this.AddIngredient( ItemID.MushroomGrassSeeds, 1 );
+			this.AddIngredient( ItemID.PurificationPowder, 1 );
 
 			this.AddTile(13);	// Bottle
 

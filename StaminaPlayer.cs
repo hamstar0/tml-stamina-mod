@@ -6,7 +6,7 @@ using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Utils;
+
 
 namespace Stamina {
 	public class StaminaPlayer : ModPlayer {
@@ -99,11 +99,7 @@ namespace Stamina {
 		public override void PreUpdate() {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return; }
-
-			if( this.player.whoAmI == Main.myPlayer ) {
-				UIHelper.UpdatePlayerLabels();
-			}
-
+			
 			if( this.Logic != null ) {
 				if( !this.player.dead ) {
 					this.Logic.PassiveFatigueRecover( mymod );

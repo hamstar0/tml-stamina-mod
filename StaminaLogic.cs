@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.PlayerHelpers;
+using HamstarHelpers.Utilities.Messages;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Utils;
+
 
 namespace Stamina {
 	class StaminaLogic {
@@ -89,7 +91,7 @@ namespace Stamina {
 						this.MaxStamina += mymod.Config.Data.ExerciseGrowthAmount;
 
 						string msg = "+" + mymod.Config.Data.ExerciseGrowthAmount + " Stamina";
-						UIHelper.AddPlayerLabel( this.Player, msg, Color.Chartreuse, 60*3, true );
+						PlayerMessage.AddPlayerLabel( this.Player, msg, Color.Chartreuse, 60*3, true );
 
 						Main.PlaySound( SoundID.Item47.WithVolume(0.5f) );
 					}
@@ -151,7 +153,7 @@ namespace Stamina {
 		public void GatherActivityStaminaDrains( StaminaMod mymod ) {
 			// Is sprinting?
 			if( !this.Player.mount.Active && this.Player.velocity.Y == 0f && this.Player.dashDelay >= 0 ) {
-				float runMin = PlayerHelper.MinimumRunSpeed(this.Player);
+				float runMin = PlayerHelpers.MinimumRunSpeed(this.Player);
 				float acc = this.Player.accRunSpeed + 0.1f;
 				float velX = this.Player.velocity.X;
 
@@ -174,12 +176,16 @@ namespace Stamina {
 
 			// Is (attempting) jump?
 			if( this.Player.controlJump ) {
-				if( !this.ModPlayer.IsJumping && !PlayerHelper.IsFlying(this.Player) ) {
-					this.DrainStamina( mymod.Config.Data.JumpBegin, "jump" );
+				if( !this.ModPlayer.IsJumping && !PlayerHelpers.IsFlying(this.Player) ) {
+					if( this.Player.swimTime > 0 ) {
+						this.DrainStamina( mymod.Config.Data.SwimBegin, "swim" );
+					} else {
+						this.DrainStamina( mymod.Config.Data.JumpBegin, "jump" );
+					}
 					this.ModPlayer.IsJumping = true;
 				}
 
-				if( this.Player.jump > 0 || PlayerHelper.IsFlying( this.Player ) ) {
+				if( this.Player.jump > 0 || PlayerHelpers.IsFlying( this.Player ) ) {
 					this.DrainStamina( mymod.Config.Data.JumpHoldRate, "jump hold" );
 				}
 			} else if( this.ModPlayer.IsJumping ) {

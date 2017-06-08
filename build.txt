@@ -1,6 +1,7 @@
 author = hamstar
-version = 1.4.10
+version = 1.4.11
 displayName = Stamina
+modReferences = HamstarHelpers
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
-includePDB = false
+includePDB = true
 homepage = http://forums.terraria.org/index.php?threads/stamina.52446/

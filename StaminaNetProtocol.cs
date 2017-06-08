@@ -2,22 +2,23 @@
 using Terraria;
 using Terraria.ModLoader;
 
+
 namespace Stamina {
 	public enum StaminaNetProtocolTypes : byte {
-		SendSettingsRequest,
-		SendSettings
+		RequestModSettings,
+		ModSettings
 	}
 
 
-	public class StaminaNetProtocol {
+	public static class StaminaNetProtocol {
 		public static void RoutePacket( StaminaMod mymod, BinaryReader reader ) {
 			StaminaNetProtocolTypes protocol = (StaminaNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
-			case StaminaNetProtocolTypes.SendSettingsRequest:
+			case StaminaNetProtocolTypes.RequestModSettings:
 				StaminaNetProtocol.ReceiveSettingsRequestOnServer( mymod, reader );
 				break;
-			case StaminaNetProtocolTypes.SendSettings:
+			case StaminaNetProtocolTypes.ModSettings:
 				StaminaNetProtocol.ReceiveSettingsOnClient( mymod, reader );
 				break;
 			default:
@@ -37,7 +38,7 @@ namespace Stamina {
 
 			ModPacket packet = mod.GetPacket();
 
-			packet.Write( (byte)StaminaNetProtocolTypes.SendSettingsRequest );
+			packet.Write( (byte)StaminaNetProtocolTypes.RequestModSettings );
 			packet.Write( (int)player.whoAmI );
 
 			packet.Send();
@@ -52,7 +53,7 @@ namespace Stamina {
 			
 			ModPacket packet = mymod.GetPacket();
 
-			packet.Write( (byte)StaminaNetProtocolTypes.SendSettings );
+			packet.Write( (byte)StaminaNetProtocolTypes.ModSettings );
 			packet.Write( (string)mymod.Config.SerializeMe() );
 
 			packet.Send( (int)player.whoAmI );

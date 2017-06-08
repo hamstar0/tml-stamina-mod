@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Libraries.JSON.NET.Newtonsoft.Json">
-      <HintPath>..\..\..\Reference\Libraries.JSON.NET.Newtonsoft.Json.dll</HintPath>
+    <Reference Include="HamstarHelpers">
+      <HintPath>..\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,6 +47,10 @@
     <Reference Include="Terraria">
       <HintPath>..\..\..\..\..\Program Files\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
     </Reference>
+    <Reference Include="Terraria.Libraries.ReLogic.ReLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Reference\Terraria.Libraries.ReLogic.ReLogic.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffs\EnergizedBuff.cs" />
@@ -59,12 +63,7 @@
     <Compile Include="StaminaNetProtocol.cs" />
     <Compile Include="StaminaPlayer.cs" />
     <Compile Include="StaminaProjectile.cs" />
-    <Compile Include="Utils\DebugHelper.cs" />
-    <Compile Include="Utils\ItemHelper.cs" />
-    <Compile Include="Utils\JsonConfig.cs" />
-    <Compile Include="Utils\PlayerHelper.cs" />
     <Compile Include="StaminaUI.cs" />
-    <Compile Include="Utils\UIHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Buffs\EnergizedBuff.png" />

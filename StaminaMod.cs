@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Utils;
 using System;
 using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
-using Utils.JsonConfig;
+using HamstarHelpers.Utilities.Config;
+using ReLogic.Graphics;
 
 
 namespace Stamina {
@@ -30,6 +30,7 @@ namespace Stamina {
 		public float SprintRate = 0.5f;
 		public float JumpBegin = 5f;
 		public float JumpHoldRate = 0.75f;
+		public float SwimBegin = 2f;
 		public float DashRate = 28f;
 		public float GravitationPotionDrainRate = 0.1f;
 
@@ -58,7 +59,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 10 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 11 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -144,8 +145,6 @@ namespace Stamina {
 			Player player = Main.player[ Main.myPlayer ];
 			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this );
 
-			UIHelper.DrawPlayerLabels( sb );
-
 			if( modplayer.IsInitialized ) {
 				int x = Main.screenWidth - 172;
 				int y = 78;
@@ -165,12 +164,10 @@ namespace Stamina {
 
 				StaminaUI.DrawStaminaBar( sb, x, y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
 
-				if( DebugHelper.DEBUGMODE ) {
-					this.PrintStaminaDrainers(sb, modplayer);
-				}
+				//if( DebugHelper.DEBUGMODE ) {
+				//	this.PrintStaminaDrainers(sb, modplayer);
+				//}
 			}
-
-			DebugHelper.PrintToBatch( sb );
 		}
 
 

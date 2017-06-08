@@ -9,6 +9,8 @@ v1.5
 -	Set bar to layer the same as health and mana
 -	Add more recovery stamina after drain
 
+v1.4.10
+-	Add 'Enabled' config setting
 v1.4.8
 -	Tone down drain from item use slightly
 -	Remove Jungle Grass Seeds from Energy Potion recipe
