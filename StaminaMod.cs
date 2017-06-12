@@ -17,7 +17,7 @@ namespace Stamina {
 
 		public int InitialStamina = 100;
 		public int MaxStaminaAmount = 400;
-		public int ExerciseGrowthAmount = 2;
+		public int ExerciseGrowthAmount = 3;
 		public float ScaleAllStaminaRates = 1f;
 
 		public float RechargeRate = 0.45f;
@@ -59,7 +59,7 @@ namespace Stamina {
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 11 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 12 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 
@@ -113,13 +113,17 @@ namespace Stamina {
 					}
 					if( vers_since < new Version( 1, 4, 6 ) ) {
 						this.Config.Data.MagicItemUseRate = new_config.MagicItemUseRate;
-						this.Config.Data.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
 					}
 					if( vers_since < new Version( 1, 4, 8 ) ) {
 						this.Config.Data.SprintRate = new_config.SprintRate;
 					}
 					if( vers_since < new Version( 1, 4, 9 ) ) {
 						this.Config.Data.ItemUseRate = new_config.ItemUseRate;
+					}
+					if( vers_since < new Version( 1, 4, 12 ) ) {
+						if( this.Config.Data.ExerciseGrowthAmount == 2 ) {	// Only update if different from old default
+							this.Config.Data.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
+						}
 					}
 
 					this.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();

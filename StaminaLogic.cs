@@ -8,9 +8,6 @@ using Terraria.ID;
 
 namespace Stamina {
 	class StaminaLogic {
-		private StaminaPlayer ModPlayer;
-		private Player Player;
-
 		private float _stamina;
 		public float Stamina {
 			get {
@@ -44,14 +41,11 @@ namespace Stamina {
 
 		////////////////
 
-		public StaminaLogic( StaminaPlayer modplayer, int max_stamina, bool has_stamina ) {
-			this.ModPlayer = modplayer;
-			this.Player = modplayer.player;
+		public StaminaLogic( StaminaMod mymod, int max_stamina, bool has_stamina ) {
 			this.MaxStamina = max_stamina;
 			this.HasStaminaSet = has_stamina;
 
 			if( !this.HasStaminaSet ) {
-				var mymod = (StaminaMod)modplayer.mod;
 				this.MaxStamina = mymod.Config.Data.InitialStamina;
 				this.HasStaminaSet = true;
 			}
@@ -69,7 +63,7 @@ namespace Stamina {
 		
 		////////////////
 
-		public void PassiveFatigueRecover( StaminaMod mymod ) {
+		public void PassiveFatigueRecover( StaminaMod mymod, Player player ) {
 			if( this.Fatigue > 0 ) {
 				if( (this.MaxStamina - this.Stamina) <= this.Fatigue ) {
 					this.FatigueRecoverTimer++;
@@ -91,7 +85,7 @@ namespace Stamina {
 						this.MaxStamina += mymod.Config.Data.ExerciseGrowthAmount;
 
 						string msg = "+" + mymod.Config.Data.ExerciseGrowthAmount + " Stamina";
-						PlayerMessage.AddPlayerLabel( this.Player, msg, Color.Chartreuse, 60*3, true );
+						PlayerMessage.AddPlayerLabel( player, msg, Color.Chartreuse, 60*3, true );
 
 						Main.PlaySound( SoundID.Item47.WithVolume(0.5f) );
 					}
@@ -99,14 +93,14 @@ namespace Stamina {
 			}
 		}
 
-		public void PassiveStaminaRegen( StaminaMod mymod ) {
+		public void PassiveStaminaRegen( StaminaMod mymod, Player player ) {
 			//if( this.Player.suffocating || this.Player.breath <= 0 ) { return; }
 
 			if( this.Stamina > 0 ) {
 				float rate = mymod.Config.Data.RechargeRate * mymod.Config.Data.ScaleAllStaminaRates;
 
 				// Gravitation Potion
-				if( this.Player.FindBuffIndex(18) >= 0 ) {
+				if( player.FindBuffIndex(18) >= 0 ) {
 					this.Stamina -= mymod.Config.Data.GravitationPotionDrainRate;
 				}
 
@@ -129,67 +123,75 @@ namespace Stamina {
 
 		////////////////
 
-		public void GatherPassiveStaminaDrains( StaminaMod mymod ) {
+		public void GatherPassiveStaminaDrains( StaminaMod mymod, Player player ) {
 			// Is grappling?
-			if( this.Player.grappling[0] >= 0 ) {
+			if( player.grappling[0] >= 0 ) {
 				this.DrainStamina( mymod.Config.Data.GrappleRate, "grapple" );
 			}
 
+			// Is item in use?
 			if( this.ItemUseDuration > 0 ) {
 				this.ItemUseDuration--;
 
-				Item curr_item = this.Player.inventory[this.Player.selectedItem];
+				Item curr_item = player.inventory[ player.selectedItem ];
 				if( curr_item != null && !curr_item.IsAir ) {
-					if( curr_item.magic ) {
+					bool is_pewpew = curr_item.type == ItemID.SpaceGun || curr_item.type == ItemID.LaserRifle;
+					bool is_spaceman = player.armor[0].type == ItemID.MeteorHelmet &&
+						player.armor[1].type == ItemID.MeteorSuit &&
+						player.armor[2].type == ItemID.MeteorLeggings;
+
+					if( curr_item.magic && !(is_pewpew && is_spaceman) ) {
 						this.DrainStamina( mymod.Config.Data.MagicItemUseRate, "magic item use" );
 					} else {
 						this.DrainStamina( mymod.Config.Data.ItemUseRate, "item use" );
 					}
 				}
-				//Main.NewText("GatherPassiveStaminaDrains " + StaminaMod.Config.Data.ItemUseRate + ", " + this.ItemUseDuration);
+//Main.NewText("GatherPassiveStaminaDrains " + StaminaMod.Config.Data.ItemUseRate + ", " + this.ItemUseDuration);
 			}
 		}
 
-		public void GatherActivityStaminaDrains( StaminaMod mymod ) {
-			// Is sprinting?
-			if( !this.Player.mount.Active && this.Player.velocity.Y == 0f && this.Player.dashDelay >= 0 ) {
-				float runMin = PlayerHelpers.MinimumRunSpeed(this.Player);
-				float acc = this.Player.accRunSpeed + 0.1f;
-				float velX = this.Player.velocity.X;
+		public void GatherActivityStaminaDrains( StaminaMod mymod, Player player ) {
+			var modplayer = player.GetModPlayer<StaminaPlayer>( mymod );
 
-				if( (this.Player.controlRight && velX > runMin && velX < acc) ||
-					(this.Player.controlLeft && velX < -runMin && velX > -acc) ) {
+			// Is sprinting?
+			if( !player.mount.Active && player.velocity.Y == 0f && player.dashDelay >= 0 ) {
+				float runMin = PlayerHelpers.MinimumRunSpeed( player );
+				float acc = player.accRunSpeed + 0.1f;
+				float velX = player.velocity.X;
+
+				if( (player.controlRight && velX > runMin && velX < acc) ||
+					(player.controlLeft && velX < -runMin && velX > -acc) ) {
 //Main.NewText("runMin:"+ runMin+ ",acc:"+ acc+ ",velX:"+ velX+",maxRunSpeed:"+ this.Player.maxRunSpeed);
 					this.DrainStamina( mymod.Config.Data.SprintRate, "sprint" );
 				}
 			}
 
 			// Is dashing?
-			if( !this.ModPlayer.IsDashing ) {
-				if( this.Player.dash != 0 && this.Player.dashDelay == -1 ) {
+			if( !modplayer.IsDashing ) {
+				if( player.dash != 0 && player.dashDelay == -1 ) {
 					this.DrainStamina( mymod.Config.Data.DashRate, "dash" );
-					this.ModPlayer.IsDashing = true;
+					modplayer.IsDashing = true;
 				}
-			} else if( this.Player.dashDelay != -1 ) {
-				this.ModPlayer.IsDashing = false;
+			} else if( player.dashDelay != -1 ) {
+				modplayer.IsDashing = false;
 			}
 
 			// Is (attempting) jump?
-			if( this.Player.controlJump ) {
-				if( !this.ModPlayer.IsJumping && !PlayerHelpers.IsFlying(this.Player) ) {
-					if( this.Player.swimTime > 0 ) {
+			if( player.controlJump ) {
+				if( !modplayer.IsJumping && !PlayerHelpers.IsFlying( player ) ) {
+					if( player.swimTime > 0 ) {
 						this.DrainStamina( mymod.Config.Data.SwimBegin, "swim" );
 					} else {
 						this.DrainStamina( mymod.Config.Data.JumpBegin, "jump" );
 					}
-					this.ModPlayer.IsJumping = true;
+					modplayer.IsJumping = true;
 				}
 
-				if( this.Player.jump > 0 || PlayerHelpers.IsFlying( this.Player ) ) {
+				if( player.jump > 0 || PlayerHelpers.IsFlying( player ) ) {
 					this.DrainStamina( mymod.Config.Data.JumpHoldRate, "jump hold" );
 				}
-			} else if( this.ModPlayer.IsJumping ) {
-				this.ModPlayer.IsJumping = false;
+			} else if( modplayer.IsJumping ) {
+				modplayer.IsJumping = false;
 			}
 		}
 

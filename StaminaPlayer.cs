@@ -61,7 +61,7 @@ namespace Stamina {
 			int max = reader.ReadInt32();
 			bool has = reader.ReadBoolean();
 
-			this.Logic = new StaminaLogic( this, max, has );
+			this.Logic = new StaminaLogic( (StaminaMod)this.mod, max, has );
 			this.IsInitialized = true;
 		}
 
@@ -80,7 +80,7 @@ namespace Stamina {
 				has = tags.GetBool( "has_stamina" );
 			}
 
-			this.Logic = new StaminaLogic( this, max, has );
+			this.Logic = new StaminaLogic( mymod, max, has );
 			this.IsInitialized = true;
 		}
 
@@ -102,9 +102,9 @@ namespace Stamina {
 			
 			if( this.Logic != null ) {
 				if( !this.player.dead ) {
-					this.Logic.PassiveFatigueRecover( mymod );
-					this.Logic.PassiveStaminaRegen( mymod );
-					this.Logic.GatherPassiveStaminaDrains( mymod );
+					this.Logic.PassiveFatigueRecover( mymod, this.player );
+					this.Logic.PassiveStaminaRegen( mymod, this.player );
+					this.Logic.GatherPassiveStaminaDrains( mymod, this.player );
 					this.Logic.CommitStaminaDrains( mymod );
 					if( this.Logic.Stamina == 0 ) {
 						this.ApplyDebuffs();
@@ -124,7 +124,7 @@ namespace Stamina {
 			if( this.Logic == null ) { return; }
 
 			if( !this.player.dead ) {
-				this.Logic.GatherActivityStaminaDrains( (StaminaMod)this.mod );
+				this.Logic.GatherActivityStaminaDrains( (StaminaMod)this.mod, this.player );
 
 				if( this.WillApplyExhaustion ) {
 					this.ApplyExhaustion();
