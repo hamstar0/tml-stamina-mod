@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.ModLoader;
 using HamstarHelpers.Utilities.Config;
 using ReLogic.Graphics;
-
+using System.Collections.Generic;
 
 namespace Stamina {
 	public class ConfigurationData {
@@ -54,12 +54,17 @@ namespace Stamina {
 
 		public int CustomStaminaBarPositionX = -1;
 		public int CustomStaminaBarPositionY = -1;
+
+		public IDictionary<string, float> CustomItemUseRate = new Dictionary<string, float> {
+			{ "Bug Net", 0.1f },
+			{ "Golden Bug Net", 0.15f }
+		};
 	}
 
 
 
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 12 );
+		public readonly static Version ConfigVersion = new Version( 1, 4, 13 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 

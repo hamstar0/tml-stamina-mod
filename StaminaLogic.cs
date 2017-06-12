@@ -140,10 +140,15 @@ namespace Stamina {
 						player.armor[1].type == ItemID.MeteorSuit &&
 						player.armor[2].type == ItemID.MeteorLeggings;
 
-					if( curr_item.magic && !(is_pewpew && is_spaceman) ) {
-						this.DrainStamina( mymod.Config.Data.MagicItemUseRate, "magic item use" );
+					if( mymod.Config.Data.CustomItemUseRate.ContainsKey( curr_item.Name ) ) {
+						float custom_rate = mymod.Config.Data.CustomItemUseRate[ curr_item.Name ];
+						this.DrainStamina( custom_rate, "custom item use" );
 					} else {
-						this.DrainStamina( mymod.Config.Data.ItemUseRate, "item use" );
+						if( curr_item.magic && !(is_pewpew && is_spaceman) ) {
+							this.DrainStamina( mymod.Config.Data.MagicItemUseRate, "magic item use" );
+						} else {
+							this.DrainStamina( mymod.Config.Data.ItemUseRate, "item use" );
+						}
 					}
 				}
 //Main.NewText("GatherPassiveStaminaDrains " + StaminaMod.Config.Data.ItemUseRate + ", " + this.ItemUseDuration);
