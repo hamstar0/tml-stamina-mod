@@ -55,14 +55,17 @@
   <ItemGroup>
     <Compile Include="Buffs\EnergizedBuff.cs" />
     <Compile Include="Buffs\ExhaustionBuff.cs" />
+    <Compile Include="ConfigDefaults.cs" />
     <Compile Include="Items\EnergyPotionItem.cs" />
+    <Compile Include="NetProtocol\ServerPacketHandlers.cs" />
+    <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaminaItem.cs" />
+    <Compile Include="MyItem.cs" />
     <Compile Include="StaminaLogic.cs" />
     <Compile Include="StaminaMod.cs" />
-    <Compile Include="StaminaNetProtocol.cs" />
-    <Compile Include="StaminaPlayer.cs" />
-    <Compile Include="StaminaProjectile.cs" />
+    <Compile Include="NetProtocol\NetProtocolTypes.cs" />
+    <Compile Include="MyPlayer.cs" />
+    <Compile Include="MyProjectile.cs" />
     <Compile Include="StaminaUI.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,9 +73,13 @@
     <Content Include="Buffs\ExhaustionBuff.png" />
     <Content Include="build.txt" />
     <Content Include="description.txt" />
+    <Content Include="icon.png" />
     <Content Include="Items\EnergyPotionItem.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="README.md" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"C:\Program Files\Steam\steamapps\common\Terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>

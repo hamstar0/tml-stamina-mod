@@ -1,11 +1,12 @@
 ﻿using HamstarHelpers.ItemHelpers;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
 namespace Stamina {
-	class StaminaItem : GlobalItem {
+	class MyItem : GlobalItem {
 		/*public override bool UseItem( Item item, Player player ) {
 			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>(this.mod);
 			info.AddDrainStamina( StaminaMod.Config.Data.ItemUseRate, "use item" );
@@ -15,7 +16,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 		}*/
 
 		public override bool WingUpdate( int wings, Player player, bool in_use ) {
-			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
+			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this.mod );
 
 			modplayer.IsFlying = in_use;
 			modplayer.HasCheckedFlying = true;
@@ -42,9 +43,9 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return base.UseItem( item, player ); }
 
-			if( item.type == 75 && item.stack > 0 && mymod.Config.Data.ConsumableStars ) {
-				if( StaminaItem.StarUseCooldown[player.whoAmI] == 0 ) {
-					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
+			if( item.type == ItemID.FallenStar && item.stack > 0 && mymod.Config.Data.ConsumableStars ) {
+				if( MyItem.StarUseCooldown[player.whoAmI] == 0 ) {
+					MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this.mod );
 
 					if( modplayer.GetStamina() < modplayer.GetMaxStamina() ) {
 						modplayer.AddStamina( mymod.Config.Data.StarStaminaHeal );
@@ -54,9 +55,9 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 						}
 					}
 
-					StaminaItem.StarUseCooldown[player.whoAmI]++;
+					MyItem.StarUseCooldown[player.whoAmI]++;
 				}
-				StaminaItem.StarUseCooldown[player.whoAmI]++;
+				MyItem.StarUseCooldown[player.whoAmI]++;
 			}
 
 			return base.UseItem( item, player );
@@ -68,8 +69,8 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			bool can_consume = base.ConsumeItem( item, player );
 			if( !mymod.Config.Data.Enabled ) { return can_consume; }
 
-			if( can_consume && item.type == 126 ) {	// Bottled Water
-				var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
+			if( can_consume && item.type == ItemID.BottledWater ) {
+				var modplayer = player.GetModPlayer<MyPlayer>( this.mod );
 				modplayer.AddFatigue( -mymod.Config.Data.BottledWaterFatigueHeal );
 				modplayer.AddStamina( (float)mymod.Config.Data.BottledWaterFatigueHeal * mymod.Config.Data.ScaleAllStaminaRates );
 			}

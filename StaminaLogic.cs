@@ -156,11 +156,11 @@ namespace Stamina {
 		}
 
 		public void GatherActivityStaminaDrains( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>( mymod );
+			var modplayer = player.GetModPlayer<MyPlayer>( mymod );
 
 			// Is sprinting?
 			if( !player.mount.Active && player.velocity.Y == 0f && player.dashDelay >= 0 ) {
-				float runMin = PlayerHelpers.MinimumRunSpeed( player );
+				float runMin = PlayerMovementHelpers.MinimumRunSpeed( player );
 				float acc = player.accRunSpeed + 0.1f;
 				float velX = player.velocity.X;
 
@@ -183,7 +183,7 @@ namespace Stamina {
 
 			// Is (attempting) jump?
 			if( player.controlJump ) {
-				if( !modplayer.IsJumping && !PlayerHelpers.IsFlying( player ) ) {
+				if( !modplayer.IsJumping && !PlayerMovementHelpers.IsFlying( player ) ) {
 					if( player.swimTime > 0 ) {
 						this.DrainStamina( mymod.Config.Data.SwimBegin, "swim" );
 					} else {
@@ -192,7 +192,7 @@ namespace Stamina {
 					modplayer.IsJumping = true;
 				}
 
-				if( player.jump > 0 || PlayerHelpers.IsFlying( player ) ) {
+				if( player.jump > 0 || PlayerMovementHelpers.IsFlying( player ) ) {
 					this.DrainStamina( mymod.Config.Data.JumpHoldRate, "jump hold" );
 				}
 			} else if( modplayer.IsJumping ) {

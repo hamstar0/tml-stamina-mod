@@ -1,72 +1,41 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using HamstarHelpers.Utilities.Config;
 using ReLogic.Graphics;
-using System.Collections.Generic;
+using Stamina.NetProtocol;
+using System;
+
 
 namespace Stamina {
-	public class ConfigurationData {
-		public string VersionSinceUpdate = "";
-
-		public bool Enabled = true;
-
-		public int InitialStamina = 100;
-		public int MaxStaminaAmount = 400;
-		public int ExerciseGrowthAmount = 3;
-		public float ScaleAllStaminaRates = 1f;
-
-		public float RechargeRate = 0.45f;
-		public float EnergizedRate = 0.25f;
-		
-		public float SingularExertionRate = 12f;
-		public float ItemUseRate = 0.51f;
-		public float MagicItemUseRate = 0.2f;
-		public float GrappleRate = 0.45f;
-		public float SprintRate = 0.5f;
-		public float JumpBegin = 5f;
-		public float JumpHoldRate = 0.75f;
-		public float SwimBegin = 2f;
-		public float DashRate = 28f;
-		public float GravitationPotionDrainRate = 0.1f;
-
-		public int ExhaustionDuration = 180;
-		public float ExhaustionRecover = 18f;
-		public bool ExhaustionLowersDefense = true;
-		public bool ExhaustionBlocksItems = true;
-		public bool ExhaustionSlowsMovement = true;
-
-		public bool CraftableEnergyDrinks = true;
-		public bool ConsumableStars = true;
-		public int StarStaminaHeal = 50;
-		public int BottledWaterFatigueHeal = 50;
-
-		public float PercentOfDamageAdrenalineBurst = 0.08f;
-
-		public float FatigueAmount = 12f;
-		public int FatigueRecoverDuration = 60;
-		public int FatigueExerciseThresholdAmountRemoved = 0;
-		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.32f;
-
-		public int CustomStaminaBarPositionX = -1;
-		public int CustomStaminaBarPositionY = -1;
-
-		public IDictionary<string, float> CustomItemUseRate = new Dictionary<string, float> {
-			{ "Bug Net", 0.1f },
-			{ "Golden Bug Net", 0.15f }
-		};
-	}
-
-
-
 	public class StaminaMod : Mod {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 13 );
-		public JsonConfig<ConfigurationData> Config { get; private set; }
+		public static string GithubUserName { get { return "hamstar0"; } }
+		public static string GithubProjectName { get { return "tml-stamina-mod"; } }
 
+		public static string ConfigRelativeFilePath {
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + StaminaConfigData.ConfigFileName; }
+		}
+		public static void ReloadConfigFromFile() {
+			if( Main.netMode != 0 ) {
+				throw new Exception( "Cannot reload configs outside of single player." );
+			}
+			if( StaminaMod.Instance != null ) {
+				StaminaMod.Instance.Config.LoadFile();
+			}
+		}
+
+		public static StaminaMod Instance { get; private set; }
+
+
+		////////////////
+
+		public JsonConfig<StaminaConfigData> Config { get; private set; }
+
+
+		////////////////
 
 		public StaminaMod() : base() {
 			this.Properties = new ModProperties() {
@@ -75,74 +44,50 @@ namespace Stamina {
 				AutoloadSounds = true
 			};
 			
-			string filename = "Stamina Config.json";
-			this.Config = new JsonConfig<ConfigurationData>( filename, "Mod Configs", new ConfigurationData() );
+			this.Config = new JsonConfig<StaminaConfigData>( StaminaConfigData.ConfigFileName,
+				ConfigurationDataBase.RelativePath, new StaminaConfigData() );
 		}
 
+		////////////////
+
 		public override void Load() {
-			var old_config = new JsonConfig<ConfigurationData>( "Stamina 1.2.0.json", "", new ConfigurationData() );
+			StaminaMod.Instance = this;
+
+			this.LoadConfigs();
+		}
+
+		private void LoadConfigs() {
+			var old_config = new JsonConfig<StaminaConfigData>( "Stamina 1.2.0.json", "", new StaminaConfigData() );
 			// Update old config to new location
 			if( old_config.LoadFile() ) {
 				old_config.DestroyFile();
-				old_config.SetFilePath( this.Config.FileName, "Mod Configs" );
+				old_config.SetFilePath( this.Config.FileName, ConfigurationDataBase.RelativePath );
 				this.Config = old_config;
-			} else if( !this.Config.LoadFile() ) {
+			}
+
+			if( !this.Config.LoadFile() ) {
 				this.Config.SaveFile();
-			} else {
-				Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
-					new Version( this.Config.Data.VersionSinceUpdate ) :
-					new Version();
+			}
 
-				if( vers_since < StaminaMod.ConfigVersion ) {
-					var new_config = new ConfigurationData();
-					ErrorLogger.Log( "Stamina config updated to " + StaminaMod.ConfigVersion.ToString() );
-
-					if( vers_since < new Version( 1, 3, 3 ) ) {
-						this.Config.Data.GrappleRate = new_config.GrappleRate;
-						this.Config.Data.JumpHoldRate = new_config.JumpHoldRate;
-						this.Config.Data.DashRate = new_config.DashRate;
-						this.Config.Data.ExhaustionRecover = new_config.ExhaustionRecover;
-					}
-					if( vers_since < new Version( 1, 3, 4 ) ) {
-						this.Config.Data.StarStaminaHeal = new_config.StarStaminaHeal;
-					}
-					if( vers_since < new Version( 1, 4, 1 ) ) {
-						this.Config.Data.FatigueAmount = new_config.FatigueAmount;
-						this.Config.Data.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
-					}
-					if( vers_since < new Version( 1, 4, 3 ) ) {
-						this.Config.Data.FatigueExerciseThresholdPercentOfMaxStamina = new_config.FatigueExerciseThresholdPercentOfMaxStamina;
-					}
-					if( vers_since < new Version( 1, 4, 5 ) ) {
-						this.Config.Data.JumpBegin = new_config.JumpBegin;
-					}
-					if( vers_since < new Version( 1, 4, 6 ) ) {
-						this.Config.Data.MagicItemUseRate = new_config.MagicItemUseRate;
-					}
-					if( vers_since < new Version( 1, 4, 8 ) ) {
-						this.Config.Data.SprintRate = new_config.SprintRate;
-					}
-					if( vers_since < new Version( 1, 4, 9 ) ) {
-						this.Config.Data.ItemUseRate = new_config.ItemUseRate;
-					}
-					if( vers_since < new Version( 1, 4, 12 ) ) {
-						if( this.Config.Data.ExerciseGrowthAmount == 2 ) {	// Only update if different from old default
-							this.Config.Data.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
-						}
-					}
-
-					this.Config.Data.VersionSinceUpdate = StaminaMod.ConfigVersion.ToString();
-					this.Config.SaveFile();
-				}
+			if( this.Config.Data.UpdateToLatestVersion() ) {
+				ErrorLogger.Log( "Stamina updated to " + StaminaConfigData.ConfigVersion.ToString() );
+				this.Config.SaveFile();
 			}
 		}
 
+		public override void Unload() {
+			StaminaMod.Instance = null;
+		}
 
 
 		////////////////
 
-		public override void HandlePacket( BinaryReader reader, int whoAmI ) {
-			StaminaNetProtocol.RoutePacket( this, reader );
+		public override void HandlePacket( BinaryReader reader, int player_who ) {
+			if( Main.netMode == 1 ) {   // Client
+				ClientPacketHandlers.HandlePacket( this, reader );
+			} else if( Main.netMode == 2 ) {    // Server
+				ServerPacketHandlers.HandlePacket( this, reader, player_who );
+			}
 		}
 
 
@@ -152,7 +97,7 @@ namespace Stamina {
 			if( !this.Config.Data.Enabled ) { return; }
 
 			Player player = Main.player[ Main.myPlayer ];
-			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this );
+			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this );
 
 			if( modplayer.IsInitialized ) {
 				int x = Main.screenWidth - 172;
@@ -180,7 +125,7 @@ namespace Stamina {
 		}
 
 
-		private void PrintStaminaDrainers( SpriteBatch sb, StaminaPlayer modplayer ) {
+		private void PrintStaminaDrainers( SpriteBatch sb, MyPlayer modplayer ) {
 			var dict = modplayer.GetCurrentDrainTypes();
 			int i = 0;
 

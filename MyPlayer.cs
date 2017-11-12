@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stamina.Buffs;
+using Stamina.NetProtocol;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ using Terraria.ModLoader.IO;
 
 
 namespace Stamina {
-	public class StaminaPlayer : ModPlayer {
+	public class MyPlayer : ModPlayer {
 		private StaminaLogic Logic;
 		public bool IsInitialized { get; private set; }
 
@@ -26,7 +27,7 @@ namespace Stamina {
 
 		public override void clientClone( ModPlayer clone ) {
 			base.clientClone( clone );
-			var myclone = (StaminaPlayer)clone;
+			var myclone = (MyPlayer)clone;
 
 			myclone.Logic = this.Logic;
 			myclone.WillApplyExhaustion = this.WillApplyExhaustion;
@@ -48,7 +49,7 @@ namespace Stamina {
 				}
 
 				if( Main.netMode == 1 ) {   // Client
-					StaminaNetProtocol.SendSettingsRequestFromClient( this.mod, player );
+					ClientPacketHandlers.SendSettingsRequestFromClient( this.mod, player );
 				}
 			}
 		}
@@ -112,8 +113,8 @@ namespace Stamina {
 				}
 			}
 
-			if( StaminaItem.StarUseCooldown[this.player.whoAmI] > 0 ) {
-				StaminaItem.StarUseCooldown[this.player.whoAmI]--;
+			if( MyItem.StarUseCooldown[this.player.whoAmI] > 0 ) {
+				MyItem.StarUseCooldown[this.player.whoAmI]--;
 			}
 		}
 
