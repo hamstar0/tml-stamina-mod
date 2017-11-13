@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 
 namespace Stamina.Buffs {
-	public class EnergizedBuff : ModBuff {
+	class EnergizedBuff : ModBuff {
 		public override void SetDefaults() {
 			this.DisplayName.SetDefault( "Energized" );
 			this.Description.SetDefault( "Boing!" );

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 
 namespace Stamina.Buffs {
-	public class ExhaustionBuff : ModBuff {
+	class ExhaustionBuff : ModBuff {
 		public override void SetDefaults() {
 			this.DisplayName.SetDefault( "Exhaustion" );
 			this.Description.SetDefault( "You're out of steam" );

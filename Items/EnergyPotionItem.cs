@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 
 namespace Stamina.Items {
-	public class EnergyPotionItem : ModItem {
+	class EnergyPotionItem : ModItem {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Energy Potion" );
 			this.Tooltip.SetDefault( "Gives 30 seconds of stamina regeneration"+'\n'

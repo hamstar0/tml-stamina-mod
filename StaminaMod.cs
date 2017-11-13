@@ -11,7 +11,7 @@ using System;
 
 
 namespace Stamina {
-	public class StaminaMod : Mod {
+	class StaminaMod : Mod {
 		public static string GithubUserName { get { return "hamstar0"; } }
 		public static string GithubProjectName { get { return "tml-stamina-mod"; } }
 
@@ -52,6 +52,12 @@ namespace Stamina {
 
 		public override void Load() {
 			StaminaMod.Instance = this;
+			
+			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
+			var min_vers = new Version( 1, 2, 0 );
+			if( hamhelpmod.Version < min_vers ) {
+				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
+			}
 
 			this.LoadConfigs();
 		}

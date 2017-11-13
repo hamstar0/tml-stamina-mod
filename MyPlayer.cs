@@ -10,7 +10,7 @@ using Terraria.ModLoader.IO;
 
 
 namespace Stamina {
-	public class MyPlayer : ModPlayer {
+	class MyPlayer : ModPlayer {
 		private StaminaLogic Logic;
 		public bool IsInitialized { get; private set; }
 

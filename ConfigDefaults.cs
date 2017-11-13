@@ -1,7 +1,7 @@
 ﻿using HamstarHelpers.Utilities.Config;
 using System;
 using System.Collections.Generic;
-using Terraria.ID;
+
 
 namespace Stamina {
 	public class StaminaConfigData : ConfigurationDataBase {

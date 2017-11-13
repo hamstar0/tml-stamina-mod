@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API.cs" />
     <Compile Include="Buffs\EnergizedBuff.cs" />
     <Compile Include="Buffs\ExhaustionBuff.cs" />
     <Compile Include="ConfigDefaults.cs" />
