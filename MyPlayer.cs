@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stamina.Buffs;
 using Stamina.NetProtocol;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -11,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stamina {
 	class MyPlayer : ModPlayer {
-		private StaminaLogic Logic;
+		public StaminaLogic Logic { get; private set; }
 		public bool IsInitialized { get; private set; }
 
 		public bool WillApplyExhaustion = false;
@@ -24,6 +22,11 @@ namespace Stamina {
 
 
 		////////////////
+
+		public override void Initialize() {
+			this.Logic = null;
+			this.IsInitialized = false;	// Ironic
+		}
 
 		public override void clientClone( ModPlayer clone ) {
 			base.clientClone( clone );
@@ -211,50 +214,6 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 			this.player.dashDelay = 1;
 			this.player.rocketTime = 0;
 			this.player.wingTime = 0;
-		}
-
-		////////////////
-
-		public bool GetDrainingFX() {
-			if( this.Logic == null ) { throw new Exception("Logic not available."); }
-			return this.Logic.DrainingFX;
-		}
-		public float GetStamina() {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			return this.Logic.Stamina;
-		}
-		public int GetMaxStamina() {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			return this.Logic.MaxStamina;
-		}
-		public float GetFatigue() {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			return this.Logic.Fatigue;
-		}
-		public IDictionary<string, float> GetCurrentDrainTypes() {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			return this.Logic.CurrentDrainTypes;
-		}
-		public int GetExerciseThreshold() {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			return this.Logic.GetExerciseThreshold( (StaminaMod)this.mod );
-		}
-		public bool IsExercising() {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			return this.Logic.IsExercising;
-		}
-
-		public void DrainStamina( float amt, string type ) {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			this.Logic.DrainStamina( amt, type );
-		}
-		public void AddStamina( float amt ) {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			this.Logic.AddStamina( (StaminaMod)this.mod, amt );
-		}
-		public void AddFatigue( float amt ) {
-			if( this.Logic == null ) { throw new Exception( "Logic not available." ); }
-			this.Logic.AddFatigue( amt );
 		}
 	}
 }

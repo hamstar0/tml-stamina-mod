@@ -9,7 +9,7 @@ namespace Stamina {
 			if( !mymod.Config.Data.Enabled ) { return; }
 
 			var modplayer = player.GetModPlayer<MyPlayer>( this.mod );
-			modplayer.DrainStamina( mymod.Config.Data.SingularExertionRate, "grapple begin" );
+			modplayer.Logic.DrainStamina( mymod.Config.Data.SingularExertionRate, "grapple begin" );
 //Main.NewText("UseGrapple " + StaminaMod.Config.Data.SingularExertionRate);
 		}
 	}

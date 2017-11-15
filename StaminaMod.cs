@@ -12,6 +12,8 @@ using System;
 
 namespace Stamina {
 	class StaminaMod : Mod {
+		public static StaminaMod Instance { get; private set; }
+
 		public static string GithubUserName { get { return "hamstar0"; } }
 		public static string GithubProjectName { get { return "tml-stamina-mod"; } }
 
@@ -26,8 +28,6 @@ namespace Stamina {
 				StaminaMod.Instance.Config.LoadFile();
 			}
 		}
-
-		public static StaminaMod Instance { get; private set; }
 
 
 		////////////////
@@ -101,19 +101,19 @@ namespace Stamina {
 
 		public override void PostDrawInterface( SpriteBatch sb ) {
 			if( !this.Config.Data.Enabled ) { return; }
-
+			
 			Player player = Main.player[ Main.myPlayer ];
 			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this );
 
 			if( modplayer.IsInitialized ) {
 				int x = Main.screenWidth - 172;
 				int y = 78;
-				float alpha = modplayer.GetDrainingFX() ? 1f : 0.65f;
-				int stamina = (int)modplayer.GetStamina();
-				int max_stamina = modplayer.GetMaxStamina();
-				float fatigue = modplayer.GetFatigue();
-				bool is_exercising = modplayer.IsExercising();
-				int threshold = fatigue > 0 ? modplayer.GetExerciseThreshold() : -1;
+				float alpha = modplayer.Logic.DrainingFX ? 1f : 0.65f;
+				int stamina = (int)modplayer.Logic.Stamina;
+				int max_stamina = modplayer.Logic.MaxStamina;
+				float fatigue = modplayer.Logic.Fatigue;
+				bool is_exercising = modplayer.Logic.IsExercising;
+				int threshold = fatigue > 0 ? modplayer.Logic.GetExerciseThreshold( this ) : -1;
 
 				if( this.Config.Data.CustomStaminaBarPositionX >= 0 ) {
 					x = this.Config.Data.CustomStaminaBarPositionX;
@@ -132,7 +132,7 @@ namespace Stamina {
 
 
 		private void PrintStaminaDrainers( SpriteBatch sb, MyPlayer modplayer ) {
-			var dict = modplayer.GetCurrentDrainTypes();
+			var dict = modplayer.Logic.CurrentDrainTypes;
 			int i = 0;
 
 			foreach( string key in dict.Keys.ToList() ) {

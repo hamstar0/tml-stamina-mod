@@ -47,8 +47,8 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 				if( MyItem.StarUseCooldown[player.whoAmI] == 0 ) {
 					MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this.mod );
 
-					if( modplayer.GetStamina() < modplayer.GetMaxStamina() ) {
-						modplayer.AddStamina( mymod.Config.Data.StarStaminaHeal );
+					if( modplayer.Logic.Stamina < modplayer.Logic.MaxStamina ) {
+						modplayer.Logic.AddStamina( mymod, mymod.Config.Data.StarStaminaHeal );
 
 						if( --item.stack <= 0 ) {
 							ItemHelpers.DestroyItem(item);
@@ -71,8 +71,8 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 			if( can_consume && item.type == ItemID.BottledWater ) {
 				var modplayer = player.GetModPlayer<MyPlayer>( this.mod );
-				modplayer.AddFatigue( -mymod.Config.Data.BottledWaterFatigueHeal );
-				modplayer.AddStamina( (float)mymod.Config.Data.BottledWaterFatigueHeal * mymod.Config.Data.ScaleAllStaminaRates );
+				modplayer.Logic.AddFatigue( -mymod.Config.Data.BottledWaterFatigueHeal );
+				modplayer.Logic.AddStamina( mymod, ( float)mymod.Config.Data.BottledWaterFatigueHeal * mymod.Config.Data.ScaleAllStaminaRates );
 			}
 			return can_consume;
 		}

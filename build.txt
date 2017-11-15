@@ -1,5 +1,5 @@
 author = hamstar
-version = 1.4.15
+version = 1.4.16
 displayName = Stamina
 modReferences = HamstarHelpers
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
