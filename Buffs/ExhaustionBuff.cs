@@ -12,7 +12,7 @@ namespace Stamina.Buffs {
 		}
 
 		public override void Update( Player player, ref int buffIndex ) {
-			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this.mod );
+			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 
 			modplayer.WillApplyExhaustion = true;
 			ExhaustionBuff.ApplyStatusExhaustion( (StaminaMod)this.mod, player );

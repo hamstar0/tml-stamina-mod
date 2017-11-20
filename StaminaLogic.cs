@@ -156,7 +156,7 @@ namespace Stamina {
 		}
 
 		public void GatherActivityStaminaDrains( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<MyPlayer>( mymod );
+			var modplayer = player.GetModPlayer<StaminaPlayer>( mymod );
 
 			// Is sprinting?
 			if( !player.mount.Active && player.velocity.Y == 0f && player.dashDelay >= 0 ) {

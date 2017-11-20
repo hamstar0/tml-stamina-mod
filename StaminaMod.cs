@@ -103,7 +103,7 @@ namespace Stamina {
 			if( !this.Config.Data.Enabled ) { return; }
 			
 			Player player = Main.player[ Main.myPlayer ];
-			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this );
+			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this );
 
 			if( modplayer.IsInitialized ) {
 				int x = Main.screenWidth - 172;
@@ -131,7 +131,7 @@ namespace Stamina {
 		}
 
 
-		private void PrintStaminaDrainers( SpriteBatch sb, MyPlayer modplayer ) {
+		private void PrintStaminaDrainers( SpriteBatch sb, StaminaPlayer modplayer ) {
 			var dict = modplayer.Logic.CurrentDrainTypes;
 			int i = 0;
 

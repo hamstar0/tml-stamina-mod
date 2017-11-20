@@ -8,7 +8,7 @@ using Terraria.ModLoader.IO;
 
 
 namespace Stamina {
-	class MyPlayer : ModPlayer {
+	class StaminaPlayer : ModPlayer {
 		public StaminaLogic Logic { get; private set; }
 		public bool IsInitialized { get; private set; }
 
@@ -30,7 +30,7 @@ namespace Stamina {
 
 		public override void clientClone( ModPlayer clone ) {
 			base.clientClone( clone );
-			var myclone = (MyPlayer)clone;
+			var myclone = (StaminaPlayer)clone;
 
 			myclone.Logic = this.Logic;
 			myclone.WillApplyExhaustion = this.WillApplyExhaustion;
@@ -116,8 +116,8 @@ namespace Stamina {
 				}
 			}
 
-			if( MyItem.StarUseCooldown[this.player.whoAmI] > 0 ) {
-				MyItem.StarUseCooldown[this.player.whoAmI]--;
+			if( StaminaItem.StarUseCooldown[this.player.whoAmI] > 0 ) {
+				StaminaItem.StarUseCooldown[this.player.whoAmI]--;
 			}
 		}
 

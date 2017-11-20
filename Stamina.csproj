@@ -61,12 +61,12 @@
     <Compile Include="NetProtocol\ServerPacketHandlers.cs" />
     <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MyItem.cs" />
+    <Compile Include="StaminaItem.cs" />
     <Compile Include="StaminaLogic.cs" />
     <Compile Include="StaminaMod.cs" />
     <Compile Include="NetProtocol\NetProtocolTypes.cs" />
-    <Compile Include="MyPlayer.cs" />
-    <Compile Include="MyProjectile.cs" />
+    <Compile Include="StaminaPlayer.cs" />
+    <Compile Include="StaminaProjectile.cs" />
     <Compile Include="StaminaUI.cs" />
   </ItemGroup>
   <ItemGroup>

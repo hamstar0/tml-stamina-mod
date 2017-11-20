@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 
 namespace Stamina {
-	class MyItem : GlobalItem {
+	class StaminaItem : GlobalItem {
 		/*public override bool UseItem( Item item, Player player ) {
 			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>(this.mod);
 			info.AddDrainStamina( StaminaMod.Config.Data.ItemUseRate, "use item" );
@@ -16,7 +16,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 		}*/
 
 		public override bool WingUpdate( int wings, Player player, bool in_use ) {
-			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this.mod );
+			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 
 			modplayer.IsFlying = in_use;
 			modplayer.HasCheckedFlying = true;
@@ -44,8 +44,8 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			if( !mymod.Config.Data.Enabled ) { return base.UseItem( item, player ); }
 
 			if( item.type == ItemID.FallenStar && item.stack > 0 && mymod.Config.Data.ConsumableStars ) {
-				if( MyItem.StarUseCooldown[player.whoAmI] == 0 ) {
-					MyPlayer modplayer = player.GetModPlayer<MyPlayer>( this.mod );
+				if( StaminaItem.StarUseCooldown[player.whoAmI] == 0 ) {
+					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 
 					if( modplayer.Logic.Stamina < modplayer.Logic.MaxStamina ) {
 						modplayer.Logic.AddStamina( mymod, mymod.Config.Data.StarStaminaHeal );
@@ -55,9 +55,9 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 						}
 					}
 
-					MyItem.StarUseCooldown[player.whoAmI]++;
+					StaminaItem.StarUseCooldown[player.whoAmI]++;
 				}
-				MyItem.StarUseCooldown[player.whoAmI]++;
+				StaminaItem.StarUseCooldown[player.whoAmI]++;
 			}
 
 			return base.UseItem( item, player );
@@ -70,7 +70,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			if( !mymod.Config.Data.Enabled ) { return can_consume; }
 
 			if( can_consume && item.type == ItemID.BottledWater ) {
-				var modplayer = player.GetModPlayer<MyPlayer>( this.mod );
+				var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 				modplayer.Logic.AddFatigue( -mymod.Config.Data.BottledWaterFatigueHeal );
 				modplayer.Logic.AddStamina( mymod, ( float)mymod.Config.Data.BottledWaterFatigueHeal * mymod.Config.Data.ScaleAllStaminaRates );
 			}

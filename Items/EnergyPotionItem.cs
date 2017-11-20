@@ -37,7 +37,7 @@ namespace Stamina.Items {
 		}
 
 		public override bool ConsumeItem( Player player ) {
-			MyPlayer info = player.GetModPlayer<MyPlayer>( this.mod );
+			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>( this.mod );
 			info.Logic.AddStamina( (StaminaMod)this.mod, 1000 );
 
 			player.AddBuff( this.mod.BuffType("EnergizedBuff"), 30 * 60 );
