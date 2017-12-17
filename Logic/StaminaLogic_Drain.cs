@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stamina.Items.Accessories;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 
@@ -251,8 +252,7 @@ namespace Stamina.Logic {
 
 				if( this.Stamina <= 0 ) {
 					if( modplayer.IsWearingRageBandana ) {
-						int damage = (int)(drain_surplus + player.statDefense) * 2;
-						player.Hurt( PlayerDeathReason.ByCustomReason( "over exertion" ), damage, 0 );
+						RageHeadbandItem.ApplyDamage( mymod, player, drain_surplus );
 						this.Stamina = 1;
 					} else {
 						this.AddFatigue( player, mymod.Config.Data.FatigueAmount );

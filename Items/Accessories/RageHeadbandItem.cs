@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.PlayerHelpers;
 using HamstarHelpers.TmlHelpers;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,10 +11,23 @@ namespace Stamina.Items.Accessories {
 	class RageHeadbandItem : ModItem {
 		public static int Width = 22;
 		public static int Height = 22;
+		public static readonly PlayerDeathReason DamageType = PlayerDeathReason.ByCustomReason( "over exertion" );
 
-		
+
 		////////////////
-		
+
+		public static int CalculateDamageFromStaminaDrain( StaminaMod mymod, float drain ) {
+			return (int)(drain * mymod.Config.Data.RageHeadbandDamageMultiplier);
+		}
+
+		public static void ApplyDamage( StaminaMod mymod, Player player, float drain ) {
+			int damage = RageHeadbandItem.CalculateDamageFromStaminaDrain( mymod, drain );
+			player.Hurt( RageHeadbandItem.DamageType, damage, 0 );
+		}
+
+
+		////////////////
+
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Rage Headband" );
 			this.Tooltip.SetDefault( "Trades exhaustion for health loss"

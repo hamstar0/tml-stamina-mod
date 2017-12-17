@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.ItemHelpers;
+using Stamina.Buffs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -23,7 +24,9 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 			return false;
 		}
-		
+
+		////////////////
+
 		public override void ModifyTooltips( Item item, List<TooltipLine> tooltips ) {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return; }
@@ -34,6 +37,15 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			if( item.type == 126 ) {    // Bottled Water
 				tooltips.Add( new TooltipLine( mymod, "StaminaPurpose", "Recovers some fatigue on use" ) );
 			}
+		}
+
+		////////////////
+
+		public override bool CanUseItem( Item item, Player player ) {
+			if( player.FindBuffIndex(this.mod.BuffType<ExhaustionBuff>()) != -1 ) {
+				return false;
+			}
+			return base.CanUseItem( item, player );
 		}
 
 
@@ -72,7 +84,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			if( config.ConsumableBottledWater && item.type == ItemID.BottledWater ) {
 				var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 				modplayer.Logic.AddFatigue( player, -config.BottledWaterFatigueHeal );
-				modplayer.Logic.AddStamina( mymod, player, ( float)config.BottledWaterFatigueHeal );
+				modplayer.Logic.AddStamina( mymod, player, (float)config.BottledWaterFatigueHeal );
 			}
 			return base.ConsumeItem( item, player );
 		}

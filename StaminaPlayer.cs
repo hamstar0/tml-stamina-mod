@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stamina.Buffs;
+using Stamina.Items.Accessories;
 using Stamina.Logic;
 using Stamina.NetProtocol;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -143,13 +145,22 @@ namespace Stamina {
 				this.Logic.GatherActivityStaminaDrains( mymod, this.player );
 
 				if( this.WillApplyExhaustion ) {
-					this.ApplyExhaustion();
+					this.ApplyExhaustionEffect();
 					this.WillApplyExhaustion = false;
 				}
 			}
 		}
 
 		////////////////
+
+		public override bool PreHurt( bool pvp, bool quiet, ref int damage, ref int hit_direction, ref bool crit, ref bool custom_damage, ref bool play_sound, ref bool gen_gore, ref PlayerDeathReason damage_source ) {
+			if( damage_source.SourceCustomReason.Equals( RageHeadbandItem.DamageType.SourceCustomReason ) ) {
+				custom_damage = true;
+				crit = false;
+			}
+			return base.PreHurt( pvp, quiet, ref damage, ref hit_direction, ref crit, ref custom_damage, ref play_sound, ref gen_gore, ref damage_source );
+		}
+
 
 		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
 			var mymod = (StaminaMod)this.mod;
@@ -167,11 +178,6 @@ namespace Stamina {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return prechecked; }
 			if( this.Logic == null ) { return prechecked; }
-
-			// No item use while exhausted (failsafe)
-			if( this.Logic.TiredTimer > 0 ) {
-				return false;
-			}
 
 			Item item = this.player.inventory[ this.player.selectedItem ];
 
@@ -222,6 +228,7 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 		private void ApplyDebuffs() {
 			var mymod = (StaminaMod)this.mod;
 			int buffid = this.mod.BuffType( "ExhaustionBuff" );
+
 			int duration = mymod.Config.Data.ExhaustionDuration - (int)this.Logic.TiredTimer;
 
 			if( duration > 0 ) {
@@ -229,7 +236,7 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 			}
 		}
 
-		private void ApplyExhaustion() {
+		private void ApplyExhaustionEffect() {
 			ExhaustionBuff.ApplyMovementExhaustion( (StaminaMod)this.mod, this.player );
 			this.player.dashDelay = 1;
 			this.player.rocketTime = 0;

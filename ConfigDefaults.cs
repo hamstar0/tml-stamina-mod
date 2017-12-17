@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Stamina {
 	public class StaminaConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 2, 0, 0 );
+		public readonly static Version ConfigVersion = new Version( 2, 0, 1 );
 		public readonly static string ConfigFileName = "Stamina Config.json";
 
 
@@ -57,6 +57,7 @@ namespace Stamina {
 		
 		public int StarStaminaHeal = 50;
 		public int BottledWaterFatigueHeal = 35;
+		public float RageHeadbandDamageMultiplier = 5f;
 		public int ExerciseSupplementAddedGrowthAmount = 2;
 		public float MuscleBeltStaminaDrainScale = 0.7f;
 		public float JointBracerStaminaDrainScale = 0.7f;
