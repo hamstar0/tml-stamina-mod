@@ -54,15 +54,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
+    <Compile Include="Buffs\AthleteBuff.cs" />
     <Compile Include="Buffs\EnergizedBuff.cs" />
     <Compile Include="Buffs\ExhaustionBuff.cs" />
     <Compile Include="ConfigDefaults.cs" />
-    <Compile Include="Items\EnergyPotionItem.cs" />
+    <Compile Include="Items\Accessories\ExerciseSupplementsItem.cs" />
+    <Compile Include="Items\Accessories\JointBracerItem.cs" />
+    <Compile Include="Items\Accessories\ExoskeletonItem.cs" />
+    <Compile Include="Items\Accessories\LegSpringItem.cs" />
+    <Compile Include="Items\Accessories\ChampionBeltItem.cs" />
+    <Compile Include="Items\Accessories\RageHeadbandItem.cs" />
+    <Compile Include="Items\Consumables\AthletePotionItem.cs" />
+    <Compile Include="Items\Consumables\EnergyPotionItem.cs" />
+    <Compile Include="Logic\StaminaLogic_Drain.cs" />
+    <Compile Include="Logic\StaminaLogic_Fatigue.cs" />
     <Compile Include="NetProtocol\ServerPacketHandlers.cs" />
     <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaminaItem.cs" />
-    <Compile Include="StaminaLogic.cs" />
+    <Compile Include="Logic\StaminaLogic.cs" />
     <Compile Include="StaminaMod.cs" />
     <Compile Include="NetProtocol\NetProtocolTypes.cs" />
     <Compile Include="StaminaPlayer.cs" />
@@ -70,17 +80,33 @@
     <Compile Include="StaminaUI.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Buffs\AthleteBuff.png" />
     <Content Include="Buffs\EnergizedBuff.png" />
     <Content Include="Buffs\ExhaustionBuff.png" />
     <Content Include="build.txt" />
     <Content Include="description.txt" />
     <Content Include="icon.png" />
-    <Content Include="Items\EnergyPotionItem.png" />
+    <Content Include="Items\Accessories\ExerciseSupplementsItem.png" />
+    <Content Include="Items\Accessories\ExoskeletonItem_Back.png" />
+    <Content Include="Items\Accessories\ExoskeletonItem_Neck.png" />
+    <Content Include="Items\Accessories\ExoskeletonItem_Waist.png" />
+    <Content Include="Items\Accessories\JointBracerItem.png" />
+    <Content Include="Items\Accessories\ExoskeletonItem.png" />
+    <Content Include="Items\Accessories\LegSpringItem.png" />
+    <Content Include="Items\Accessories\ExoskeletonItem_Shoes.png" />
+    <Content Include="Items\Accessories\ChampionBeltItem.png" />
+    <Content Include="Items\Accessories\LegSpringItem_Shoes.png" />
+    <Content Include="Items\Accessories\ChampionBeltItem_Waist.png" />
+    <Content Include="Items\Accessories\RageHeadbandItem.png" />
+    <Content Include="Items\Accessories\RageHeadbandItem_Face.png" />
+    <Content Include="Items\Consumables\AthletePotionItem.png" />
+    <Content Include="Items\Consumables\EnergyPotionItem.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"C:\Program Files\Steam\steamapps\common\Terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>

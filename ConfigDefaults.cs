@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Stamina {
 	public class StaminaConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 1, 4, 13 );
+		public readonly static Version ConfigVersion = new Version( 2, 0, 0 );
 		public readonly static string ConfigFileName = "Stamina Config.json";
 
 
@@ -15,50 +15,92 @@ namespace Stamina {
 
 		public bool Enabled = true;
 
+		public bool DEBUG_INFO = false;
+		public bool DEBUG_VIEW_DRAINERS = false;
+
 		public int InitialStamina = 100;
 		public int MaxStaminaAmount = 400;
 		public int ExerciseGrowthAmount = 3;
 		public float ScaleAllStaminaRates = 1f;
 
 		public float RechargeRate = 0.45f;
-		public float EnergizedRate = 0.25f;
+		public float EnergizedRate = 0.1f;
 
 		public float SingularExertionRate = 12f;
-		public float ItemUseRate = 0.51f;
+		public float ItemUseRate = 0.501f;
 		public float MagicItemUseRate = 0.2f;
 		public float GrappleRate = 0.45f;
 		public float SprintRate = 0.5f;
-		public float JumpBegin = 5f;
-		public float JumpHoldRate = 0.75f;
+		public float JumpBegin = 6.5f;
+		public float JumpHoldRate = 0.65f;
 		public float SwimBegin = 2f;
+		public float SwimHoldRate = 0.5f;
 		public float DashRate = 28f;
 		public float GravitationPotionDrainRate = 0.1f;
 
-		public int ExhaustionDuration = 180;
+		public int ExhaustionDuration = 160;
 		public float ExhaustionRecover = 18f;
 		public bool ExhaustionLowersDefense = true;
 		public bool ExhaustionBlocksItems = true;
 		public bool ExhaustionSlowsMovement = true;
 
-		public bool CraftableEnergyDrinks = true;
 		public bool ConsumableStars = true;
+		public bool ConsumableBottledWater = true;
+		public bool CraftableEnergyDrinks = true;
+		public bool CraftableAthletePotions = true;
+		public bool CraftableRageHeadbands = true;
+		public bool CraftableExerciseSupplements = true;
+		public bool CraftableMuscleBelts = true;
+		public bool CraftableJointBracers = true;
+		public bool CraftableLegSprings = true;
+		public bool CraftableExoskeletons = true;
+		
 		public int StarStaminaHeal = 50;
-		public int BottledWaterFatigueHeal = 50;
+		public int BottledWaterFatigueHeal = 35;
+		public int ExerciseSupplementAddedGrowthAmount = 2;
+		public float MuscleBeltStaminaDrainScale = 0.7f;
+		public float JointBracerStaminaDrainScale = 0.7f;
+		public float LegSpringsStaminaDrainScale = 0.7f;
+
+		public int EnergyPotionDuration = 30 * 60;
+		public int AthletePotionDuration = 120 * 60;
 
 		public float PercentOfDamageAdrenalineBurst = 0.08f;
 
-		public float FatigueAmount = 12f;
+		public float FatigueAmountFromExhaustion = 12f;
 		public int FatigueRecoverDuration = 60;
-		public int FatigueExerciseThresholdAmountRemoved = 0;
-		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.32f;
+		public int FatigueForExerciseAmountRemoved = 0;
+		public float FatigueAsMaxStaminaPercentAmountNeeededForExercise = 0.24f;
 
 		public int CustomStaminaBarPositionX = -1;
 		public int CustomStaminaBarPositionY = -1;
+
+		public int PlayerStaminaBarOffsetX = 0;
+		public int PlayerStaminaBarOffsetY = 0;
 
 		public IDictionary<string, float> CustomItemUseRate = new Dictionary<string, float> {
 			{ "Bug Net", 0.1f },
 			{ "Golden Bug Net", 0.15f }
 		};
+
+		public bool ShowMiniStaminaBar = true;
+
+
+		////////////////
+
+		public string _OLD_SETTINGS_BELOW_ = "";
+
+		public float FatigueAmount = 12f;
+		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.32f;
+
+
+		////////////////
+
+		public readonly static int _1_4_11_ExerciseGrowthAmount = 2;
+		public readonly static int _1_5_0_ExhaustionDuration = 180;
+		public readonly static float _1_5_0_EnergizedRate = 0.25f;
+		public readonly static int _1_5_0_BottledWaterFatigueHeal = 50;
+
 
 
 		////////////////
@@ -87,7 +129,7 @@ namespace Stamina {
 				this.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
 			}
 			if( vers_since < new Version( 1, 4, 3 ) ) {
-				this.FatigueExerciseThresholdPercentOfMaxStamina = new_config.FatigueExerciseThresholdPercentOfMaxStamina;
+				this.FatigueAsMaxStaminaPercentAmountNeeededForExercise = new_config.FatigueAsMaxStaminaPercentAmountNeeededForExercise;
 			}
 			if( vers_since < new Version( 1, 4, 5 ) ) {
 				this.JumpBegin = new_config.JumpBegin;
@@ -102,8 +144,19 @@ namespace Stamina {
 				this.ItemUseRate = new_config.ItemUseRate;
 			}
 			if( vers_since < new Version( 1, 4, 12 ) ) {
-				if( this.ExerciseGrowthAmount == 2 ) {  // Only update if different from old default
+				if( this.ExerciseGrowthAmount == StaminaConfigData._1_4_11_ExerciseGrowthAmount ) {
 					this.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
+				}
+			}
+			if( vers_since < new Version( 2, 0, 0 ) ) {
+				if( this.ExhaustionDuration == StaminaConfigData._1_5_0_ExhaustionDuration ) {
+					this.ExhaustionDuration = new_config.ExhaustionDuration;
+				}
+				if( this.EnergizedRate == StaminaConfigData._1_5_0_EnergizedRate ) {
+					this.EnergizedRate = new_config.EnergizedRate;
+				}
+				if( this.BottledWaterFatigueHeal == StaminaConfigData._1_5_0_BottledWaterFatigueHeal ) {
+					this.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
 				}
 			}
 

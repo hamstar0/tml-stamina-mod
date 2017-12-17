@@ -1,12 +1,68 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using System;
 using Terraria;
 
 
 namespace Stamina {
 	public static class StaminaUI {
-		public static void DrawStaminaBar( SpriteBatch sb, float x, float y, int stamina, int max_stamina, int fatigue, int exercise_threshold, bool is_exercising, float alpha, float scale = 1f ) {
+		public static void DrawShortStaminaBar( SpriteBatch sb, float x, float y, int stamina, int max_stamina, int fatigue, int exercise_threshold, bool is_exercising, float alpha, float scale = 1f ) {
+			Texture2D bar = Main.hbTexture1;
+			Texture2D maxbar = Main.hbTexture2;
+			int tex_width = maxbar.Width;
+			int tex_height = maxbar.Height;
+
+			float ratio = (float)stamina / (float)max_stamina;
+			if( ratio > 1f ) { ratio = 1f; }
+			int stamina_bar_length = (int)((float)tex_width * ratio);
+			if( stamina_bar_length < 3 ) { stamina_bar_length = 3; }
+
+			float fat_ratio = (float)fatigue / (float)max_stamina;
+			if( fat_ratio > 1f ) { fat_ratio = 1f; }
+
+			float x_final = x - ((float)(tex_width * 0.5f) * scale);
+			float y_final = y;
+			float depth = 1f;
+
+			float largest_ratio = Math.Max( 0.1f, Math.Max( (1f - ratio), fat_ratio ) );
+			float alpha_final = largest_ratio * alpha;
+
+			float r = 255f * alpha_final * 0.95f;
+			float g = 255f * alpha_final * 0.95f * (ratio > 0.33f ? 1f : 0f);
+			float b = 0f;
+			float a = 255f * alpha_final * 0.95f;
+
+			if( r < 0f ) { r = 0f; } else if( r > 255f ) { r = 255f; }
+			if( g < 0f ) { g = 0f; } else if( g > 255f ) { g = 255f; }
+			if( a < 0f ) { a = 0f; } else if( a > 255f ) { a = 255f; }
+
+			Color color = new Color( (byte)r, (byte)g, (byte)b, (byte)a );
+			var pos = new Vector2( x_final, y_final );
+
+			// Underneath bar
+			var u_rect = new Rectangle( 0, 0, tex_width, tex_height );
+			sb.Draw( maxbar, pos, u_rect, color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
+
+			// Overlay bar (stamina)
+			var o_rect = new Rectangle( 0, 0, (int)((float)tex_width * ratio), bar.Height );
+			sb.Draw( bar, pos, o_rect, color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
+
+			// Fatigue bar (stamina)
+			if( fatigue > 0 ) {
+				Color fat_color = Color.Gray;
+				if( is_exercising ) { fat_color = new Color( 128, 255, 128 ); }
+
+				int fat_bar_length = (int)((float)tex_width * fat_ratio);
+
+				var f_pos = new Vector2( x_final + (tex_width - fat_bar_length), y_final );
+				var rect = new Rectangle( tex_width - fat_bar_length, 0, fat_bar_length, bar.Height );
+				sb.Draw( bar, f_pos, rect, fat_color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
+			}
+		}
+
+
+		public static void DrawLongStaminaBar( SpriteBatch sb, float x, float y, int stamina, int max_stamina, int fatigue, int exercise_threshold, bool is_exercising, float alpha, float scale = 1f ) {
 			Texture2D bar = Main.hbTexture1;
 			Texture2D maxbar = Main.hbTexture2;
 			int width = 256;
@@ -26,14 +82,11 @@ namespace Stamina {
 			float b = 0f;
 			float a = 255f * alpha * 0.95f;
 
-			if( r < 0f ) { r = 0f; }
-			if( r > 255f ) { r = 255f; }
-			if( g < 0f ) { g = 0f; }
-			if( g > 255f ) { g = 255f; }
-			if( a < 0f ) { a = 0f; }
-			if( a > 255f ) { a = 255f; }
+			if( r < 0f ) { r = 0f; } else if( r > 255f ) { r = 255f; }
+			if( g < 0f ) { g = 0f; } else if( g > 255f ) { g = 255f; }
+			if( a < 0f ) { a = 0f; } else if( a > 255f ) { a = 255f; }
 
-			Color color = new Color( (int)((byte)r), (int)((byte)g), (int)((byte)b), (int)((byte)a) );
+			Color color = new Color( (byte)r, (byte)g, (byte)b, (byte)a );
 
 			//batch.DrawString(Main.fontMouseText, "stamina "+stamina+", max "+max_stamina+", ratio "+ratio+", ratio_scaled "+ratio_scaled, new Vector2(0, Main.screenHeight-32), Color.White);
 			// Underneath bar (max stamina)

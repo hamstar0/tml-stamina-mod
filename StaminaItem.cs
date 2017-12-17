@@ -43,12 +43,12 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return base.UseItem( item, player ); }
 
-			if( item.type == ItemID.FallenStar && item.stack > 0 && mymod.Config.Data.ConsumableStars ) {
+			if( mymod.Config.Data.ConsumableStars && item.type == ItemID.FallenStar && item.stack > 0 ) {
 				if( StaminaItem.StarUseCooldown[player.whoAmI] == 0 ) {
 					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 
-					if( modplayer.Logic.Stamina < modplayer.Logic.MaxStamina ) {
-						modplayer.Logic.AddStamina( mymod, mymod.Config.Data.StarStaminaHeal );
+					if( modplayer.Logic.Stamina < modplayer.Logic.MaxStamina2 ) {
+						modplayer.Logic.AddStamina( mymod, player, mymod.Config.Data.StarStaminaHeal );
 
 						if( --item.stack <= 0 ) {
 							ItemHelpers.DestroyItem(item);
@@ -66,15 +66,15 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 		public override bool ConsumeItem( Item item, Player player ) {
 			var mymod = (StaminaMod)this.mod;
-			bool can_consume = base.ConsumeItem( item, player );
-			if( !mymod.Config.Data.Enabled ) { return can_consume; }
+			var config = mymod.Config.Data;
+			if( !config.Enabled ) { return base.ConsumeItem( item, player ); }
 
-			if( can_consume && item.type == ItemID.BottledWater ) {
+			if( config.ConsumableBottledWater && item.type == ItemID.BottledWater ) {
 				var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
-				modplayer.Logic.AddFatigue( -mymod.Config.Data.BottledWaterFatigueHeal );
-				modplayer.Logic.AddStamina( mymod, ( float)mymod.Config.Data.BottledWaterFatigueHeal * mymod.Config.Data.ScaleAllStaminaRates );
+				modplayer.Logic.AddFatigue( player, -config.BottledWaterFatigueHeal );
+				modplayer.Logic.AddStamina( mymod, player, ( float)config.BottledWaterFatigueHeal );
 			}
-			return can_consume;
+			return base.ConsumeItem( item, player );
 		}
 	}
 }

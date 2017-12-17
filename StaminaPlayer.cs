@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stamina.Buffs;
+using Stamina.Logic;
 using Stamina.NetProtocol;
-using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -10,7 +10,7 @@ using Terraria.ModLoader.IO;
 namespace Stamina {
 	class StaminaPlayer : ModPlayer {
 		public StaminaLogic Logic { get; private set; }
-		public bool IsInitialized { get; private set; }
+		public bool HasEnteredWorld { get; private set; }
 
 		public bool WillApplyExhaustion = false;
 		public bool IsDashing = false;
@@ -18,14 +18,21 @@ namespace Stamina {
 		public bool IsFlying = false;
 		public bool HasCheckedFlying = false;
 
-		private int SweatDelay = 0;
+		public bool IsWearingRageBandana = false;
+		public bool IsUsingSupplements = false;
+		public bool IsWearingMuscleBelt = false;
+		public bool IsWearingJointBracer = false;
+		public bool IsWearingLegSprings = false;
+		public bool IsWearingExoskeleton = false;
 
+		private int SweatDelay = 0;
+		
 
 		////////////////
 
 		public override void Initialize() {
 			this.Logic = null;
-			this.IsInitialized = false;	// Ironic
+			this.HasEnteredWorld = false;
 		}
 
 		public override void clientClone( ModPlayer clone ) {
@@ -39,6 +46,10 @@ namespace Stamina {
 			myclone.IsFlying = this.IsFlying;
 			myclone.HasCheckedFlying = this.HasCheckedFlying;
 			myclone.SweatDelay = this.SweatDelay;
+			myclone.IsWearingRageBandana = this.IsWearingRageBandana;
+			myclone.IsUsingSupplements = this.IsUsingSupplements;
+			myclone.IsWearingMuscleBelt = this.IsWearingMuscleBelt;
+			myclone.IsWearingJointBracer = this.IsWearingJointBracer;
 		}
 
 		public override void OnEnterWorld( Player player ) {
@@ -53,21 +64,21 @@ namespace Stamina {
 
 				if( Main.netMode == 1 ) {   // Client
 					ClientPacketHandlers.SendSettingsRequestFromClient( this.mod, player );
+				} else {
+					this.PostEnterWorld();
 				}
 			}
 		}
 
-		////////////////
-
-		public override void LoadLegacy( BinaryReader reader ) {
-			this.Initialize();
-
-			int max = reader.ReadInt32();
-			bool has = reader.ReadBoolean();
-
-			this.Logic = new StaminaLogic( (StaminaMod)this.mod, max, has );
-			this.IsInitialized = true;
+		public void PostEnterWorld() {
+			this.HasEnteredWorld = true;
 		}
+
+		public void OnReceiveServerSettings() {
+			if( !this.HasEnteredWorld ) { this.PostEnterWorld(); }
+		}
+
+		////////////////
 
 		public override void Load( TagCompound tags ) {
 			this.Initialize();
@@ -79,13 +90,12 @@ namespace Stamina {
 
 			int max = mymod.Config.Data.InitialStamina;
 			bool has = true;
-			if( tags.ContainsKey("max_stamina") && tags.ContainsKey( "has_stamina") ) {
+			if( tags.ContainsKey("max_stamina") && tags.ContainsKey("has_stamina") ) {
 				max = tags.GetInt( "max_stamina" );
 				has = tags.GetBool( "has_stamina" );
 			}
 
 			this.Logic = new StaminaLogic( mymod, max, has );
-			this.IsInitialized = true;
 		}
 
 		public override TagCompound Save() {
@@ -103,13 +113,16 @@ namespace Stamina {
 		public override void PreUpdate() {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return; }
-			
+
+			this.Logic.UpdateMaxStamina( mymod, this.player );
+
 			if( this.Logic != null ) {
 				if( !this.player.dead ) {
 					this.Logic.PassiveFatigueRecover( mymod, this.player );
 					this.Logic.PassiveStaminaRegen( mymod, this.player );
 					this.Logic.GatherPassiveStaminaDrains( mymod, this.player );
-					this.Logic.CommitStaminaDrains( mymod );
+					this.Logic.CommitStaminaDrains( mymod, this.player );
+
 					if( this.Logic.Stamina == 0 ) {
 						this.ApplyDebuffs();
 					}
@@ -124,11 +137,10 @@ namespace Stamina {
 		public override void PostUpdateRunSpeeds() {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return; }
-
 			if( this.Logic == null ) { return; }
 
 			if( !this.player.dead ) {
-				this.Logic.GatherActivityStaminaDrains( (StaminaMod)this.mod, this.player );
+				this.Logic.GatherActivityStaminaDrains( mymod, this.player );
 
 				if( this.WillApplyExhaustion ) {
 					this.ApplyExhaustion();
@@ -146,17 +158,22 @@ namespace Stamina {
 
 			float yike = (float)damage * mymod.Config.Data.PercentOfDamageAdrenalineBurst * (crit ? 2f : 1f);
 
-			this.Logic.AddStamina( mymod, yike );
+			this.Logic.AddStamina( mymod, this.player, yike );
 		}
 
-
+		
 		public override bool PreItemCheck() {
-			var mymod = (StaminaMod)this.mod;
 			bool prechecked = base.PreItemCheck();
+			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return prechecked; }
 			if( this.Logic == null ) { return prechecked; }
 
-			Item item = this.player.inventory[this.player.selectedItem ];
+			// No item use while exhausted (failsafe)
+			if( this.Logic.TiredTimer > 0 ) {
+				return false;
+			}
+
+			Item item = this.player.inventory[ this.player.selectedItem ];
 
 			if( item.type != 0 && !this.player.noItems ) {
 				/*if( (player.itemTime == 0 && player.controlUseItem && player.releaseUseItem) ||
@@ -165,7 +182,7 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 					this.DrainStamina( StaminaMod.Config.Data.SingularExertionRate * ((float)item.useTime/30f) );
 				}*/
 				if( this.player.controlUseItem && this.player.itemTime <= 1 ) {
-					this.Logic.SetItemUseDuration( 36 );
+					this.Logic.SetItemUseHoldDurationForStaminaDrain( 36 );
 				}
 			}
 
@@ -205,8 +222,11 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 		private void ApplyDebuffs() {
 			var mymod = (StaminaMod)this.mod;
 			int buffid = this.mod.BuffType( "ExhaustionBuff" );
+			int duration = mymod.Config.Data.ExhaustionDuration - (int)this.Logic.TiredTimer;
 
-			this.player.AddBuff( buffid, (int)(mymod.Config.Data.ExhaustionDuration - this.Logic.TiredTimer) );
+			if( duration > 0 ) {
+				this.player.AddBuff( buffid, duration );
+			}
 		}
 
 		private void ApplyExhaustion() {

@@ -15,7 +15,7 @@ namespace Stamina.Buffs {
 			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>(mod);
 			var mymod = (StaminaMod)this.mod;
 
-			modplayer.Logic.AddStamina( (StaminaMod)this.mod, mymod.Config.Data.EnergizedRate );
+			modplayer.Logic.AddStamina( (StaminaMod)this.mod, player, mymod.Config.Data.EnergizedRate );
 		}
 	}
 }

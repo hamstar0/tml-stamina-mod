@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stamina.Logic;
+using Terraria;
 using Terraria.ModLoader;
 
 
@@ -9,7 +10,7 @@ namespace Stamina {
 			if( !mymod.Config.Data.Enabled ) { return; }
 
 			var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
-			modplayer.Logic.DrainStamina( mymod.Config.Data.SingularExertionRate, "grapple begin" );
+			modplayer.Logic.DrainStaminaViaGrappleBegin( mymod, player );
 //Main.NewText("UseGrapple " + StaminaMod.Config.Data.SingularExertionRate);
 		}
 	}

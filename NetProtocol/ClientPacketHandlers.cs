@@ -25,8 +25,6 @@ namespace Stamina.NetProtocol {
 		////////////////////////////////
 
 		public static void SendSettingsRequestFromClient( Mod mod, Player player ) {
-			if( Main.netMode != 1 ) { return; } // Client only
-
 			ModPacket packet = mod.GetPacket();
 
 			packet.Write( (byte)StaminaNetProtocolTypes.RequestModSettings );
@@ -41,9 +39,10 @@ namespace Stamina.NetProtocol {
 		////////////////////////////////
 
 		private static void ReceiveSettingsOnClient( StaminaMod mymod, BinaryReader reader ) {
-			if( Main.netMode != 1 ) { return; } // Clients only
-
 			mymod.Config.DeserializeMe( reader.ReadString() );
+
+			var modplayer = Main.LocalPlayer.GetModPlayer<StaminaPlayer>();
+			modplayer.OnReceiveServerSettings();
 		}
 	}
 }

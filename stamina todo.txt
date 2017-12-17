@@ -1,14 +1,53 @@
-v1.5
--	Add Stimulants (draws mana regen for stamina; Fast Clock + Frog + Scorpion + Living Fire Blocks)
--	Add Steroids (draws health regen for stamina; Vitamins + Pink Gel + Stingers)
--	Add Strength Belt (increases max stamina; Anklet + Leather + Bones + Feathers)
--	Set minimum 15% fatigue before exercise occurs
--	Set energy potion to remove some fatigue
--	Set well fed buff to remove some fatigue, but reduce accelerate the buff's time
--	Give better indication of stamina fully drained
--	Set bar to layer the same as health and mana
--	Add more recovery stamina after drain
+Future consideration
+-	Drain 'Well Fed' buff duration to recover some stamina
 
+
+
+v2.0
+-	Check stamina use from megashark
+-	Remove exoskeleton hand
+-	Add config option for player stamina bar offset
+-	Add Exoskeleton - Combines Muscle Belt, Joint Braces, and Knee Springs
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Muscle Belt, Joint Braces, Leg Springs, Power Cell, Conveyors
+-	Add Leg Springs - Jump movement draws less stamina
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Tabi OR Black Belt, Frog Legs, Iron
+-	Add Joint Bracers - Non-jump movement draws less stamina
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Dual Hook, Cogs, Any Weighted Pressure Plate
+-	Add Muscle Belt - Attacks draw less stamina
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Titan Glove, Avenger Emblem, Leather
+	-	Create graphics
+-	Add Exercise Supplements - Increases exercise rate
+	-	Create graphic
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Vitamins, Pink Gel, Stingers
+-	@Test Athlete Potion, Rage Headband
+-	Add Rage Headband - Exhaustion drains health only
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Magma Stone, Hooks, Silk
+-	Add Athlete Potion - Increases max stamina by 100
+	-	Create graphics
+	-	Implement buff
+	-	Define item
+	-	@Recipe: Bone, Strange Plant, Bottled Water
+-	Set minimum 24% fatigue before exercise occurs
+-	Add on-player stamina indicator
+-	Set bar to layer the same as health and mana
+-	Nerf energy potion
+-	Improve exhaustion behavior
 v1.4.10
 -	Add 'Enabled' config setting
 v1.4.8

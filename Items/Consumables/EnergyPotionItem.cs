@@ -3,15 +3,17 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Stamina.Items {
+namespace Stamina.Items.Consumables {
 	class EnergyPotionItem : ModItem {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Energy Potion" );
-			this.Tooltip.SetDefault( "Gives 30 seconds of stamina regeneration"+'\n'
-				+ "It's got electrolytes!" );
+			this.Tooltip.SetDefault( "Gives stamina regeneration" +'\n'
+				+ "'It's got electrolytes!'" );
 		}
 
 		public override void SetDefaults() {
+			var mymod = (StaminaMod)this.mod;
+
 			this.item.UseSound = SoundID.Item3;
 			this.item.useStyle = 2;
 			this.item.useTurn = true;
@@ -23,8 +25,8 @@ namespace Stamina.Items {
 			this.item.height = 24;
 			//item.potion = true;
 			this.item.buffType = this.mod.BuffType("EnergizedBuff");
-			this.item.buffTime = 30 * 60;
-			this.item.value = 1000;
+			this.item.buffTime = mymod.Config.Data.EnergyPotionDuration;
+			this.item.value = Item.buyPrice( 0, 0, 10, 0 );
 			this.item.rare = 1;
 		}
 		
@@ -37,10 +39,11 @@ namespace Stamina.Items {
 		}
 
 		public override bool ConsumeItem( Player player ) {
+			var mymod = (StaminaMod)this.mod;
 			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>( this.mod );
-			info.Logic.AddStamina( (StaminaMod)this.mod, 1000 );
+			info.Logic.AddStamina( (StaminaMod)this.mod, player, 100 );
 
-			player.AddBuff( this.mod.BuffType("EnergizedBuff"), 30 * 60 );
+			player.AddBuff( this.mod.BuffType("EnergizedBuff"), mymod.Config.Data.EnergyPotionDuration );
 
 			return base.ConsumeItem( player );
 		}
@@ -67,7 +70,7 @@ namespace Stamina.Items {
 			//this.AddIngredient( ItemID.MushroomGrassSeeds, 1 );
 			this.AddIngredient( ItemID.PurificationPowder, 1 );
 
-			this.AddTile(13);	// Bottle
+			this.AddTile( TileID.Bottles );
 
 			this.SetResult(moditem);
 		}
