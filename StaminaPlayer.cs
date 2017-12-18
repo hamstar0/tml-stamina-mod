@@ -3,6 +3,7 @@ using Stamina.Buffs;
 using Stamina.Items.Accessories;
 using Stamina.Logic;
 using Stamina.NetProtocol;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -154,9 +155,14 @@ namespace Stamina {
 		////////////////
 
 		public override bool PreHurt( bool pvp, bool quiet, ref int damage, ref int hit_direction, ref bool crit, ref bool custom_damage, ref bool play_sound, ref bool gen_gore, ref PlayerDeathReason damage_source ) {
-			if( damage_source.SourceCustomReason.Equals( RageHeadbandItem.DamageType.SourceCustomReason ) ) {
-				custom_damage = true;
-				crit = false;
+			if( damage_source != null ) {
+				string src_reason = damage_source.SourceCustomReason;
+				string rage_reason = RageHeadbandItem.DamageType.SourceCustomReason;
+
+				if( src_reason != null && src_reason.Equals( rage_reason ) ) {
+					custom_damage = true;
+					crit = false;
+				}
 			}
 			return base.PreHurt( pvp, quiet, ref damage, ref hit_direction, ref crit, ref custom_damage, ref play_sound, ref gen_gore, ref damage_source );
 		}
@@ -197,12 +203,12 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 
 		////////////////
 
-		public override void DrawEffects( PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright ) {
+		public override void DrawEffects( PlayerDrawInfo draw_info, ref float r, ref float g, ref float b, ref float a, ref bool full_bright ) {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return; }
 			if( this.Logic == null ) { return; }
 			if( this.Logic.Stamina > 0 ) { return; }
-
+			
 			if( --this.SweatDelay <= 0 ) {
 				this.SweatDelay = 3;
 
