@@ -42,8 +42,11 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 		////////////////
 
 		public override bool CanUseItem( Item item, Player player ) {
-			if( player.FindBuffIndex(this.mod.BuffType<ExhaustionBuff>()) != -1 ) {
-				return false;
+			if( player.FindBuffIndex( this.mod.BuffType<ExhaustionBuff>() ) != -1 ) {
+				var mymod = (StaminaMod)this.mod;
+				if( mymod.Config.Data.ExhaustionBlocksItems ) {
+					return false;
+				}
 			}
 			return base.CanUseItem( item, player );
 		}
