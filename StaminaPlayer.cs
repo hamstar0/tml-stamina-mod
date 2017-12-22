@@ -116,7 +116,8 @@ namespace Stamina {
 		public override void PreUpdate() {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Data.Enabled ) { return; }
-
+			if( this.Logic == null ) { return; }
+			
 			this.Logic.UpdateMaxStamina( mymod, this.player );
 
 			if( this.Logic != null ) {

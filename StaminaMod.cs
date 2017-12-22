@@ -146,26 +146,28 @@ namespace Stamina {
 					scr_y = this.Config.Data.CustomStaminaBarPositionY;
 				}
 
-				StaminaUI.DrawLongStaminaBar( sb, scr_x, scr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
+				try {
+					StaminaUI.DrawLongStaminaBar( sb, scr_x, scr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
 
-				if( this.Config.Data.ShowMiniStaminaBar ) {
-					int plr_x = (int)(player.position.X - Main.screenPosition.X) + (player.width / 2);
-					int plr_y = (int)(player.position.Y - Main.screenPosition.Y) + player.height;
-					plr_x += this.Config.Data.PlayerStaminaBarOffsetX;
-					plr_y += this.Config.Data.PlayerStaminaBarOffsetY;
+					if( this.Config.Data.ShowMiniStaminaBar ) {
+						int plr_x = (int)( player.position.X - Main.screenPosition.X ) + ( player.width / 2 );
+						int plr_y = (int)( player.position.Y - Main.screenPosition.Y ) + player.height;
+						plr_x += this.Config.Data.PlayerStaminaBarOffsetX;
+						plr_y += this.Config.Data.PlayerStaminaBarOffsetY;
 
-					StaminaUI.DrawShortStaminaBar( sb, plr_x, plr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
-				}
+						StaminaUI.DrawShortStaminaBar( sb, plr_x, plr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
+					}
 
-				if( this.Config.Data.DEBUG_VIEW_DRAINERS ) {
-					this.PrintStaminaDrainers( sb, modplayer );
-				}
+					if( this.Config.Data.DEBUG_VIEW_DRAINERS ) {
+						this.PrintStaminaDrainers( sb, modplayer );
+					}
+				} catch( Exception _ ) { }
 
 				return true;
 			};
 
 			var interface_layer = new LegacyGameInterfaceLayer( "Stamina: Meter", func, InterfaceScaleType.UI );
-			layers.Insert( idx, interface_layer );
+			layers.Insert( idx+1, interface_layer );
 		}
 
 
