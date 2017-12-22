@@ -161,7 +161,7 @@ namespace Stamina {
 					if( this.Config.Data.DEBUG_VIEW_DRAINERS ) {
 						this.PrintStaminaDrainers( sb, modplayer );
 					}
-				} catch( Exception _ ) { }
+				} catch( Exception _ ) {}
 
 				return true;
 			};
