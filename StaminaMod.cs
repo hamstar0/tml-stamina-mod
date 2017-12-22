@@ -150,8 +150,8 @@ namespace Stamina {
 					StaminaUI.DrawLongStaminaBar( sb, scr_x, scr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
 
 					if( this.Config.Data.ShowMiniStaminaBar ) {
-						int plr_x = (int)( player.position.X - Main.screenPosition.X ) + ( player.width / 2 );
-						int plr_y = (int)( player.position.Y - Main.screenPosition.Y ) + player.height;
+						int plr_x = (int)(player.position.X - Main.screenPosition.X) + (player.width / 2);
+						int plr_y = (int)(player.position.Y - Main.screenPosition.Y) + player.height;
 						plr_x += this.Config.Data.PlayerStaminaBarOffsetX;
 						plr_y += this.Config.Data.PlayerStaminaBarOffsetY;
 
