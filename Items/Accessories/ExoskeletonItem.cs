@@ -19,7 +19,7 @@ namespace Stamina.Items.Accessories {
 			this.DisplayName.SetDefault( "Powered Exoskeleton Frame" );
 			this.Tooltip.SetDefault( "Attacks, movement, and jumping draw less stamina"
 				+ '\n' + "Negates fall damage and knockback"
-				+ '\n' + "'Oil can not included.'" );
+				+ '\n' + "'Oil Can not included.'" );
 
 			TmlPlayerHelpers.AddArmorEquipAction( "Stamina:ExoskeletonEquip", delegate ( Player player, int slot, Item myitem ) {
 				if( myitem.type != this.mod.ItemType<ExoskeletonItem>() ) { return; }
@@ -92,7 +92,7 @@ namespace Stamina.Items.Accessories {
 			var data = mymod.Config.Data;
 
 			return data.Enabled && data.CraftableExoskeletons
-				&& (data.CraftableMuscleBelts || data.CraftableJointBracers || data.CraftableLegSprings);
+				&& (data.CraftableMuscleBelts || data.CraftableJointBracers || data.CraftableLegSprings );
 		}
 	}
 }

@@ -68,8 +68,9 @@ namespace Stamina.Items.Accessories {
 			this.AddTile( TileID.TinkerersWorkbench );
 
 			this.AddIngredient( ItemID.DualHook, 1 );
+			this.AddIngredient( ItemID.StaticHook, 1 );
 			this.AddIngredient( ItemID.Cog, 25 );
-			this.AddRecipeGroup( "Stamina:BasicKnockbackResistShield", 1 );
+			this.AddRecipeGroup( "Stamina:GreaterBiomeHook", 1 );
 			this.AddRecipeGroup( RecipeHelpers.WeightedPressurePlates.Key, 4 );
 
 			this.SetResult( myitem );
@@ -77,7 +78,7 @@ namespace Stamina.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableMuscleBelts;
+			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableJointBracers;
 		}
 	}
 }

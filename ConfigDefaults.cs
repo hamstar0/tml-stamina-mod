@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Stamina {
 	public class StaminaConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 2, 0, 1 );
+		public readonly static Version ConfigVersion = new Version( 2, 0, 2 );
 		public readonly static string ConfigFileName = "Stamina Config.json";
 
 
@@ -24,7 +24,7 @@ namespace Stamina {
 		public float ScaleAllStaminaRates = 1f;
 
 		public float RechargeRate = 0.45f;
-		public float EnergizedRate = 0.1f;
+		public float EnergizedRate = 0.125f;
 
 		public float SingularExertionRate = 12f;
 		public float ItemUseRate = 0.501f;
@@ -50,7 +50,7 @@ namespace Stamina {
 		public bool CraftableAthletePotions = true;
 		public bool CraftableRageHeadbands = true;
 		public bool CraftableExerciseSupplements = true;
-		public bool CraftableMuscleBelts = true;
+		public bool CraftableChampionBelts = true;
 		public bool CraftableJointBracers = true;
 		public bool CraftableLegSprings = true;
 		public bool CraftableExoskeletons = true;
@@ -83,16 +83,18 @@ namespace Stamina {
 			{ "Bug Net", 0.1f },
 			{ "Golden Bug Net", 0.15f }
 		};
-
+		
+		public bool ShowMainStaminaBar = true;
 		public bool ShowMiniStaminaBar = true;
 
 
 		////////////////
 
 		public string _OLD_SETTINGS_BELOW_ = "";
-
+		
 		public float FatigueAmount = 12f;
 		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.32f;
+		public bool CraftableMuscleBelts = true;
 
 
 		////////////////
@@ -101,6 +103,7 @@ namespace Stamina {
 		public readonly static int _1_5_0_ExhaustionDuration = 180;
 		public readonly static float _1_5_0_EnergizedRate = 0.25f;
 		public readonly static int _1_5_0_BottledWaterFatigueHeal = 50;
+		public readonly static float _2_0_1_EnergizedRate = 0.1f;
 
 
 
@@ -160,6 +163,12 @@ namespace Stamina {
 					this.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
 				}
 			}
+			if( vers_since < new Version( 2, 0, 2 ) ) {
+				if( this.EnergizedRate == StaminaConfigData._2_0_1_EnergizedRate ) {
+					this.EnergizedRate = new_config.EnergizedRate;
+				}
+			}
+			
 
 			this.VersionSinceUpdate = StaminaConfigData.ConfigVersion.ToString();
 
