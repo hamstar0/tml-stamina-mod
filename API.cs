@@ -9,12 +9,19 @@ namespace Stamina {
 
 
 
-	public static class StaminaAPI {
+
+	public static partial class StaminaAPI {
 		public static StaminaConfigData GetModSettings() {
 			if( StaminaMod.Instance == null ) { return null; }
-			return StaminaMod.Instance.Config.Data;
+			return StaminaMod.Instance.Config;
 		}
 
+		public static void SaveModSettingsChanges() {
+			if( StaminaMod.Instance == null ) { return; }
+			StaminaMod.Instance.ConfigJson.SaveFile();
+		}
+
+		////////////////
 
 		public static bool IsShowingDrainingFX( Player player ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();

@@ -25,7 +25,7 @@ namespace Stamina.Items.Consumables {
 			this.item.height = 24;
 			//item.potion = true;
 			this.item.buffType = this.mod.BuffType("EnergizedBuff");
-			this.item.buffTime = mymod.Config.Data.EnergyPotionDuration;
+			this.item.buffTime = mymod.Config.EnergyPotionDuration;
 			this.item.value = Item.buyPrice( 0, 0, 10, 0 );
 			this.item.rare = 1;
 		}
@@ -43,7 +43,7 @@ namespace Stamina.Items.Consumables {
 			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>( this.mod );
 			info.Logic.AddStamina( (StaminaMod)this.mod, player, 100 );
 
-			player.AddBuff( this.mod.BuffType("EnergizedBuff"), mymod.Config.Data.EnergyPotionDuration );
+			player.AddBuff( this.mod.BuffType("EnergizedBuff"), mymod.Config.EnergyPotionDuration );
 
 			return base.ConsumeItem( player );
 		}
@@ -77,7 +77,7 @@ namespace Stamina.Items.Consumables {
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableEnergyDrinks;
+			return mymod.Config.Enabled && mymod.Config.CraftableEnergyDrinks;
 		}
 	}
 }

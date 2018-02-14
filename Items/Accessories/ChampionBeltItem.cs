@@ -69,7 +69,7 @@ namespace Stamina.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableChampionBelts;
+			return mymod.Config.Enabled && mymod.Config.CraftableChampionBelts;
 		}
 	}
 }

@@ -29,7 +29,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 		public override void ModifyTooltips( Item item, List<TooltipLine> tooltips ) {
 			var mymod = (StaminaMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 
 			if( item.type == 75 ) { // Fallen Star
 				tooltips.Add( new TooltipLine( mymod, "StaminaPurpose", "Recovers some stamina on use" ) );
@@ -44,7 +44,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 		public override bool CanUseItem( Item item, Player player ) {
 			if( player.FindBuffIndex( this.mod.BuffType<ExhaustionBuff>() ) != -1 ) {
 				var mymod = (StaminaMod)this.mod;
-				if( mymod.Config.Data.ExhaustionBlocksItems ) {
+				if( mymod.Config.ExhaustionBlocksItems ) {
 					return false;
 				}
 			}
@@ -56,14 +56,14 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 		public override bool UseItem( Item item, Player player ) {
 			var mymod = (StaminaMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return base.UseItem( item, player ); }
+			if( !mymod.Config.Enabled ) { return base.UseItem( item, player ); }
 
-			if( mymod.Config.Data.ConsumableStars && item.type == ItemID.FallenStar && item.stack > 0 ) {
+			if( mymod.Config.ConsumableStars && item.type == ItemID.FallenStar && item.stack > 0 ) {
 				if( StaminaItem.StarUseCooldown[player.whoAmI] == 0 ) {
 					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
 
 					if( modplayer.Logic.Stamina < modplayer.Logic.MaxStamina2 ) {
-						modplayer.Logic.AddStamina( mymod, player, mymod.Config.Data.StarStaminaHeal );
+						modplayer.Logic.AddStamina( mymod, player, mymod.Config.StarStaminaHeal );
 
 						if( --item.stack <= 0 ) {
 							ItemHelpers.DestroyItem(item);
@@ -81,7 +81,7 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 
 		public override bool ConsumeItem( Item item, Player player ) {
 			var mymod = (StaminaMod)this.mod;
-			var config = mymod.Config.Data;
+			var config = mymod.Config;
 			if( !config.Enabled ) { return base.ConsumeItem( item, player ); }
 
 			if( config.ConsumableBottledWater && item.type == ItemID.BottledWater ) {

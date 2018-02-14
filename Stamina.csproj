@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HamstarHelpers">
-      <HintPath>..\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
+      <HintPath>..\..\Helpers\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,19 +45,19 @@
     <Reference Include="Microsoft.Xna.Framework.Game" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
     <Reference Include="Terraria">
-      <HintPath>..\..\..\..\..\Program Files\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
     </Reference>
-    <Reference Include="Terraria.Libraries.ReLogic.ReLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Reference\Terraria.Libraries.ReLogic.ReLogic.dll</HintPath>
+    <Reference Include="Terraria.Libraries.ReLogic.ReLogic">
+      <HintPath>..\..\..\Reference\Terraria.Libraries.ReLogic.ReLogic.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API_Call.cs" />
     <Compile Include="API.cs" />
     <Compile Include="Buffs\AthleteBuff.cs" />
     <Compile Include="Buffs\EnergizedBuff.cs" />
     <Compile Include="Buffs\ExhaustionBuff.cs" />
-    <Compile Include="ConfigDefaults.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Items\Accessories\ExerciseSupplementsItem.cs" />
     <Compile Include="Items\Accessories\JointBracerItem.cs" />
     <Compile Include="Items\Accessories\ExoskeletonItem.cs" />

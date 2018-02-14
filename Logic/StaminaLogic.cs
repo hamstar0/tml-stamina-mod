@@ -50,8 +50,8 @@ namespace Stamina.Logic {
 			this.HasStaminaSet = has_stamina;
 
 			if( !this.HasStaminaSet ) {
-				this.MaxStamina = mymod.Config.Data.InitialStamina;
-				this.MaxStamina2 = mymod.Config.Data.InitialStamina;
+				this.MaxStamina = mymod.Config.InitialStamina;
+				this.MaxStamina2 = mymod.Config.InitialStamina;
 				this.HasStaminaSet = true;
 			}
 
@@ -83,13 +83,13 @@ namespace Stamina.Logic {
 
 			if( this.Stamina > 0 ) {
 				this.TiredTimer = 0d;
-				this.AddStamina( mymod, player, mymod.Config.Data.RechargeRate );
+				this.AddStamina( mymod, player, mymod.Config.RechargeRate );
 			} else {
-				if( this.TiredTimer >= mymod.Config.Data.ExhaustionDuration ) {
+				if( this.TiredTimer >= mymod.Config.ExhaustionDuration ) {
 					this.TiredTimer = 0d;
 					this.Stamina = 0.0001f;
 
-					this.AddStamina( mymod, player, mymod.Config.Data.ExhaustionRecover );
+					this.AddStamina( mymod, player, mymod.Config.ExhaustionRecover );
 				} else {
 					this.TiredTimer += 1d;
 				}
@@ -116,8 +116,8 @@ namespace Stamina.Logic {
 					player.armor[1].type == ItemID.MeteorSuit &&
 					player.armor[2].type == ItemID.MeteorLeggings;
 				
-				if( mymod.Config.Data.CustomItemUseRate.ContainsKey( curr_item.Name ) ) {
-					float custom_rate = mymod.Config.Data.CustomItemUseRate[curr_item.Name];
+				if( mymod.Config.CustomItemUseRate.ContainsKey( curr_item.Name ) ) {
+					float custom_rate = mymod.Config.CustomItemUseRate[curr_item.Name];
 					this.DrainStaminaViaCustomItemUse( mymod, player, curr_item.Name );
 				} else {
 					if( curr_item.magic && !(is_pewpew && is_spaceman) ) {
@@ -187,7 +187,7 @@ namespace Stamina.Logic {
 		////////////////
 
 		public void AddStamina( StaminaMod mymod, Player player, float amount ) {
-			amount *= mymod.Config.Data.ScaleAllStaminaRates;
+			amount *= mymod.Config.ScaleAllStaminaRates;
 
 			if( this.Stamina == 0 ) {
 				this.TiredTimer += amount / 2;

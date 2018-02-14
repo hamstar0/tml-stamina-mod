@@ -17,7 +17,7 @@ namespace Stamina.Items.Accessories {
 		////////////////
 
 		public static int CalculateDamageFromStaminaDrain( StaminaMod mymod, float drain ) {
-			return (int)(drain * mymod.Config.Data.RageHeadbandDamageMultiplier);
+			return (int)(drain * mymod.Config.RageHeadbandDamageMultiplier);
 		}
 
 		public static void ApplyDamage( StaminaMod mymod, Player player, float drain ) {
@@ -76,13 +76,13 @@ namespace Stamina.Items.Accessories {
 			this.AddTile( TileID.TinkerersWorkbench );
 			this.AddIngredient( ItemID.MagmaStone, 1 );
 			this.AddIngredient( ItemID.Hook, 4 );
-			this.AddIngredient( ItemID.Silk, 5 );
+			this.AddIngredient( ItemID.Silk, 10 );
 			this.SetResult( myitem );
 		}
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableRageHeadbands;
+			return mymod.Config.Enabled && mymod.Config.CraftableRageHeadbands;
 		}
 	}
 }

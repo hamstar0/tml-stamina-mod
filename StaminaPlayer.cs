@@ -3,7 +3,6 @@ using Stamina.Buffs;
 using Stamina.Items.Accessories;
 using Stamina.Logic;
 using Stamina.NetProtocol;
-using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -60,8 +59,8 @@ namespace Stamina {
 
 			if( player.whoAmI == this.player.whoAmI ) { // Current player
 				if( Main.netMode != 2 ) {   // Not server
-					if( !mymod.Config.LoadFile() ) {
-						mymod.Config.SaveFile();
+					if( !mymod.ConfigJson.LoadFile() ) {
+						mymod.ConfigJson.SaveFile();
 					}
 				}
 
@@ -87,11 +86,11 @@ namespace Stamina {
 			this.Initialize();
 			var mymod = (StaminaMod)this.mod;
 
-			if( !mymod.Config.LoadFile() ) {
-				mymod.Config.SaveFile();
+			if( !mymod.ConfigJson.LoadFile() ) {
+				mymod.ConfigJson.SaveFile();
 			}
 
-			int max = mymod.Config.Data.InitialStamina;
+			int max = mymod.Config.InitialStamina;
 			bool has = true;
 			if( tags.ContainsKey("max_stamina") && tags.ContainsKey("has_stamina") ) {
 				max = tags.GetInt( "max_stamina" );
@@ -115,21 +114,19 @@ namespace Stamina {
 
 		public override void PreUpdate() {
 			var mymod = (StaminaMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 			if( this.Logic == null ) { return; }
 			
 			this.Logic.UpdateMaxStamina( mymod, this.player );
+			
+			if( !this.player.dead ) {
+				this.Logic.PassiveFatigueRecover( mymod, this.player );
+				this.Logic.PassiveStaminaRegen( mymod, this.player );
+				this.Logic.GatherPassiveStaminaDrains( mymod, this.player );
+				this.Logic.CommitStaminaDrains( mymod, this.player );
 
-			if( this.Logic != null ) {
-				if( !this.player.dead ) {
-					this.Logic.PassiveFatigueRecover( mymod, this.player );
-					this.Logic.PassiveStaminaRegen( mymod, this.player );
-					this.Logic.GatherPassiveStaminaDrains( mymod, this.player );
-					this.Logic.CommitStaminaDrains( mymod, this.player );
-
-					if( this.Logic.Stamina == 0 ) {
-						this.ApplyDebuffs();
-					}
+				if( this.Logic.Stamina == 0 ) {
+					this.ApplyDebuffs();
 				}
 			}
 
@@ -140,7 +137,7 @@ namespace Stamina {
 
 		public override void PostUpdateRunSpeeds() {
 			var mymod = (StaminaMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 			if( this.Logic == null ) { return; }
 
 			if( !this.player.dead ) {
@@ -171,10 +168,10 @@ namespace Stamina {
 
 		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
 			var mymod = (StaminaMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 			if( quiet ) { return; }
 
-			float yike = (float)damage * mymod.Config.Data.PercentOfDamageAdrenalineBurst * (crit ? 2f : 1f);
+			float yike = (float)damage * mymod.Config.PercentOfDamageAdrenalineBurst * (crit ? 2f : 1f);
 
 			this.Logic.AddStamina( mymod, this.player, yike );
 		}
@@ -183,7 +180,7 @@ namespace Stamina {
 		public override bool PreItemCheck() {
 			bool prechecked = base.PreItemCheck();
 			var mymod = (StaminaMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return prechecked; }
+			if( !mymod.Config.Enabled ) { return prechecked; }
 			if( this.Logic == null ) { return prechecked; }
 
 			Item item = this.player.inventory[ this.player.selectedItem ];
@@ -206,7 +203,7 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 
 		public override void DrawEffects( PlayerDrawInfo draw_info, ref float r, ref float g, ref float b, ref float a, ref bool full_bright ) {
 			var mymod = (StaminaMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 			if( this.Logic == null ) { return; }
 			if( this.Logic.Stamina > 0 ) { return; }
 			
@@ -236,7 +233,7 @@ Main.NewText("PreItemCheck "+ StaminaMod.Config.Data.SingularExertionRate * ((fl
 			var mymod = (StaminaMod)this.mod;
 			int buffid = this.mod.BuffType( "ExhaustionBuff" );
 
-			int duration = mymod.Config.Data.ExhaustionDuration - (int)this.Logic.TiredTimer;
+			int duration = mymod.Config.ExhaustionDuration - (int)this.Logic.TiredTimer;
 
 			if( duration > 0 ) {
 				this.player.AddBuff( buffid, duration );

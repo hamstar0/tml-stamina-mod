@@ -78,7 +78,7 @@ namespace Stamina.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableJointBracers;
+			return mymod.Config.Enabled && mymod.Config.CraftableJointBracers;
 		}
 	}
 }

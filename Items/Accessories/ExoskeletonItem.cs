@@ -72,13 +72,13 @@ namespace Stamina.Items.Accessories {
 
 			this.AddTile( TileID.TinkerersWorkbench );
 
-			if( mymod.Config.Data.CraftableMuscleBelts ) {
+			if( mymod.Config.CraftableMuscleBelts ) {
 				this.AddIngredient( this.mod.ItemType<ChampionBeltItem>(), 1 );
 			}
-			if( mymod.Config.Data.CraftableJointBracers ) {
+			if( mymod.Config.CraftableJointBracers ) {
 				this.AddIngredient( this.mod.ItemType<JointBracerItem>(), 1 );
 			}
-			if( mymod.Config.Data.CraftableLegSprings ) {
+			if( mymod.Config.CraftableLegSprings ) {
 				this.AddIngredient( this.mod.ItemType<LegSpringItem>(), 1 );
 			}
 			this.AddIngredient( ItemID.LihzahrdPowerCell, 2 );
@@ -89,8 +89,8 @@ namespace Stamina.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			var data = mymod.Config.Data;
-
+			var data = mymod.Config;
+			
 			return data.Enabled && data.CraftableExoskeletons
 				&& (data.CraftableMuscleBelts || data.CraftableJointBracers || data.CraftableLegSprings );
 		}

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Stamina {
 	public class StaminaConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 2, 0, 2 );
+		public readonly static Version ConfigVersion = new Version( 2, 0, 3 );
 		public readonly static string ConfigFileName = "Stamina Config.json";
 
 
@@ -59,9 +59,9 @@ namespace Stamina {
 		public int BottledWaterFatigueHeal = 35;
 		public float RageHeadbandDamageMultiplier = 5f;
 		public int ExerciseSupplementAddedGrowthAmount = 2;
-		public float MuscleBeltStaminaDrainScale = 0.7f;
-		public float JointBracerStaminaDrainScale = 0.7f;
-		public float LegSpringsStaminaDrainScale = 0.7f;
+		public float MuscleBeltStaminaDrainScale = 0.8f;
+		public float JointBracerStaminaDrainScale = 0.8f;
+		public float LegSpringsStaminaDrainScale = 0.8f;
 
 		public int EnergyPotionDuration = 30 * 60;
 		public int AthletePotionDuration = 120 * 60;
@@ -79,15 +79,12 @@ namespace Stamina {
 		public int PlayerStaminaBarOffsetX = 0;
 		public int PlayerStaminaBarOffsetY = 0;
 
-		public IDictionary<string, float> CustomItemUseRate = new Dictionary<string, float> {
-			{ "Bug Net", 0.1f },
-			{ "Golden Bug Net", 0.15f }
-		};
+		public IDictionary<string, float> CustomItemUseRate = new Dictionary<string, float>();
 		
 		public bool ShowMainStaminaBar = true;
 		public bool ShowMiniStaminaBar = true;
 
-
+		
 		////////////////
 
 		public string _OLD_SETTINGS_BELOW_ = "";
@@ -96,7 +93,7 @@ namespace Stamina {
 		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.32f;
 		public bool CraftableMuscleBelts = true;
 
-
+		
 		////////////////
 
 		public readonly static int _1_4_11_ExerciseGrowthAmount = 2;
@@ -104,13 +101,28 @@ namespace Stamina {
 		public readonly static float _1_5_0_EnergizedRate = 0.25f;
 		public readonly static int _1_5_0_BottledWaterFatigueHeal = 50;
 		public readonly static float _2_0_1_EnergizedRate = 0.1f;
+		public readonly static float _2_0_2_MuscleBeltStaminaDrainScale = 0.7f;
+		public readonly static float _2_0_2_JointBracerStaminaDrainScale = 0.7f;
+		public readonly static float _2_0_2_LegSpringsStaminaDrainScale = 0.7f;
+
 
 
 
 		////////////////
 
+		public void SetDefaults() {
+			this.CustomItemUseRate = new Dictionary<string, float>{
+				{ "Bug Net", 0.1f },
+				{ "Golden Bug Net", 0.15f }
+			};
+		}
+
+		////////////////
+
 		public bool UpdateToLatestVersion() {
 			var new_config = new StaminaConfigData();
+			new_config.SetDefaults();
+
 			var vers_since = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
@@ -168,7 +180,22 @@ namespace Stamina {
 					this.EnergizedRate = new_config.EnergizedRate;
 				}
 			}
-			
+			if( vers_since < new Version( 2, 0, 3 ) ) {
+				foreach( var kv in new_config.CustomItemUseRate ) {
+					if( !this.CustomItemUseRate.ContainsKey(kv.Key) ) {
+						this.CustomItemUseRate[ kv.Key ] = kv.Value;
+					}
+				}
+				if( this.MuscleBeltStaminaDrainScale == StaminaConfigData._2_0_2_MuscleBeltStaminaDrainScale ) {
+					this.MuscleBeltStaminaDrainScale = new_config.MuscleBeltStaminaDrainScale;
+				}
+				if( this.JointBracerStaminaDrainScale == StaminaConfigData._2_0_2_JointBracerStaminaDrainScale ) {
+					this.JointBracerStaminaDrainScale = new_config.JointBracerStaminaDrainScale;
+				}
+				if( this.LegSpringsStaminaDrainScale == StaminaConfigData._2_0_2_LegSpringsStaminaDrainScale ) {
+					this.LegSpringsStaminaDrainScale = new_config.LegSpringsStaminaDrainScale;
+				}
+			}
 
 			this.VersionSinceUpdate = StaminaConfigData.ConfigVersion.ToString();
 

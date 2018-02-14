@@ -7,8 +7,8 @@ using Terraria.ID;
 namespace Stamina.Logic {
 	partial class StaminaLogic {
 		public int GetStaminaLossAmountNeededForExercise( StaminaMod mymod ) {
-			int threshold = (int)((float)this.MaxStamina2 * mymod.Config.Data.FatigueAsMaxStaminaPercentAmountNeeededForExercise);
-			return threshold - mymod.Config.Data.FatigueForExerciseAmountRemoved;
+			int threshold = (int)((float)this.MaxStamina2 * mymod.Config.FatigueAsMaxStaminaPercentAmountNeeededForExercise);
+			return threshold - mymod.Config.FatigueForExerciseAmountRemoved;
 		}
 
 		////////////////
@@ -17,7 +17,7 @@ namespace Stamina.Logic {
 			if( this.Fatigue > 0 ) {
 				if( (this.MaxStamina2 - this.Stamina) <= this.Fatigue ) {
 					this.FatigueRecoverTimer++;
-					int duration = mymod.Config.Data.FatigueRecoverDuration;
+					int duration = mymod.Config.FatigueRecoverDuration;
 
 					if( this.FatigueRecoverTimer >= duration ) {
 						this.FatigueRecoverTimer = 0;
@@ -39,22 +39,22 @@ namespace Stamina.Logic {
 		////////////////
 
 		public bool ApplyExercise( StaminaMod mymod, Player player ) {
-			if( this.MaxStamina >= mymod.Config.Data.MaxStaminaAmount ) { return false; }
+			if( this.MaxStamina >= mymod.Config.MaxStaminaAmount ) { return false; }
 
 			var modplayer = player.GetModPlayer<StaminaPlayer>();
 			
-			this.MaxStamina += mymod.Config.Data.ExerciseGrowthAmount;
+			this.MaxStamina += mymod.Config.ExerciseGrowthAmount;
 
 			if( modplayer.IsUsingSupplements ) {
-				this.MaxStamina += mymod.Config.Data.ExerciseSupplementAddedGrowthAmount;
+				this.MaxStamina += mymod.Config.ExerciseSupplementAddedGrowthAmount;
 			}
 
-			if( this.MaxStamina > mymod.Config.Data.MaxStaminaAmount ) {
-				this.MaxStamina = mymod.Config.Data.MaxStaminaAmount;
+			if( this.MaxStamina > mymod.Config.MaxStaminaAmount ) {
+				this.MaxStamina = mymod.Config.MaxStaminaAmount;
 			}
 
-			string msg = "+" + mymod.Config.Data.ExerciseGrowthAmount + " Stamina";
-			PlayerMessage.AddPlayerLabel( player, msg, Color.Chartreuse, 60 * 3, true );
+			string msg = "+" + mymod.Config.ExerciseGrowthAmount + " Stamina";
+			PlayerMessages.AddPlayerLabel( player, msg, Color.Chartreuse, 60 * 3, true );
 
 			Main.PlaySound( SoundID.Item47.WithVolume( 0.5f ) );
 

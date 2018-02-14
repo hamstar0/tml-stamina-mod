@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using System.Linq;
 using Terraria;
@@ -28,8 +27,8 @@ namespace Stamina {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
 			if( StaminaMod.Instance != null ) {
-				if( !StaminaMod.Instance.Config.LoadFile() ) {
-					StaminaMod.Instance.Config.SaveFile();
+				if( !StaminaMod.Instance.ConfigJson.LoadFile() ) {
+					StaminaMod.Instance.ConfigJson.SaveFile();
 				}
 			}
 		}
@@ -37,7 +36,8 @@ namespace Stamina {
 
 		////////////////
 
-		public JsonConfig<StaminaConfigData> Config { get; private set; }
+		internal JsonConfig<StaminaConfigData> ConfigJson { get; private set; }
+		public StaminaConfigData Config { get { return this.ConfigJson.Data; } }
 
 
 		////////////////
@@ -49,7 +49,7 @@ namespace Stamina {
 				AutoloadSounds = true
 			};
 			
-			this.Config = new JsonConfig<StaminaConfigData>( StaminaConfigData.ConfigFileName,
+			this.ConfigJson = new JsonConfig<StaminaConfigData>( StaminaConfigData.ConfigFileName,
 				JsonConfig<StaminaConfigData>.RelativePath, new StaminaConfigData() );
 		}
 
@@ -72,17 +72,17 @@ namespace Stamina {
 			// Update old config to new location
 			if( old_config.LoadFile() ) {
 				old_config.DestroyFile();
-				old_config.SetFilePath( this.Config.FileName, JsonConfig<StaminaConfigData>.RelativePath );
-				this.Config = old_config;
+				old_config.SetFilePath( this.ConfigJson.FileName, JsonConfig<StaminaConfigData>.RelativePath );
+				this.ConfigJson = old_config;
 			}
 
-			if( !this.Config.LoadFile() ) {
-				this.Config.SaveFile();
+			if( !this.ConfigJson.LoadFile() ) {
+				this.ConfigJson.SaveFile();
 			}
 
-			if( this.Config.Data.UpdateToLatestVersion() ) {
+			if( this.Config.UpdateToLatestVersion() ) {
 				ErrorLogger.Log( "Stamina updated to " + StaminaConfigData.ConfigVersion.ToString() );
-				this.Config.SaveFile();
+				this.ConfigJson.SaveFile();
 			}
 		}
 
@@ -93,6 +93,21 @@ namespace Stamina {
 
 		////////////////
 
+		public override object Call( params object[] args ) {
+			if( args.Length == 0 ) { throw new Exception( "Undefined call type." ); }
+
+			string call_type = args[0] as string;
+			if( args == null ) { throw new Exception( "Invalid call type." ); }
+
+			var new_args = new object[args.Length - 1];
+			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
+
+			return StaminaAPI.Call( call_type, new_args );
+		}
+
+
+		////////////////
+		
 		public override void HandlePacket( BinaryReader reader, int player_who ) {
 			if( Main.netMode == 1 ) {   // Client
 				ClientPacketHandlers.HandlePacket( this, reader );
@@ -105,12 +120,12 @@ namespace Stamina {
 		////////////////
 
 		public override void AddRecipeGroups() {
-			var ninja_item = new RecipeGroup( delegate () { return Lang.misc[37]+" base ninja item"; },
+			var ninja_item = new RecipeGroup( delegate () { return Lang.misc[37]+" martial arts master item"; },
 				ItemID.Tabi, ItemID.BlackBelt );
 			var greater_hook = new RecipeGroup( delegate () { return Lang.misc[37] + " greater biome hook"; },
 				ItemID.IlluminantHook, ItemID.WormHook, ItemID.TendonHook, ItemID.ThornHook );
 
-			RecipeGroup.RegisterGroup( "Stamina:NinjaItems", ninja_item );
+			RecipeGroup.RegisterGroup( "Stamina:MartialArtsMasterItems", ninja_item );
 			RecipeGroup.RegisterGroup( "Stamina:GreaterBiomeHook", greater_hook );
 		}
 
@@ -118,12 +133,12 @@ namespace Stamina {
 		////////////////
 
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
-			if( !this.Config.Data.Enabled ) { return; }
+			if( !this.Config.Enabled ) { return; }
 
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );
 			if( idx == -1 ) { return; }
 
-			if( this.Config.Data.ShowMainStaminaBar ) {
+			if( this.Config.ShowMainStaminaBar ) {
 				GameInterfaceDrawMethod func = delegate {
 					Player player = Main.LocalPlayer;
 					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>();
@@ -131,27 +146,27 @@ namespace Stamina {
 
 					SpriteBatch sb = Main.spriteBatch;
 
-					int scr_x = Main.screenWidth - 172;
-					int scr_y = 78;
-					float alpha = modplayer.Logic.DrainingFX ? 1f : 0.65f;
-					int stamina = (int)modplayer.Logic.Stamina;
-					int max_stamina = modplayer.Logic.MaxStamina2;
-					float fatigue = modplayer.Logic.Fatigue;
-					bool is_exercising = modplayer.Logic.IsExercising;
-					int threshold = fatigue > 0 ? modplayer.Logic.GetStaminaLossAmountNeededForExercise( this ) : -1;
-
-					if( this.Config.Data.CustomStaminaBarPositionX >= 0 ) {
-						scr_x = this.Config.Data.CustomStaminaBarPositionX;
-					}
-					if( this.Config.Data.CustomStaminaBarPositionY >= 0 ) {
-						scr_y = this.Config.Data.CustomStaminaBarPositionY;
-					}
-
 					try {
-						StaminaUI.DrawLongStaminaBar( sb, scr_x, scr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
-					} catch( Exception _ ) { }
+						int scr_x = Main.screenWidth - 172;
+						int scr_y = 78;
+						float alpha = modplayer.Logic.DrainingFX ? 1f : 0.65f;
+						int stamina = (int)modplayer.Logic.Stamina;
+						int max_stamina = modplayer.Logic.MaxStamina2;
+						float fatigue = modplayer.Logic.Fatigue;
+						bool is_exercising = modplayer.Logic.IsExercising;
+						int threshold = fatigue > 0 ? modplayer.Logic.GetStaminaLossAmountNeededForExercise( this ) : -1;
 
-					if( this.Config.Data.DEBUG_VIEW_DRAINERS ) {
+						if( this.Config.CustomStaminaBarPositionX >= 0 ) {
+							scr_x = this.Config.CustomStaminaBarPositionX;
+						}
+						if( this.Config.CustomStaminaBarPositionY >= 0 ) {
+							scr_y = this.Config.CustomStaminaBarPositionY;
+						}
+
+						StaminaUI.DrawLongStaminaBar( sb, scr_x, scr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
+					} catch( Exception e ) { ErrorLogger.Log( e.ToString() ); }
+
+					if( this.Config.DEBUG_VIEW_DRAINERS ) {
 						this.PrintStaminaDrainers( sb, modplayer );
 					}
 					return true;
@@ -161,7 +176,7 @@ namespace Stamina {
 				layers.Insert( idx + 1, main_ui_layer );
 			}
 
-			if( this.Config.Data.ShowMiniStaminaBar ) {
+			if( this.Config.ShowMiniStaminaBar ) {
 				GameInterfaceDrawMethod func2 = delegate {
 					Player player = Main.LocalPlayer;
 					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>();
@@ -169,23 +184,23 @@ namespace Stamina {
 
 					SpriteBatch sb = Main.spriteBatch;
 
-					float alpha = modplayer.Logic.DrainingFX ? 1f : 0.65f;
-					int stamina = (int)modplayer.Logic.Stamina;
-					int max_stamina = modplayer.Logic.MaxStamina2;
-					float fatigue = modplayer.Logic.Fatigue;
-					bool is_exercising = modplayer.Logic.IsExercising;
-					int threshold = fatigue > 0 ? modplayer.Logic.GetStaminaLossAmountNeededForExercise( this ) : -1;
+					try {
+						float alpha = modplayer.Logic.DrainingFX ? 1f : 0.65f;
+						int stamina = (int)modplayer.Logic.Stamina;
+						int max_stamina = modplayer.Logic.MaxStamina2;
+						float fatigue = modplayer.Logic.Fatigue;
+						bool is_exercising = modplayer.Logic.IsExercising;
+						int threshold = fatigue > 0 ? modplayer.Logic.GetStaminaLossAmountNeededForExercise( this ) : -1;
 
-					if( this.Config.Data.ShowMiniStaminaBar ) {
-						int plr_x = (int)( player.position.X - Main.screenPosition.X ) + ( player.width / 2 );
-						int plr_y = (int)( player.position.Y - Main.screenPosition.Y ) + player.height;
-						plr_x += this.Config.Data.PlayerStaminaBarOffsetX;
-						plr_y += this.Config.Data.PlayerStaminaBarOffsetY;
+						if( this.Config.ShowMiniStaminaBar ) {
+							int plr_x = (int)( player.position.X - Main.screenPosition.X ) + ( player.width / 2 );
+							int plr_y = (int)( player.position.Y - Main.screenPosition.Y ) + player.height;
+							plr_x += this.Config.PlayerStaminaBarOffsetX;
+							plr_y += this.Config.PlayerStaminaBarOffsetY;
 
-						try {
 							StaminaUI.DrawShortStaminaBar( sb, plr_x, plr_y, stamina, max_stamina, (int)fatigue, threshold, is_exercising, alpha, 1f );
-						} catch( Exception _ ) { }
-					}
+						}
+					} catch( Exception e ) { ErrorLogger.Log( e.ToString() ); }
 					return true;
 				};
 

@@ -67,7 +67,7 @@ namespace Stamina.Items.Accessories {
 		public LegSpringItemRecipe( LegSpringItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.TinkerersWorkbench );
 
-			this.AddRecipeGroup( "Stamina:NinjaItems", 1 );
+			this.AddRecipeGroup( "Stamina:MartialArtsMasterItems", 1 );
 			this.AddIngredient( ItemID.FrogLeg, 1 );
 			this.AddIngredient( ItemID.IronBar, 10 );
 
@@ -76,7 +76,7 @@ namespace Stamina.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (StaminaMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableLegSprings;
+			return mymod.Config.Enabled && mymod.Config.CraftableLegSprings;
 		}
 	}
 }

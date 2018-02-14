@@ -3,6 +3,9 @@ Future consideration
 
 
 
+v2.1
+-	Update for new HH
+-	Tone down stamina accessories
 v2.0
 -	Check stamina use from megashark
 -	Remove exoskeleton hand

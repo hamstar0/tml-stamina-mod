@@ -39,7 +39,7 @@ namespace Stamina.NetProtocol {
 		////////////////////////////////
 
 		private static void ReceiveSettingsOnClient( StaminaMod mymod, BinaryReader reader ) {
-			mymod.Config.DeserializeMe( reader.ReadString() );
+			mymod.ConfigJson.DeserializeMe( reader.ReadString() );
 
 			var modplayer = Main.LocalPlayer.GetModPlayer<StaminaPlayer>();
 			modplayer.OnReceiveServerSettings();

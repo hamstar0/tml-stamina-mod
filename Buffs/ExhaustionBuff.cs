@@ -20,16 +20,16 @@ namespace Stamina.Buffs {
 
 
 		public static void ApplyStatusExhaustion( StaminaMod mymod, Player player ) {
-			if( mymod.Config.Data.ExhaustionLowersDefense ) {
+			if( mymod.Config.ExhaustionLowersDefense ) {
 				player.statDefense -= 5;
 			}
-			if( mymod.Config.Data.ExhaustionBlocksItems ) {
+			if( mymod.Config.ExhaustionBlocksItems ) {
 				player.noItems = true;
 			}
 		}
 
 		public static void ApplyMovementExhaustion( StaminaMod mymod, Player player ) {
-			if( mymod.Config.Data.ExhaustionSlowsMovement ) {
+			if( mymod.Config.ExhaustionSlowsMovement ) {
 				player.maxRunSpeed *= 0.65f;
 				player.accRunSpeed = player.maxRunSpeed;
 				player.moveSpeed *= 0.65f;
