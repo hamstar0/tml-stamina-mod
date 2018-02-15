@@ -167,7 +167,10 @@ namespace Stamina.Logic {
 					if( player.swimTime > 0 ) {
 						this.DrainStaminaViaSwimBegin( mymod, player );
 					} else {
-						this.DrainStaminaViaJumpBegin( mymod, player );
+						if( player.velocity.Y == 0 || player.sliding ||
+								player.jumpAgainBlizzard || player.jumpAgainCloud || player.jumpAgainFart || player.jumpAgainSandstorm ) {
+							this.DrainStaminaViaJumpBegin( mymod, player );
+						}
 					}
 					modplayer.IsJumping = true;
 				}
