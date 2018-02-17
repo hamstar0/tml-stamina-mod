@@ -48,6 +48,14 @@ namespace Stamina.Logic {
 			this.MaxStamina = max_stamina;
 			this.MaxStamina2 = max_stamina;
 			this.HasStaminaSet = has_stamina;
+			this.Fatigue = 0;
+			this.FatigueRecoverTimer = 0;
+			this.CurrentDrain = 0;
+			this.CurrentDrainMost = 0;
+			this.CurrentDrainCount = 0;
+			this.DrainingFX = false;
+			this.ItemUseDrainDuration = 0;
+			this.IsExercising = false;
 
 			if( !this.HasStaminaSet ) {
 				this.MaxStamina = mymod.Config.InitialStamina;
