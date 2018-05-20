@@ -20,15 +20,15 @@ namespace Stamina {
 		public static string GithubProjectName { get { return "tml-stamina-mod"; } }
 
 		public static string ConfigFileRelativePath {
-			get { return JsonConfig<StaminaConfigData>.RelativePath + Path.DirectorySeparatorChar + StaminaConfigData.ConfigFileName; }
+			get { return HamstarHelpers.Utilities.Config.JsonConfig.ConfigSubfolder + Path.DirectorySeparatorChar + StaminaConfigData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
 			if( StaminaMod.Instance != null ) {
-				if( !StaminaMod.Instance.ConfigJson.LoadFile() ) {
-					StaminaMod.Instance.ConfigJson.SaveFile();
+				if( !StaminaMod.Instance.JsonConfig.LoadFile() ) {
+					StaminaMod.Instance.JsonConfig.SaveFile();
 				}
 			}
 		}
@@ -36,34 +36,28 @@ namespace Stamina {
 
 		////////////////
 
-		internal JsonConfig<StaminaConfigData> ConfigJson { get; private set; }
-		public StaminaConfigData Config { get { return this.ConfigJson.Data; } }
+		internal JsonConfig<StaminaConfigData> JsonConfig { get; private set; }
+		public StaminaConfigData Config { get { return this.JsonConfig.Data; } }
 
 
 		////////////////
 
 		public StaminaMod() : base() {
+			StaminaMod.Instance = this;
+
 			this.Properties = new ModProperties() {
 				Autoload = true,
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
 			
-			this.ConfigJson = new JsonConfig<StaminaConfigData>( StaminaConfigData.ConfigFileName,
-				JsonConfig<StaminaConfigData>.RelativePath, new StaminaConfigData() );
+			this.JsonConfig = new JsonConfig<StaminaConfigData>( StaminaConfigData.ConfigFileName,
+				HamstarHelpers.Utilities.Config.JsonConfig.ConfigSubfolder, new StaminaConfigData() );
 		}
 
 		////////////////
 
 		public override void Load() {
-			StaminaMod.Instance = this;
-			
-			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_vers = new Version( 1, 2, 3 );
-			if( hamhelpmod.Version < min_vers ) {
-				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
-			}
-
 			this.LoadConfigs();
 		}
 
@@ -72,17 +66,17 @@ namespace Stamina {
 			// Update old config to new location
 			if( old_config.LoadFile() ) {
 				old_config.DestroyFile();
-				old_config.SetFilePath( this.ConfigJson.FileName, JsonConfig<StaminaConfigData>.RelativePath );
-				this.ConfigJson = old_config;
+				old_config.SetFilePath( this.JsonConfig.FileName, HamstarHelpers.Utilities.Config.JsonConfig.ConfigSubfolder );
+				this.JsonConfig = old_config;
 			}
 
-			if( !this.ConfigJson.LoadFile() ) {
-				this.ConfigJson.SaveFile();
+			if( !this.JsonConfig.LoadFile() ) {
+				this.JsonConfig.SaveFile();
 			}
 
 			if( this.Config.UpdateToLatestVersion() ) {
 				ErrorLogger.Log( "Stamina updated to " + StaminaConfigData.ConfigVersion.ToString() );
-				this.ConfigJson.SaveFile();
+				this.JsonConfig.SaveFile();
 			}
 		}
 

@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.PlayerHelpers;
+﻿using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.PlayerHelpers;
 using HamstarHelpers.RecipeHelpers;
 using HamstarHelpers.TmlHelpers;
 using Terraria;
@@ -71,8 +72,8 @@ namespace Stamina.Items.Accessories {
 			this.AddIngredient( ItemID.StaticHook, 1 );
 			this.AddIngredient( ItemID.Cog, 25 );
 			this.AddRecipeGroup( "Stamina:GreaterBiomeHook", 1 );
-			this.AddRecipeGroup( RecipeHelpers.WeightedPressurePlates.Key, 4 );
-
+			this.AddRecipeGroup( "HamstarHelpers:WeightPressurePlates", 4 );
+			
 			this.SetResult( myitem );
 		}
 

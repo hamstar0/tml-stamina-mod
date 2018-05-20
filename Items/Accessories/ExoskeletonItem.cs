@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.PlayerHelpers;
+﻿using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.PlayerHelpers;
 using HamstarHelpers.RecipeHelpers;
 using HamstarHelpers.TmlHelpers;
 using Terraria;
@@ -82,7 +83,7 @@ namespace Stamina.Items.Accessories {
 				this.AddIngredient( this.mod.ItemType<LegSpringItem>(), 1 );
 			}
 			this.AddIngredient( ItemID.LihzahrdPowerCell, 2 );
-			this.AddRecipeGroup( RecipeHelpers.ConveyorBelts.Key, 50 );
+			this.AddRecipeGroup( "HamstarHelpers:ConveyorBeltPair", 50 );
 
 			this.SetResult( myitem );
 		}
