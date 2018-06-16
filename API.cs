@@ -18,7 +18,7 @@ namespace Stamina {
 
 		public static void SaveModSettingsChanges() {
 			if( StaminaMod.Instance == null ) { return; }
-			StaminaMod.Instance.JsonConfig.SaveFile();
+			StaminaMod.Instance.ConfigJson.SaveFile();
 		}
 
 		////////////////

@@ -59,8 +59,8 @@ namespace Stamina {
 
 			if( player.whoAmI == this.player.whoAmI ) { // Current player
 				if( Main.netMode != 2 ) {   // Not server
-					if( !mymod.JsonConfig.LoadFile() ) {
-						mymod.JsonConfig.SaveFile();
+					if( !mymod.ConfigJson.LoadFile() ) {
+						mymod.ConfigJson.SaveFile();
 					}
 				}
 
@@ -86,8 +86,8 @@ namespace Stamina {
 			this.Initialize();
 			var mymod = (StaminaMod)this.mod;
 
-			if( !mymod.JsonConfig.LoadFile() ) {
-				mymod.JsonConfig.SaveFile();
+			if( !mymod.ConfigJson.LoadFile() ) {
+				mymod.ConfigJson.SaveFile();
 			}
 
 			int max = mymod.Config.InitialStamina;

@@ -73,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaminaItem.cs" />
     <Compile Include="Logic\StaminaLogic.cs" />
+    <Compile Include="StaminaMod_Draw.cs" />
     <Compile Include="StaminaMod.cs" />
     <Compile Include="NetProtocol\NetProtocolTypes.cs" />
     <Compile Include="StaminaPlayer.cs" />
