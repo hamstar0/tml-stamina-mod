@@ -255,7 +255,7 @@ namespace Stamina.Logic {
 						RageHeadbandItem.ApplyDamage( mymod, player, drain_surplus );
 						this.Stamina = 1;
 					} else {
-						this.AddFatigue( player, mymod.Config.FatigueAmount );
+						this.AddFatigue( player, mymod.Config.FatigueAmountFromExhaustion );
 					}
 				}
 			}

@@ -84,28 +84,6 @@ namespace Stamina {
 		public bool ShowMainStaminaBar = true;
 		public bool ShowMiniStaminaBar = true;
 
-		
-		////////////////
-
-		public string _OLD_SETTINGS_BELOW_ = "";
-		
-		public float FatigueAmount = 12f;
-		public float FatigueExerciseThresholdPercentOfMaxStamina = 0.32f;
-		public bool CraftableMuscleBelts = true;
-
-		
-		////////////////
-
-		public readonly static int _1_4_11_ExerciseGrowthAmount = 2;
-		public readonly static int _1_5_0_ExhaustionDuration = 180;
-		public readonly static float _1_5_0_EnergizedRate = 0.25f;
-		public readonly static int _1_5_0_BottledWaterFatigueHeal = 50;
-		public readonly static float _2_0_1_EnergizedRate = 0.1f;
-		public readonly static float _2_0_2_MuscleBeltStaminaDrainScale = 0.7f;
-		public readonly static float _2_0_2_JointBracerStaminaDrainScale = 0.7f;
-		public readonly static float _2_0_2_LegSpringsStaminaDrainScale = 0.7f;
-
-
 
 
 		////////////////
@@ -129,72 +107,6 @@ namespace Stamina {
 
 			if( vers_since >= StaminaConfigData.ConfigVersion ) {
 				return false;
-			}
-
-			if( vers_since < new Version( 1, 3, 3 ) ) {
-				this.GrappleRate = new_config.GrappleRate;
-				this.JumpHoldRate = new_config.JumpHoldRate;
-				this.DashRate = new_config.DashRate;
-				this.ExhaustionRecover = new_config.ExhaustionRecover;
-			}
-			if( vers_since < new Version( 1, 3, 4 ) ) {
-				this.StarStaminaHeal = new_config.StarStaminaHeal;
-			}
-			if( vers_since < new Version( 1, 4, 1 ) ) {
-				this.FatigueAmount = new_config.FatigueAmount;
-				this.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
-			}
-			if( vers_since < new Version( 1, 4, 3 ) ) {
-				this.FatigueAsMaxStaminaPercentAmountNeeededForExercise = new_config.FatigueAsMaxStaminaPercentAmountNeeededForExercise;
-			}
-			if( vers_since < new Version( 1, 4, 5 ) ) {
-				this.JumpBegin = new_config.JumpBegin;
-			}
-			if( vers_since < new Version( 1, 4, 6 ) ) {
-				this.MagicItemUseRate = new_config.MagicItemUseRate;
-			}
-			if( vers_since < new Version( 1, 4, 8 ) ) {
-				this.SprintRate = new_config.SprintRate;
-			}
-			if( vers_since < new Version( 1, 4, 9 ) ) {
-				this.ItemUseRate = new_config.ItemUseRate;
-			}
-			if( vers_since < new Version( 1, 4, 12 ) ) {
-				if( this.ExerciseGrowthAmount == StaminaConfigData._1_4_11_ExerciseGrowthAmount ) {
-					this.ExerciseGrowthAmount = new_config.ExerciseGrowthAmount;
-				}
-			}
-			if( vers_since < new Version( 2, 0, 0 ) ) {
-				if( this.ExhaustionDuration == StaminaConfigData._1_5_0_ExhaustionDuration ) {
-					this.ExhaustionDuration = new_config.ExhaustionDuration;
-				}
-				if( this.EnergizedRate == StaminaConfigData._1_5_0_EnergizedRate ) {
-					this.EnergizedRate = new_config.EnergizedRate;
-				}
-				if( this.BottledWaterFatigueHeal == StaminaConfigData._1_5_0_BottledWaterFatigueHeal ) {
-					this.BottledWaterFatigueHeal = new_config.BottledWaterFatigueHeal;
-				}
-			}
-			if( vers_since < new Version( 2, 0, 2 ) ) {
-				if( this.EnergizedRate == StaminaConfigData._2_0_1_EnergizedRate ) {
-					this.EnergizedRate = new_config.EnergizedRate;
-				}
-			}
-			if( vers_since < new Version( 2, 0, 3 ) ) {
-				foreach( var kv in new_config.CustomItemUseRate ) {
-					if( !this.CustomItemUseRate.ContainsKey(kv.Key) ) {
-						this.CustomItemUseRate[ kv.Key ] = kv.Value;
-					}
-				}
-				if( this.MuscleBeltStaminaDrainScale == StaminaConfigData._2_0_2_MuscleBeltStaminaDrainScale ) {
-					this.MuscleBeltStaminaDrainScale = new_config.MuscleBeltStaminaDrainScale;
-				}
-				if( this.JointBracerStaminaDrainScale == StaminaConfigData._2_0_2_JointBracerStaminaDrainScale ) {
-					this.JointBracerStaminaDrainScale = new_config.JointBracerStaminaDrainScale;
-				}
-				if( this.LegSpringsStaminaDrainScale == StaminaConfigData._2_0_2_LegSpringsStaminaDrainScale ) {
-					this.LegSpringsStaminaDrainScale = new_config.LegSpringsStaminaDrainScale;
-				}
 			}
 
 			this.VersionSinceUpdate = StaminaConfigData.ConfigVersion.ToString();

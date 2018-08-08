@@ -1,6 +1,4 @@
-﻿using HamstarHelpers.ItemHelpers;
-using HamstarHelpers.RecipeHelpers;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 

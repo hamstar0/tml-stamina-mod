@@ -1,7 +1,5 @@
-﻿using HamstarHelpers.ItemHelpers;
-using HamstarHelpers.PlayerHelpers;
-using HamstarHelpers.RecipeHelpers;
-using HamstarHelpers.TmlHelpers;
+﻿using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

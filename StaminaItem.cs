@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.Helpers.ItemHelpers;
 using Stamina.Buffs;
 using System.Collections.Generic;
 using Terraria;

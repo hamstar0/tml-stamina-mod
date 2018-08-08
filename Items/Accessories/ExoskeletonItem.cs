@@ -1,7 +1,5 @@
-﻿using HamstarHelpers.ItemHelpers;
-using HamstarHelpers.PlayerHelpers;
-using HamstarHelpers.RecipeHelpers;
-using HamstarHelpers.TmlHelpers;
+﻿using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -73,7 +71,7 @@ namespace Stamina.Items.Accessories {
 
 			this.AddTile( TileID.TinkerersWorkbench );
 
-			if( mymod.Config.CraftableMuscleBelts ) {
+			if( mymod.Config.CraftableChampionBelts ) {
 				this.AddIngredient( this.mod.ItemType<ChampionBeltItem>(), 1 );
 			}
 			if( mymod.Config.CraftableJointBracers ) {
@@ -93,7 +91,7 @@ namespace Stamina.Items.Accessories {
 			var data = mymod.Config;
 			
 			return data.Enabled && data.CraftableExoskeletons
-				&& (data.CraftableMuscleBelts || data.CraftableJointBracers || data.CraftableLegSprings );
+				&& (data.CraftableChampionBelts || data.CraftableJointBracers || data.CraftableLegSprings );
 		}
 	}
 }

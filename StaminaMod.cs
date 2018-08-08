@@ -4,30 +4,12 @@ using Terraria.ModLoader;
 using Stamina.NetProtocol;
 using System;
 using Terraria.ID;
-using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.Components.Config;
 
 
 namespace Stamina {
 	partial class StaminaMod : Mod {
 		public static StaminaMod Instance { get; private set; }
-
-		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-stamina-mod"; } }
-
-		public static string ConfigFileRelativePath {
-			get { return JsonConfig.ConfigSubfolder + Path.DirectorySeparatorChar + StaminaConfigData.ConfigFileName; }
-		}
-		public static void ReloadConfigFromFile() {
-			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reload configs outside of single player." );
-			}
-			if( StaminaMod.Instance != null ) {
-				if( !StaminaMod.Instance.ConfigJson.LoadFile() ) {
-					StaminaMod.Instance.ConfigJson.SaveFile();
-				}
-			}
-		}
 
 
 		////////////////
@@ -58,14 +40,6 @@ namespace Stamina {
 		}
 
 		private void LoadConfigs() {
-			var old_config = new JsonConfig<StaminaConfigData>( "Stamina 1.2.0.json", "", new StaminaConfigData() );
-			// Update old config to new location
-			if( old_config.LoadFile() ) {
-				old_config.DestroyFile();
-				old_config.SetFilePath( this.ConfigJson.FileName, JsonConfig.ConfigSubfolder );
-				this.ConfigJson = old_config;
-			}
-
 			if( !this.ConfigJson.LoadFile() ) {
 				this.ConfigJson.SaveFile();
 			}

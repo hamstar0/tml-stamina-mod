@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using HamstarHelpers.Components.Errors;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -39,7 +40,13 @@ namespace Stamina.NetProtocol {
 		////////////////////////////////
 
 		private static void ReceiveSettingsOnClient( StaminaMod mymod, BinaryReader reader ) {
-			mymod.ConfigJson.DeserializeMe( reader.ReadString() );
+			bool success;
+
+			mymod.ConfigJson.DeserializeMe( reader.ReadString(), out success );
+
+			if( success ) {
+				throw new HamstarException( "Stamina.NetProtocols.ClientPacketHandlers.ReceiveSettingsOnClient - Could not deserialize settings." );
+			}
 
 			var modplayer = Main.LocalPlayer.GetModPlayer<StaminaPlayer>();
 			modplayer.OnReceiveServerSettings();

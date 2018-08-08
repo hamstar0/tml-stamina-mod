@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using System;
 using Terraria.UI;
 using System.Collections.Generic;
-using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.Helpers.DebugHelpers;
 
 
 namespace Stamina {
@@ -99,7 +99,7 @@ namespace Stamina {
 
 				//string msg = kv.Key.ToString() + ":  " + kv.Value;
 				//sb.DrawString( Main.fontMouseText, msg, new Vector2( 8, (Main.screenHeight - 32) - (i * 24) ), Color.White );
-				DebugHelpers.SetDisplay( kv.Key.ToString(), "" + kv.Value, 30 );
+				DebugHelpers.Print( kv.Key.ToString(), "" + kv.Value, 30 );
 
 				dict[ kv.Key ] = 0f;
 				i++;
