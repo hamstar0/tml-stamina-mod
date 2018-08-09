@@ -82,6 +82,9 @@
     <Compile Include="StaminaMod_Draw.cs" />
     <Compile Include="StaminaMod.cs" />
     <Compile Include="NetProtocol\NetProtocolTypes.cs" />
+    <Compile Include="StaminaPlayer_Draw.cs" />
+    <Compile Include="StaminaPlayer_Interactions.cs" />
+    <Compile Include="StaminaPlayer_Update.cs" />
     <Compile Include="StaminaPlayer.cs" />
     <Compile Include="StaminaProjectile.cs" />
     <Compile Include="StaminaUI.cs" />
