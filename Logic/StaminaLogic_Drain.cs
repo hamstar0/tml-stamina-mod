@@ -1,7 +1,6 @@
 ﻿using Stamina.Items.Accessories;
 using System;
 using Terraria;
-using Terraria.DataStructures;
 
 
 namespace Stamina.Logic {

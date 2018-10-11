@@ -57,7 +57,7 @@ namespace Stamina.Logic {
 			this.ItemUseDrainDuration = 0;
 			this.IsExercising = false;
 
-			if( !this.HasStaminaSet ) {
+			if( !has_stamina ) {
 				this.MaxStamina = mymod.Config.InitialStamina;
 				this.MaxStamina2 = mymod.Config.InitialStamina;
 				this.HasStaminaSet = true;

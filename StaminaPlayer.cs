@@ -32,7 +32,7 @@ namespace Stamina {
 		public override bool CloneNewInstances { get { return false; } }
 
 		public override void Initialize() {
-			this.Logic = null;
+			this.Logic = new StaminaLogic( (StaminaMod)this.mod, -1, false );
 			this.HasEnteredWorld = false;
 		}
 

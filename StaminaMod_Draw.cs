@@ -54,6 +54,10 @@ namespace Stamina {
 			if( sb == null ) { return true; }
 
 			try {
+				if( modplayer.Logic == null ) {
+					throw new Exception("StaminaMod.StaminaBarPlayerDraw - Player logic failed to load.");
+				}
+
 				float alpha = modplayer.Logic.DrainingFX ? 1f : 0.65f;
 				int stamina = (int)modplayer.Logic.Stamina;
 				int max_stamina = modplayer.Logic.MaxStamina2;
