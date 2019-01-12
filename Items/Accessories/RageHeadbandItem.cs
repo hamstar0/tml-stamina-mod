@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Helpers.TmlHelpers;
+using HamstarHelpers.Services.Players;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -33,7 +34,7 @@ namespace Stamina.Items.Accessories {
 			this.Tooltip.SetDefault( "Trades exhaustion for health loss"
 				+'\n'+"'Feel the burn!'" );
 
-			TmlPlayerHelpers.AddArmorEquipAction( "Stamina:RageHeadbandEquip", delegate ( Player player, int slot, Item myitem ) {
+			PlayerState.AddArmorEquipAction( "Stamina:RageHeadbandEquip", delegate ( Player player, int slot, Item myitem ) {
 				if( myitem.type != this.mod.ItemType<RageHeadbandItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
@@ -41,7 +42,7 @@ namespace Stamina.Items.Accessories {
 				modplayer.IsWearingRageBandana = true;
 			} );
 
-			TmlPlayerHelpers.AddArmorUnequipAction( "Stamina:RageHeadbandUnequip", delegate ( Player player, int slot, int item_type ) {
+			PlayerState.AddArmorUnequipAction( "Stamina:RageHeadbandUnequip", delegate ( Player player, int slot, int item_type ) {
 				if( item_type != this.mod.ItemType<RageHeadbandItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 

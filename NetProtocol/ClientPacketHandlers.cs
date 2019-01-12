@@ -44,7 +44,7 @@ namespace Stamina.NetProtocol {
 
 			mymod.ConfigJson.DeserializeMe( reader.ReadString(), out success );
 
-			if( success ) {
+			if( !success ) {
 				throw new HamstarException( "Stamina.NetProtocols.ClientPacketHandlers.ReceiveSettingsOnClient - Could not deserialize settings." );
 			}
 

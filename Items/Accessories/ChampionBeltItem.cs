@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Helpers.TmlHelpers;
+using HamstarHelpers.Services.Players;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,7 +20,7 @@ namespace Stamina.Items.Accessories {
 			this.Tooltip.SetDefault( "Attacks draw less stamina"
 				+ '\n' + "'We are the champions!'" );
 
-			TmlPlayerHelpers.AddArmorEquipAction( "Stamina:ChampionBeltEquip", delegate ( Player player, int slot, Item myitem ) {
+			PlayerState.AddArmorEquipAction( "Stamina:ChampionBeltEquip", delegate ( Player player, int slot, Item myitem ) {
 				if( myitem.type != this.mod.ItemType<ChampionBeltItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
@@ -27,7 +28,7 @@ namespace Stamina.Items.Accessories {
 				modplayer.IsWearingMuscleBelt = true;
 			} );
 
-			TmlPlayerHelpers.AddArmorUnequipAction( "Stamina:ChampionBeltUnequip", delegate ( Player player, int slot, int item_type ) {
+			PlayerState.AddArmorUnequipAction( "Stamina:ChampionBeltUnequip", delegate ( Player player, int slot, int item_type ) {
 				if( item_type != this.mod.ItemType<ChampionBeltItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 

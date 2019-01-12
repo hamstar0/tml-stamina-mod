@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Helpers.TmlHelpers;
+using HamstarHelpers.Services.Players;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,7 +21,7 @@ namespace Stamina.Items.Accessories {
 				+ '\n' + "Negates fall damage and knockback"
 				+ '\n' + "'Oil Can not included.'" );
 
-			TmlPlayerHelpers.AddArmorEquipAction( "Stamina:ExoskeletonEquip", delegate ( Player player, int slot, Item myitem ) {
+			PlayerState.AddArmorEquipAction( "Stamina:ExoskeletonEquip", delegate ( Player player, int slot, Item myitem ) {
 				if( myitem.type != this.mod.ItemType<ExoskeletonItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
@@ -28,7 +29,7 @@ namespace Stamina.Items.Accessories {
 				modplayer.IsWearingExoskeleton = true;
 			} );
 
-			TmlPlayerHelpers.AddArmorUnequipAction( "Stamina:ExoskeletonUnequip", delegate ( Player player, int slot, int item_type ) {
+			PlayerState.AddArmorUnequipAction( "Stamina:ExoskeletonUnequip", delegate ( Player player, int slot, int item_type ) {
 				if( item_type != this.mod.ItemType<ExoskeletonItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
