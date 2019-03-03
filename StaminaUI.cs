@@ -149,7 +149,7 @@ namespace Stamina {
 					// End
 					if( staminaBarLength > width - 4 ) {
 						var pos = new Vector2( offsetX + width - 4, offsetY );
-						var rect = new Rectangle( bar.Width - 4, 0, 4 /*wid_x*/, bar.Height );
+						var rect = new Rectangle( bar.Width - 4, 0, 4 /*widX*/, bar.Height );
 						sb.Draw( bar, pos, new Rectangle?( rect ), color, 0f, new Vector2(), scale, SpriteEffects.None, depth );
 					}
 				}

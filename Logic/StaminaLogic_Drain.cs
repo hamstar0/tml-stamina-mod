@@ -1,4 +1,5 @@
-﻿using Stamina.Items.Accessories;
+﻿using HamstarHelpers.Components.Errors;
+using Stamina.Items.Accessories;
 using System;
 using Terraria;
 
@@ -65,7 +66,7 @@ namespace Stamina.Logic {
 				this.DrainStaminaViaGravitationPotion( player );
 				break;
 			default:
-				throw new Exception("No such drain type.");
+				throw new HamstarException("No such drain type.");
 			}
 		}
 

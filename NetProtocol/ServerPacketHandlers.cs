@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -13,7 +14,7 @@ namespace Stamina.NetProtocol {
 				ServerPacketHandlers.ReceiveSettingsRequestOnServer( reader, playerWho );
 				break;
 			default:
-				ErrorLogger.Log( "Invalid packet protocol: " + protocol );
+				LogHelpers.Warn( "Invalid packet protocol: " + protocol );
 				break;
 			}
 		}

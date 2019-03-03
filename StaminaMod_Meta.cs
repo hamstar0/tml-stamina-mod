@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using System;
 using HamstarHelpers.Components.Config;
+using HamstarHelpers.Components.Errors;
 
 
 namespace Stamina {
@@ -15,7 +16,7 @@ namespace Stamina {
 		}
 		public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reload configs outside of single player." );
+				throw new HamstarException( "Cannot reload configs outside of single player." );
 			}
 			if( StaminaMod.Instance != null ) {
 				if( !StaminaMod.Instance.ConfigJson.LoadFile() ) {
@@ -26,7 +27,7 @@ namespace Stamina {
 
 		public static void ResetConfigFromDefaults() {
 			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reset to default configs outside of single player." );
+				throw new HamstarException( "Cannot reset to default configs outside of single player." );
 			}
 
 			var newConfig = new StaminaConfigData();
