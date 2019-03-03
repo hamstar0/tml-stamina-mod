@@ -5,6 +5,9 @@ using Stamina.NetProtocol;
 using System;
 using Terraria.ID;
 using HamstarHelpers.Components.Config;
+using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Helpers.TmlHelpers;
+using HamstarHelpers.Helpers.TmlHelpers.ModHelpers;
 
 
 namespace Stamina {
@@ -12,22 +15,18 @@ namespace Stamina {
 		public static StaminaMod Instance { get; private set; }
 
 
+
 		////////////////
 
 		internal JsonConfig<StaminaConfigData> ConfigJson { get; private set; }
-		public StaminaConfigData Config { get { return this.ConfigJson.Data; } }
+		public StaminaConfigData Config => this.ConfigJson.Data;
+
 
 
 		////////////////
 
-		public StaminaMod() : base() {
+		public StaminaMod() {
 			StaminaMod.Instance = this;
-
-			this.Properties = new ModProperties() {
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true
-			};
 			
 			this.ConfigJson = new JsonConfig<StaminaConfigData>( StaminaConfigData.ConfigFileName,
 				JsonConfig.ConfigSubfolder, new StaminaConfigData() );
@@ -40,12 +39,15 @@ namespace Stamina {
 		}
 
 		private void LoadConfigs() {
+			string depErr = TmlHelpers.ReportBadDependencyMods( this );
+			if( depErr != null ) { throw new HamstarException( depErr ); }
+
 			if( !this.ConfigJson.LoadFile() ) {
 				this.ConfigJson.SaveFile();
 			}
 
 			if( this.Config.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Stamina updated to " + StaminaConfigData.ConfigVersion.ToString() );
+				ErrorLogger.Log( "Stamina updated to " + this.Version.ToString() );
 				this.ConfigJson.SaveFile();
 			}
 		}
@@ -58,25 +60,17 @@ namespace Stamina {
 		////////////////
 
 		public override object Call( params object[] args ) {
-			if( args.Length == 0 ) { throw new Exception( "Undefined call type." ); }
-
-			string call_type = args[0] as string;
-			if( args == null ) { throw new Exception( "Invalid call type." ); }
-
-			var new_args = new object[args.Length - 1];
-			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
-
-			return StaminaAPI.Call( call_type, new_args );
+			return ModBoilerplateHelpers.HandleModCall( typeof( StaminaAPI ), args );
 		}
 
 
 		////////////////
 		
-		public override void HandlePacket( BinaryReader reader, int player_who ) {
+		public override void HandlePacket( BinaryReader reader, int playerWho ) {
 			if( Main.netMode == 1 ) {   // Client
-				ClientPacketHandlers.HandlePacket( this, reader );
+				ClientPacketHandlers.HandlePacket( reader );
 			} else if( Main.netMode == 2 ) {    // Server
-				ServerPacketHandlers.HandlePacket( this, reader, player_who );
+				ServerPacketHandlers.HandlePacket( reader, playerWho );
 			}
 		}
 
@@ -84,13 +78,13 @@ namespace Stamina {
 		////////////////
 
 		public override void AddRecipeGroups() {
-			var ninja_item = new RecipeGroup( delegate () { return Lang.misc[37]+" martial arts master item"; },
+			var ninjaItem = new RecipeGroup( delegate () { return Lang.misc[37]+" martial arts master item"; },
 				ItemID.Tabi, ItemID.BlackBelt );
-			var greater_hook = new RecipeGroup( delegate () { return Lang.misc[37] + " greater biome hook"; },
+			var greaterHook = new RecipeGroup( delegate () { return Lang.misc[37] + " greater biome hook"; },
 				ItemID.IlluminantHook, ItemID.WormHook, ItemID.TendonHook, ItemID.ThornHook );
 
-			RecipeGroup.RegisterGroup( "Stamina:MartialArtsMasterItems", ninja_item );
-			RecipeGroup.RegisterGroup( "Stamina:GreaterBiomeHook", greater_hook );
+			RecipeGroup.RegisterGroup( "Stamina:MartialArtsMasterItems", ninjaItem );
+			RecipeGroup.RegisterGroup( "Stamina:GreaterBiomeHook", greaterHook );
 		}
 	}
 }

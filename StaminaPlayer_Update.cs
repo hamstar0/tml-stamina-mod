@@ -8,13 +8,13 @@ namespace Stamina {
 			if( !mymod.Config.Enabled ) { return; }
 			if( this.Logic == null ) { return; }
 			
-			this.Logic.UpdateMaxStamina( mymod, this.player );
+			this.Logic.UpdateMaxStamina( this.player );
 			
 			if( !this.player.dead ) {
-				this.Logic.PassiveFatigueRecover( mymod, this.player );
-				this.Logic.PassiveStaminaRegen( mymod, this.player );
-				this.Logic.GatherPassiveStaminaDrains( mymod, this.player );
-				this.Logic.CommitStaminaDrains( mymod, this.player );
+				this.Logic.PassiveFatigueRecover( this.player );
+				this.Logic.PassiveStaminaRegen( this.player );
+				this.Logic.GatherPassiveStaminaDrains( this.player );
+				this.Logic.CommitStaminaDrains( this.player );
 
 				if( this.Logic.Stamina == 0 ) {
 					this.ApplyDebuffs();
@@ -32,7 +32,7 @@ namespace Stamina {
 			if( this.Logic == null ) { return; }
 
 			if( !this.player.dead ) {
-				this.Logic.GatherActivityStaminaDrains( mymod, this.player );
+				this.Logic.GatherActivityStaminaDrains( this.player );
 
 				if( this.WillApplyExhaustion ) {
 					this.ApplyExhaustionEffect();

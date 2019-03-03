@@ -12,14 +12,15 @@ namespace Stamina.Buffs {
 		}
 
 		public override void Update( Player player, ref int buffIndex ) {
-			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
+			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>();
 
 			modplayer.WillApplyExhaustion = true;
-			ExhaustionBuff.ApplyStatusExhaustion( (StaminaMod)this.mod, player );
+			ExhaustionBuff.ApplyStatusExhaustion( player );
 		}
 
 
-		public static void ApplyStatusExhaustion( StaminaMod mymod, Player player ) {
+		public static void ApplyStatusExhaustion( Player player ) {
+			var mymod = StaminaMod.Instance;
 			if( mymod.Config.ExhaustionLowersDefense ) {
 				player.statDefense -= 5;
 			}
@@ -28,7 +29,9 @@ namespace Stamina.Buffs {
 			}
 		}
 
-		public static void ApplyMovementExhaustion( StaminaMod mymod, Player player ) {
+		public static void ApplyMovementExhaustion( Player player ) {
+			var mymod = StaminaMod.Instance;
+
 			if( mymod.Config.ExhaustionSlowsMovement ) {
 				player.maxRunSpeed *= 0.65f;
 				player.accRunSpeed = player.maxRunSpeed;

@@ -6,14 +6,17 @@ using Terraria.ID;
 
 namespace Stamina.Logic {
 	partial class StaminaLogic {
-		public int GetStaminaLossAmountNeededForExercise( StaminaMod mymod ) {
+		public int GetStaminaLossAmountNeededForExercise() {
+			var mymod = StaminaMod.Instance;
 			int threshold = (int)((float)this.MaxStamina2 * mymod.Config.FatigueAsMaxStaminaPercentAmountNeeededForExercise);
 			return threshold - mymod.Config.FatigueForExerciseAmountRemoved;
 		}
 
 		////////////////
 
-		public void PassiveFatigueRecover( StaminaMod mymod, Player player ) {
+		public void PassiveFatigueRecover( Player player ) {
+			var mymod = StaminaMod.Instance;
+
 			if( this.Fatigue > 0 ) {
 				if( (this.MaxStamina2 - this.Stamina) <= this.Fatigue ) {
 					this.FatigueRecoverTimer++;
@@ -25,27 +28,29 @@ namespace Stamina.Logic {
 					}
 				}
 
-				if( this.Fatigue >= this.GetStaminaLossAmountNeededForExercise( mymod ) ) {
+				if( this.Fatigue >= this.GetStaminaLossAmountNeededForExercise() ) {
 					this.IsExercising = true;
 				}
 			} else {
 				if( this.IsExercising ) {
 					this.IsExercising = false;
-					this.ApplyExercise( mymod, player );
+					this.ApplyExercise( player );
 				}
 			}
 		}
 
 		////////////////
 
-		public bool ApplyExercise( StaminaMod mymod, Player player ) {
+		public bool ApplyExercise( Player player ) {
+			var mymod = StaminaMod.Instance;
+
 			if( this.MaxStamina >= mymod.Config.MaxStaminaAmount ) { return false; }
 
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			
 			this.MaxStamina += mymod.Config.ExerciseGrowthAmount;
 
-			if( modplayer.IsUsingSupplements ) {
+			if( myplayer.IsUsingSupplements ) {
 				this.MaxStamina += mymod.Config.ExerciseSupplementAddedGrowthAmount;
 			}
 

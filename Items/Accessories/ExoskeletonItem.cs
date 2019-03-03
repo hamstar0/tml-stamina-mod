@@ -13,6 +13,7 @@ namespace Stamina.Items.Accessories {
 		public static int Height = 30;
 
 		
+
 		////////////////
 		
 		public override void SetStaticDefaults() {
@@ -25,16 +26,16 @@ namespace Stamina.Items.Accessories {
 				if( myitem.type != this.mod.ItemType<ExoskeletonItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsWearingExoskeleton = true;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsWearingExoskeleton = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:ExoskeletonUnequip", delegate ( Player player, int slot, int item_type ) {
-				if( item_type != this.mod.ItemType<ExoskeletonItem>() ) { return; }
+			PlayerState.AddArmorUnequipAction( "Stamina:ExoskeletonUnequip", delegate ( Player player, int slot, int itemType ) {
+				if( itemType != this.mod.ItemType<ExoskeletonItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsWearingExoskeleton = false;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsWearingExoskeleton = false;
 			} );
 		}
 

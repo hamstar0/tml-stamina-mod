@@ -40,8 +40,8 @@ namespace Stamina.Items.Consumables {
 
 		public override bool ConsumeItem( Player player ) {
 			var mymod = (StaminaMod)this.mod;
-			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>( this.mod );
-			info.Logic.AddStamina( (StaminaMod)this.mod, player, 100 );
+			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>();
+			info.Logic.AddStamina( player, 100 );
 
 			player.AddBuff( this.mod.BuffType("EnergizedBuff"), mymod.Config.EnergyPotionDuration );
 
@@ -53,6 +53,7 @@ namespace Stamina.Items.Consumables {
 			recipe.AddRecipe();
 		}
 	}
+
 
 
 

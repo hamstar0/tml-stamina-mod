@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stamina {
 	partial class StaminaPlayer : ModPlayer {
-		public override void DrawEffects( PlayerDrawInfo draw_info, ref float r, ref float g, ref float b, ref float a, ref bool full_bright ) {
+		public override void DrawEffects( PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright ) {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Enabled ) { return; }
 			if( this.Logic == null ) { return; }

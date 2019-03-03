@@ -38,16 +38,21 @@ namespace Stamina.Logic {
 		public int ItemUseDrainDuration { get; private set; }
 		public bool IsExercising { get; private set; }
 
+		////
+
 		internal IList<StaminaChangeHook> StaminaChangeHooks = new List<StaminaChangeHook>();
 		internal IList<FatigueChangeHook> FatigueChangeHooks = new List<FatigueChangeHook>();
 		
 
+
 		////////////////
 
-		public StaminaLogic( StaminaMod mymod, int max_stamina, bool has_stamina ) {
-			this.MaxStamina = max_stamina;
-			this.MaxStamina2 = max_stamina;
-			this.HasStaminaSet = has_stamina;
+		public StaminaLogic( int maxStamina, bool hasStamina ) {
+			var mymod = StaminaMod.Instance;
+
+			this.MaxStamina = maxStamina;
+			this.MaxStamina2 = maxStamina;
+			this.HasStaminaSet = hasStamina;
 			this.Fatigue = 0;
 			this.FatigueRecoverTimer = 0;
 			this.CurrentDrain = 0;
@@ -57,7 +62,7 @@ namespace Stamina.Logic {
 			this.ItemUseDrainDuration = 0;
 			this.IsExercising = false;
 
-			if( !has_stamina ) {
+			if( !hasStamina ) {
 				this.MaxStamina = mymod.Config.InitialStamina;
 				this.MaxStamina2 = mymod.Config.InitialStamina;
 				this.HasStaminaSet = true;
@@ -69,7 +74,9 @@ namespace Stamina.Logic {
 
 		////////////////
 
-		public void UpdateMaxStamina( StaminaMod mymod, Player player ) {
+		public void UpdateMaxStamina( Player player ) {
+			var mymod = StaminaMod.Instance;
+
 			this.MaxStamina2 = this.MaxStamina;
 
 			if( player.FindBuffIndex( mymod.BuffType<AthleteBuff>() ) != -1 ) {
@@ -86,18 +93,19 @@ namespace Stamina.Logic {
 
 		////////////////
 
-		public void PassiveStaminaRegen( StaminaMod mymod, Player player ) {
+		public void PassiveStaminaRegen( Player player ) {
 			//if( this.Player.suffocating || this.Player.breath <= 0 ) { return; }
+			var mymod = StaminaMod.Instance;
 
 			if( this.Stamina > 0 ) {
 				this.TiredTimer = 0d;
-				this.AddStamina( mymod, player, mymod.Config.RechargeRate );
+				this.AddStamina( player, mymod.Config.RechargeRate );
 			} else {
 				if( this.TiredTimer >= mymod.Config.ExhaustionDuration ) {
 					this.TiredTimer = 0d;
 					this.Stamina = 0.0001f;
 
-					this.AddStamina( mymod, player, mymod.Config.ExhaustionRecover );
+					this.AddStamina( player, mymod.Config.ExhaustionRecover );
 				} else {
 					this.TiredTimer += 1d;
 				}
@@ -106,45 +114,48 @@ namespace Stamina.Logic {
 
 		////////////////
 
-		public void GatherPassiveStaminaDrains( StaminaMod mymod, Player player ) {
+		public void GatherPassiveStaminaDrains( Player player ) {
+			var mymod = StaminaMod.Instance;
+
 			// Is grappling?
 			if( player.grappling[0] >= 0 ) {
-				this.DrainStaminaViaGrappleHold( mymod, player );
+				this.DrainStaminaViaGrappleHold( player );
 			}
 
 			// Is item in use?
 			if( this.ItemUseDrainDuration > 0 ) {
 				this.ItemUseDrainDuration--;
 
-				Item curr_item = player.inventory[player.selectedItem];
-				if( curr_item == null || curr_item.IsAir ) { return; }
+				Item currItem = player.inventory[player.selectedItem];
+				if( currItem == null || currItem.IsAir ) { return; }
 
-				bool is_pewpew = curr_item.type == ItemID.SpaceGun || curr_item.type == ItemID.LaserRifle;
-				bool is_spaceman = player.armor[0].type == ItemID.MeteorHelmet &&
+				bool isPewpew = currItem.type == ItemID.SpaceGun || currItem.type == ItemID.LaserRifle;
+				bool isSpaceman = player.armor[0].type == ItemID.MeteorHelmet &&
 					player.armor[1].type == ItemID.MeteorSuit &&
 					player.armor[2].type == ItemID.MeteorLeggings;
 				
-				if( mymod.Config.CustomItemUseRate.ContainsKey( curr_item.Name ) ) {
-					float custom_rate = mymod.Config.CustomItemUseRate[curr_item.Name];
-					this.DrainStaminaViaCustomItemUse( mymod, player, curr_item.Name );
+				if( mymod.Config.CustomItemUseRate.ContainsKey( currItem.Name ) ) {
+					float customRate = mymod.Config.CustomItemUseRate[currItem.Name];
+					this.DrainStaminaViaCustomItemUse( player, currItem.Name );
 				} else {
-					if( curr_item.magic && !(is_pewpew && is_spaceman) ) {
-						this.DrainStaminaViaMagicItemUse( mymod, player );
+					if( currItem.magic && !(isPewpew && isSpaceman) ) {
+						this.DrainStaminaViaMagicItemUse( player );
 					} else {
-						this.DrainStaminaViaItemUse( mymod, player );
+						this.DrainStaminaViaItemUse( player );
 					}
 				}
 			}
 
 			// Is using grav pot?
 			if( player.FindBuffIndex( BuffID.Gravitation ) != -1 ) {
-				this.DrainStaminaViaGravitationPotion( mymod, player );
+				this.DrainStaminaViaGravitationPotion( player );
 			}
 //Main.NewText("GatherPassiveStaminaDrains " + StaminaMod.Config.Data.ItemUseRate + ", " + this.ItemUseDuration);
 		}
 
-		public void GatherActivityStaminaDrains( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>( mymod );
+		public void GatherActivityStaminaDrains( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 
 			// Is sprinting?
 			if( !player.mount.Active && player.velocity.Y == 0f && player.dashDelay >= 0 ) {
@@ -155,49 +166,51 @@ namespace Stamina.Logic {
 				if( (player.controlRight && velX > runMin && velX < acc) ||
 					(player.controlLeft && velX < -runMin && velX > -acc) ) {
 //Main.NewText("runMin:"+ runMin+ ",acc:"+ acc+ ",velX:"+ velX+",maxRunSpeed:"+ this.Player.maxRunSpeed);
-					this.DrainStaminaViaSprint( mymod, player );
+					this.DrainStaminaViaSprint( player );
 				}
 			}
 
 			// Is dashing?
-			if( !modplayer.IsDashing ) {
+			if( !myplayer.IsDashing ) {
 				if( player.dash != 0 && player.dashDelay == -1 ) {
-					this.DrainStaminaViaDash( mymod, player );
-					modplayer.IsDashing = true;
+					this.DrainStaminaViaDash( player );
+					myplayer.IsDashing = true;
 				}
 			} else if( player.dashDelay != -1 ) {
-				modplayer.IsDashing = false;
+				myplayer.IsDashing = false;
 			}
 
 			// Is (attempting) jump?
 			if( player.controlJump ) {
-				if( !modplayer.IsJumping && !PlayerMovementHelpers.IsFlying( player ) ) {
+				if( !myplayer.IsJumping && !PlayerMovementHelpers.IsFlying( player ) ) {
 					if( player.swimTime > 0 ) {
-						this.DrainStaminaViaSwimBegin( mymod, player );
+						this.DrainStaminaViaSwimBegin( player );
 					} else {
 						if( player.velocity.Y == 0 || player.sliding ||
 								player.jumpAgainBlizzard || player.jumpAgainCloud || player.jumpAgainFart || player.jumpAgainSandstorm ) {
-							this.DrainStaminaViaJumpBegin( mymod, player );
+							this.DrainStaminaViaJumpBegin( player );
 						}
 					}
-					modplayer.IsJumping = true;
+					myplayer.IsJumping = true;
 				}
 
 				if( player.jump > 0 || PlayerMovementHelpers.IsFlying( player ) ) {
 					if( player.swimTime > 0 ) {
-						this.DrainStaminaViaSwimHold( mymod, player );
+						this.DrainStaminaViaSwimHold( player );
 					} else {
-						this.DrainStaminaViaJumpHold( mymod, player );
+						this.DrainStaminaViaJumpHold( player );
 					}
 				}
-			} else if( modplayer.IsJumping ) {
-				modplayer.IsJumping = false;
+			} else if( myplayer.IsJumping ) {
+				myplayer.IsJumping = false;
 			}
 		}
 
 		////////////////
 
-		public void AddStamina( StaminaMod mymod, Player player, float amount ) {
+		public void AddStamina( Player player, float amount ) {
+			var mymod = StaminaMod.Instance;
+
 			amount *= mymod.Config.ScaleAllStaminaRates;
 
 			if( this.Stamina == 0 ) {

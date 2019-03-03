@@ -24,43 +24,45 @@ namespace Stamina.Logic {
 
 
 	partial class StaminaLogic {
-		public void DrainStamina( StaminaMod mymod, Player player, StaminaDrainTypes type ) {
+		public void DrainStamina( Player player, StaminaDrainTypes type ) {
+			var mymod = StaminaMod.Instance;
+
 			switch( type ) {
 			case StaminaDrainTypes.ItemUse:
-				this.DrainStaminaViaItemUse( mymod, player );
+				this.DrainStaminaViaItemUse( player );
 				break;
 			case StaminaDrainTypes.MagicItemUse:
-				this.DrainStaminaViaMagicItemUse( mymod, player );
+				this.DrainStaminaViaMagicItemUse( player );
 				break;
 			//case StaminaDrainTypes.CustomItemUse:
-			//	this.DrainStaminaViaCustomItemUse( mymod, player );
+			//	this.DrainStaminaViaCustomItemUse( player );
 			//	break;
 			case StaminaDrainTypes.GrappleBegin:
-				this.DrainStaminaViaGrappleBegin( mymod, player );
+				this.DrainStaminaViaGrappleBegin( player );
 				break;
 			case StaminaDrainTypes.GrappleHold:
-				this.DrainStaminaViaGrappleHold( mymod, player );
+				this.DrainStaminaViaGrappleHold( player );
 				break;
 			case StaminaDrainTypes.Sprint:
-				this.DrainStaminaViaSprint( mymod, player );
+				this.DrainStaminaViaSprint( player );
 				break;
 			case StaminaDrainTypes.Dash:
-				this.DrainStaminaViaDash( mymod, player );
+				this.DrainStaminaViaDash( player );
 				break;
 			case StaminaDrainTypes.SwimBegin:
-				this.DrainStaminaViaSwimBegin( mymod, player );
+				this.DrainStaminaViaSwimBegin( player );
 				break;
 			case StaminaDrainTypes.SwimHold:
-				this.DrainStaminaViaSwimHold( mymod, player );
+				this.DrainStaminaViaSwimHold( player );
 				break;
 			case StaminaDrainTypes.JumpBegin:
-				this.DrainStaminaViaJumpBegin( mymod, player );
+				this.DrainStaminaViaJumpBegin( player );
 				break;
 			case StaminaDrainTypes.JumpHold:
-				this.DrainStaminaViaJumpHold( mymod, player );
+				this.DrainStaminaViaJumpHold( player );
 				break;
 			case StaminaDrainTypes.GravitationPotion:
-				this.DrainStaminaViaGravitationPotion( mymod, player );
+				this.DrainStaminaViaGravitationPotion( player );
 				break;
 			default:
 				throw new Exception("No such drain type.");
@@ -69,73 +71,80 @@ namespace Stamina.Logic {
 
 		////////////////
 
-		public void DrainStaminaViaItemUse( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaItemUse( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.ItemUseRate;
 
-			if( modplayer.IsWearingMuscleBelt || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingMuscleBelt || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.MuscleBeltStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.ItemUse );
 		}
 
-		public void DrainStaminaViaMagicItemUse( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaMagicItemUse( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.MagicItemUseRate;
 
-			if( modplayer.IsWearingMuscleBelt || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingMuscleBelt || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.MuscleBeltStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.MagicItemUse );
 		}
 
-		public void DrainStaminaViaCustomItemUse( StaminaMod mymod, Player player, string item_name ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
-			float amt = mymod.Config.CustomItemUseRate[ item_name ];
+		public void DrainStaminaViaCustomItemUse( Player player, string itemName ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
+			float amt = mymod.Config.CustomItemUseRate[ itemName ];
 			
-			if( modplayer.IsWearingMuscleBelt || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingMuscleBelt || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.MuscleBeltStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.CustomItemUse );
 		}
 
-		public void DrainStaminaViaGrappleBegin( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaGrappleBegin( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.SingularExertionRate;
 
-			if( modplayer.IsWearingMuscleBelt || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingMuscleBelt || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.MuscleBeltStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.GrappleBegin );
 		}
 
-		public void DrainStaminaViaGrappleHold( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaGrappleHold( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.GrappleRate;
 
-			if( modplayer.IsWearingJointBracer || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingJointBracer || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.JointBracerStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.GrappleHold );
 		}
 
-		public void DrainStaminaViaSprint( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaSprint( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.SprintRate;
 
-			if( modplayer.IsWearingJointBracer || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingJointBracer || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.JointBracerStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.Sprint );
 		}
 
-		public void DrainStaminaViaDash( StaminaMod mymod, Player player ) {
+		public void DrainStaminaViaDash( Player player ) {
+			var mymod = StaminaMod.Instance;
 			var modplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.DashRate;
 
@@ -146,63 +155,68 @@ namespace Stamina.Logic {
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.Dash );
 		}
 
-		public void DrainStaminaViaSwimBegin( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaSwimBegin( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.SwimBegin;
 
-			if( modplayer.IsWearingLegSprings || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingLegSprings || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.LegSpringsStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.SwimBegin );
 		}
 
-		public void DrainStaminaViaSwimHold( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaSwimHold( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.SwimHoldRate;
 
-			if( modplayer.IsWearingLegSprings || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingLegSprings || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.LegSpringsStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.SwimHold );
 		}
 
-		public void DrainStaminaViaJumpBegin( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaJumpBegin( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.JumpBegin;
 
-			if( modplayer.IsWearingLegSprings || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingLegSprings || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.LegSpringsStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.JumpBegin );
 		}
 
-		public void DrainStaminaViaJumpHold( StaminaMod mymod, Player player ) {
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+		public void DrainStaminaViaJumpHold( Player player ) {
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float amt = mymod.Config.JumpHoldRate;
 
-			if( modplayer.IsWearingLegSprings || modplayer.IsWearingExoskeleton ) {
+			if( myplayer.IsWearingLegSprings || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.LegSpringsStaminaDrainScale;
 			}
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.JumpHold );
 		}
 
-		public void DrainStaminaViaGravitationPotion( StaminaMod mymod, Player player ) {
+		public void DrainStaminaViaGravitationPotion( Player player ) {
+			var mymod = StaminaMod.Instance;
 			float amt = mymod.Config.GravitationPotionDrainRate;
 
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.GravitationPotion );
 		}
 
-		public void DrainStaminaCustomAmount( StaminaMod mymod, Player player, float amount, string custom_type ) {
+		public void DrainStaminaCustomAmount( Player player, float amount, string customType ) {
 			this.DrainStaminaAmount( player, amount, StaminaDrainTypes.Custom );
 			
-			if( this.CurrentDrainTypes.ContainsKey( custom_type ) ) {
-				this.CurrentDrainTypes[custom_type] += amount;
+			if( this.CurrentDrainTypes.ContainsKey( customType ) ) {
+				this.CurrentDrainTypes[customType] += amount;
 			} else {
-				this.CurrentDrainTypes[custom_type] = amount;
+				this.CurrentDrainTypes[customType] = amount;
 			}
 		}
 
@@ -222,11 +236,11 @@ namespace Stamina.Logic {
 				this.CurrentDrain += amount;
 			}
 
-			string base_type = type.ToString();
-			if( this.CurrentDrainTypes.ContainsKey( base_type ) ) {
-				this.CurrentDrainTypes[base_type] += amount;
+			string baseType = type.ToString();
+			if( this.CurrentDrainTypes.ContainsKey( baseType ) ) {
+				this.CurrentDrainTypes[baseType] += amount;
 			} else {
-				this.CurrentDrainTypes[base_type] = amount;
+				this.CurrentDrainTypes[baseType] = amount;
 			}
 		}
 		
@@ -234,24 +248,25 @@ namespace Stamina.Logic {
 
 		////////////////
 
-		public void CommitStaminaDrains( StaminaMod mymod, Player player ) {
+		public void CommitStaminaDrains( Player player ) {
 			if( this.CurrentDrainCount == 0 ) {
 				this.DrainingFX = false;
 				return;
 			}
 
-			var modplayer = player.GetModPlayer<StaminaPlayer>();
+			var mymod = StaminaMod.Instance;
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			float drain = this.CurrentDrainMost + (this.CurrentDrain / ((float)this.CurrentDrainCount * 2f));
 
 			if( this.Stamina == 0 ) {
 				this.TiredTimer = (int)drain > this.TiredTimer ? 0d : this.TiredTimer - drain;
 			} else {
-				float drain_surplus = (drain * mymod.Config.ScaleAllStaminaRates) - this.Stamina;
+				float drainSurplus = (drain * mymod.Config.ScaleAllStaminaRates) - this.Stamina;
 				this.Stamina -= drain * mymod.Config.ScaleAllStaminaRates;
 
 				if( this.Stamina <= 0 ) {
-					if( modplayer.IsWearingRageBandana ) {
-						RageHeadbandItem.ApplyDamage( mymod, player, drain_surplus );
+					if( myplayer.IsWearingRageBandana ) {
+						RageHeadbandItem.ApplyDamage( mymod, player, drainSurplus );
 						this.Stamina = 1;
 					} else {
 						this.AddFatigue( player, mymod.Config.FatigueAmountFromExhaustion );

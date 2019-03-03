@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace Stamina {
 	public class StaminaConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 2, 0, 3 );
 		public readonly static string ConfigFileName = "Stamina Config.json";
 
 
@@ -15,8 +14,8 @@ namespace Stamina {
 
 		public bool Enabled = true;
 
-		public bool DEBUG_INFO = false;
-		public bool DEBUG_VIEW_DRAINERS = false;
+		public bool DebugModeInfo = false;
+		public bool DebugModeInfoDrainers = false;
 
 		public int InitialStamina = 100;
 		public int MaxStaminaAmount = 400;
@@ -98,18 +97,18 @@ namespace Stamina {
 		////////////////
 
 		public bool UpdateToLatestVersion() {
-			var new_config = new StaminaConfigData();
-			new_config.SetDefaults();
+			var newConfig = new StaminaConfigData();
+			newConfig.SetDefaults();
 
-			var vers_since = this.VersionSinceUpdate != "" ?
+			var versSince = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
 
-			if( vers_since >= StaminaConfigData.ConfigVersion ) {
+			if( versSince >= StaminaMod.Instance.Version ) {
 				return false;
 			}
 
-			this.VersionSinceUpdate = StaminaConfigData.ConfigVersion.ToString();
+			this.VersionSinceUpdate = StaminaMod.Instance.Version.ToString();
 
 			return true;
 		}

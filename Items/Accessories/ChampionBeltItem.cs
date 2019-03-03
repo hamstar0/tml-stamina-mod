@@ -12,6 +12,7 @@ namespace Stamina.Items.Accessories {
 		public static int Width = 22;
 		public static int Height = 18;
 
+
 		
 		////////////////
 		
@@ -24,16 +25,16 @@ namespace Stamina.Items.Accessories {
 				if( myitem.type != this.mod.ItemType<ChampionBeltItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsWearingMuscleBelt = true;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsWearingMuscleBelt = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:ChampionBeltUnequip", delegate ( Player player, int slot, int item_type ) {
-				if( item_type != this.mod.ItemType<ChampionBeltItem>() ) { return; }
+			PlayerState.AddArmorUnequipAction( "Stamina:ChampionBeltUnequip", delegate ( Player player, int slot, int itemType ) {
+				if( itemType != this.mod.ItemType<ChampionBeltItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsWearingMuscleBelt = false;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsWearingMuscleBelt = false;
 			} );
 		}
 

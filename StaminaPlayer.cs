@@ -1,4 +1,5 @@
-﻿using Stamina.Buffs;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using Stamina.Buffs;
 using Stamina.Logic;
 using Stamina.NetProtocol;
 using Terraria;
@@ -8,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stamina {
 	partial class StaminaPlayer : ModPlayer {
-		public StaminaLogic Logic { get; private set; }
+		public StaminaLogic Logic { get; internal set; }
 		public bool HasEnteredWorld { get; private set; }
 
 		public bool WillApplyExhaustion = false;
@@ -29,10 +30,14 @@ namespace Stamina {
 
 		////////////////
 
-		public override bool CloneNewInstances { get { return false; } }
+		public override bool CloneNewInstances => false;
 
+
+
+		////////////////
+		
 		public override void Initialize() {
-			this.Logic = new StaminaLogic( (StaminaMod)this.mod, -1, false );
+			this.Logic = new StaminaLogic( -1, false );
 			this.HasEnteredWorld = false;
 		}
 
@@ -63,12 +68,13 @@ namespace Stamina {
 			
 			if( Main.netMode != 2 ) {   // Not server
 				if( !mymod.ConfigJson.LoadFile() ) {
+					LogHelpers.Alert( "Configs reset." );
 					mymod.ConfigJson.SaveFile();
 				}
 			}
 
 			if( Main.netMode == 1 ) {   // Client
-				ClientPacketHandlers.SendSettingsRequestFromClient( this.mod, player );
+				ClientPacketHandlers.SendSettingsRequestFromClient( player );
 			} else {
 				this.PostEnterWorld();
 			}
@@ -100,7 +106,7 @@ namespace Stamina {
 				has = tags.GetBool( "has_stamina" );
 			}
 
-			this.Logic = new StaminaLogic( mymod, max, has );
+			this.Logic = new StaminaLogic( max, has );
 		}
 
 		public override TagCompound Save() {
@@ -128,7 +134,7 @@ namespace Stamina {
 		}
 
 		private void ApplyExhaustionEffect() {
-			ExhaustionBuff.ApplyMovementExhaustion( (StaminaMod)this.mod, this.player );
+			ExhaustionBuff.ApplyMovementExhaustion( this.player );
 			this.player.dashDelay = 1;
 			this.player.rocketTime = 0;
 			this.player.wingTime = 0;

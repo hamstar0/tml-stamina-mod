@@ -8,8 +8,8 @@ namespace Stamina {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Enabled ) { return; }
 
-			var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
-			modplayer.Logic.DrainStaminaViaGrappleBegin( mymod, player );
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
+			myplayer.Logic.DrainStaminaViaGrappleBegin( player );
 //Main.NewText("UseGrapple " + StaminaMod.Config.Data.SingularExertionRate);
 		}
 	}

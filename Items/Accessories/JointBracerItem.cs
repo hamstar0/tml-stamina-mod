@@ -12,6 +12,7 @@ namespace Stamina.Items.Accessories {
 		public static int Height = 26;
 
 		
+
 		////////////////
 		
 		public override void SetStaticDefaults() {
@@ -28,8 +29,8 @@ namespace Stamina.Items.Accessories {
 				modplayer.IsWearingJointBracer = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:JointBracerUnequip", delegate ( Player player, int slot, int item_type ) {
-				if( item_type != this.mod.ItemType<JointBracerItem>() ) { return; }
+			PlayerState.AddArmorUnequipAction( "Stamina:JointBracerUnequip", delegate ( Player player, int slot, int itemType ) {
+				if( itemType != this.mod.ItemType<JointBracerItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var modplayer = player.GetModPlayer<StaminaPlayer>();

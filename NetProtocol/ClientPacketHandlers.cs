@@ -6,12 +6,12 @@ using Terraria.ModLoader;
 
 namespace Stamina.NetProtocol {
 	static class ClientPacketHandlers {
-		public static void HandlePacket( StaminaMod mymod, BinaryReader reader ) {
+		public static void HandlePacket( BinaryReader reader ) {
 			StaminaNetProtocolTypes protocol = (StaminaNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
 			case StaminaNetProtocolTypes.ModSettings:
-				ClientPacketHandlers.ReceiveSettingsOnClient( mymod, reader );
+				ClientPacketHandlers.ReceiveSettingsOnClient( reader );
 				break;
 			default:
 				ErrorLogger.Log( "Invalid packet protocol: " + protocol );
@@ -25,8 +25,9 @@ namespace Stamina.NetProtocol {
 		// Senders (Client)
 		////////////////////////////////
 
-		public static void SendSettingsRequestFromClient( Mod mod, Player player ) {
-			ModPacket packet = mod.GetPacket();
+		public static void SendSettingsRequestFromClient( Player player ) {
+			var mymod = StaminaMod.Instance;
+			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)StaminaNetProtocolTypes.RequestModSettings );
 
@@ -39,13 +40,14 @@ namespace Stamina.NetProtocol {
 		// Recipients (Client)
 		////////////////////////////////
 
-		private static void ReceiveSettingsOnClient( StaminaMod mymod, BinaryReader reader ) {
+		private static void ReceiveSettingsOnClient( BinaryReader reader ) {
+			var mymod = StaminaMod.Instance;
 			bool success;
 
 			mymod.ConfigJson.DeserializeMe( reader.ReadString(), out success );
 
 			if( !success ) {
-				throw new HamstarException( "Stamina.NetProtocols.ClientPacketHandlers.ReceiveSettingsOnClient - Could not deserialize settings." );
+				throw new HamstarException( "Could not deserialize settings." );
 			}
 
 			var modplayer = Main.LocalPlayer.GetModPlayer<StaminaPlayer>();

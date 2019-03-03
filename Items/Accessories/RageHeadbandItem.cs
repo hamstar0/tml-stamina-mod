@@ -15,6 +15,7 @@ namespace Stamina.Items.Accessories {
 		public static readonly PlayerDeathReason DamageType = PlayerDeathReason.ByCustomReason( "over exertion" );
 
 
+
 		////////////////
 
 		public static int CalculateDamageFromStaminaDrain( StaminaMod mymod, float drain ) {
@@ -38,16 +39,16 @@ namespace Stamina.Items.Accessories {
 				if( myitem.type != this.mod.ItemType<RageHeadbandItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsWearingRageBandana = true;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsWearingRageBandana = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:RageHeadbandUnequip", delegate ( Player player, int slot, int item_type ) {
-				if( item_type != this.mod.ItemType<RageHeadbandItem>() ) { return; }
+			PlayerState.AddArmorUnequipAction( "Stamina:RageHeadbandUnequip", delegate ( Player player, int slot, int itemType ) {
+				if( itemType != this.mod.ItemType<RageHeadbandItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsWearingRageBandana = false;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsWearingRageBandana = false;
 			} );
 		}
 
@@ -69,6 +70,7 @@ namespace Stamina.Items.Accessories {
 			recipe.AddRecipe();
 		}
 	}
+
 
 
 

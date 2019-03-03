@@ -5,12 +5,12 @@ using Terraria.ModLoader;
 
 namespace Stamina.NetProtocol {
 	static class ServerPacketHandlers {
-		public static void HandlePacket( StaminaMod mymod, BinaryReader reader, int player_who ) {
+		public static void HandlePacket( BinaryReader reader, int playerWho ) {
 			StaminaNetProtocolTypes protocol = (StaminaNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
 			case StaminaNetProtocolTypes.RequestModSettings:
-				ServerPacketHandlers.ReceiveSettingsRequestOnServer( mymod, reader, player_who );
+				ServerPacketHandlers.ReceiveSettingsRequestOnServer( reader, playerWho );
 				break;
 			default:
 				ErrorLogger.Log( "Invalid packet protocol: " + protocol );
@@ -24,9 +24,10 @@ namespace Stamina.NetProtocol {
 		// Senders (Server)
 		////////////////////////////////
 
-		public static void SendSettingsFromServer( StaminaMod mymod, Player player ) {
+		public static void SendSettingsFromServer( Player player ) {
 			if( Main.netMode != 2 ) { return; } // Server only
 
+			var mymod = StaminaMod.Instance;
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)StaminaNetProtocolTypes.ModSettings );
@@ -40,10 +41,10 @@ namespace Stamina.NetProtocol {
 		// Recipients (Server)
 		////////////////////////////////
 
-		private static void ReceiveSettingsRequestOnServer( StaminaMod mymod, BinaryReader reader, int player_who ) {
+		private static void ReceiveSettingsRequestOnServer( BinaryReader reader, int playerWho ) {
 			if( Main.netMode != 2 ) { return; } // Server only
 
-			ServerPacketHandlers.SendSettingsFromServer( mymod, Main.player[player_who] );
+			ServerPacketHandlers.SendSettingsFromServer( Main.player[playerWho] );
 		}
 	}
 }

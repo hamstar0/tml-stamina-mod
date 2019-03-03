@@ -8,6 +8,12 @@ using Terraria.ModLoader;
 
 namespace Stamina {
 	class StaminaItem : GlobalItem {
+		public static int[] StarUseCooldown = new int[Main.player.Length];
+
+
+
+		////////////////
+
 		/*public override bool UseItem( Item item, Player player ) {
 			StaminaPlayer info = player.GetModPlayer<StaminaPlayer>(this.mod);
 			info.AddDrainStamina( StaminaMod.Config.Data.ItemUseRate, "use item" );
@@ -16,11 +22,11 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			return base.UseItem( item, player );
 		}*/
 
-		public override bool WingUpdate( int wings, Player player, bool in_use ) {
-			StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
+		public override bool WingUpdate( int wings, Player player, bool inUse ) {
+			StaminaPlayer myplayer = player.GetModPlayer<StaminaPlayer>();
 
-			modplayer.IsFlying = in_use;
-			modplayer.HasCheckedFlying = true;
+			myplayer.IsFlying = inUse;
+			myplayer.HasCheckedFlying = true;
 
 			return false;
 		}
@@ -52,18 +58,16 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 		}
 
 
-		public static int[] StarUseCooldown = new int[Main.player.Length];
-
 		public override bool UseItem( Item item, Player player ) {
 			var mymod = (StaminaMod)this.mod;
 			if( !mymod.Config.Enabled ) { return base.UseItem( item, player ); }
 
 			if( mymod.Config.ConsumableStars && item.type == ItemID.FallenStar && item.stack > 0 ) {
 				if( StaminaItem.StarUseCooldown[player.whoAmI] == 0 ) {
-					StaminaPlayer modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
+					StaminaPlayer myplayer = player.GetModPlayer<StaminaPlayer>();
 
-					if( modplayer.Logic.Stamina < modplayer.Logic.MaxStamina2 ) {
-						modplayer.Logic.AddStamina( mymod, player, mymod.Config.StarStaminaHeal );
+					if( myplayer.Logic.Stamina < myplayer.Logic.MaxStamina2 ) {
+						myplayer.Logic.AddStamina( player, mymod.Config.StarStaminaHeal );
 
 						if( --item.stack <= 0 ) {
 							ItemHelpers.DestroyItem(item);
@@ -85,9 +89,9 @@ Main.NewText("UseItem " + StaminaMod.Config.Data.ItemUseRate);
 			if( !config.Enabled ) { return base.ConsumeItem( item, player ); }
 
 			if( config.ConsumableBottledWater && item.type == ItemID.BottledWater ) {
-				var modplayer = player.GetModPlayer<StaminaPlayer>( this.mod );
-				modplayer.Logic.AddFatigue( player, -config.BottledWaterFatigueHeal );
-				modplayer.Logic.AddStamina( mymod, player, (float)config.BottledWaterFatigueHeal );
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.Logic.AddFatigue( player, -config.BottledWaterFatigueHeal );
+				myplayer.Logic.AddStamina( player, (float)config.BottledWaterFatigueHeal );
 			}
 			return base.ConsumeItem( item, player );
 		}

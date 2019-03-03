@@ -12,6 +12,7 @@ namespace Stamina.Items.Accessories {
 		public static int Height = 22;
 
 		
+
 		////////////////
 		
 		public override void SetStaticDefaults() {
@@ -22,16 +23,16 @@ namespace Stamina.Items.Accessories {
 				if( myitem.type != this.mod.ItemType<ExerciseSupplementsItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsUsingSupplements = true;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsUsingSupplements = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:ExerciseSupplementsUnequip", delegate ( Player player, int slot, int item_type ) {
-				if( item_type != this.mod.ItemType<ExerciseSupplementsItem>() ) { return; }
+			PlayerState.AddArmorUnequipAction( "Stamina:ExerciseSupplementsUnequip", delegate ( Player player, int slot, int itemType ) {
+				if( itemType != this.mod.ItemType<ExerciseSupplementsItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
-				var modplayer = player.GetModPlayer<StaminaPlayer>();
-				modplayer.IsUsingSupplements = false;
+				var myplayer = player.GetModPlayer<StaminaPlayer>();
+				myplayer.IsUsingSupplements = false;
 			} );
 		}
 

@@ -4,7 +4,7 @@ using Terraria;
 
 
 namespace Stamina {
-	public delegate float StaminaChangeHook( Player player, StaminaDrainTypes drain_type, float amount );
+	public delegate float StaminaChangeHook( Player player, StaminaDrainTypes drainType, float amount );
 	public delegate float FatigueChangeHook( Player player, float amount );
 
 
@@ -45,7 +45,7 @@ namespace Stamina {
 		}
 		public static int GetExerciseThreshold( Player player ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			return myplayer.Logic.GetStaminaLossAmountNeededForExercise( StaminaMod.Instance );
+			return myplayer.Logic.GetStaminaLossAmountNeededForExercise();
 		}
 		public static bool IsExercising( Player player ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -54,20 +54,20 @@ namespace Stamina {
 
 		public static void DrainStamina( Player player, StaminaDrainTypes type ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			myplayer.Logic.DrainStamina( StaminaMod.Instance, player, type );
+			myplayer.Logic.DrainStamina( player, type );
 		}
-		public static void DrainStaminaViaCustomItem( Player player, string item_name ) {
+		public static void DrainStaminaViaCustomItem( Player player, string itemName ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			myplayer.Logic.DrainStaminaViaCustomItemUse( StaminaMod.Instance, player, item_name );
+			myplayer.Logic.DrainStaminaViaCustomItemUse( player, itemName );
 		}
-		public static void DrainCustomStaminaAmount( Player player, float amount, string custom_type ) {
+		public static void DrainCustomStaminaAmount( Player player, float amount, string customType ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			myplayer.Logic.DrainStaminaCustomAmount( StaminaMod.Instance, player, amount, custom_type );
+			myplayer.Logic.DrainStaminaCustomAmount( player, amount, customType );
 		}
 
 		public static void AddStamina( Player player, float amt ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			myplayer.Logic.AddStamina( StaminaMod.Instance, player, amt );
+			myplayer.Logic.AddStamina( player, amt );
 		}
 		public static void AddFatigue( Player player, float amt ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();

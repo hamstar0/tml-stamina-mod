@@ -7,8 +7,8 @@ using HamstarHelpers.Components.Config;
 
 namespace Stamina {
 	partial class StaminaMod : Mod {
-		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-stamina-mod"; } }
+		public static string GithubUserName => "hamstar0";
+		public static string GithubProjectName => "tml-stamina-mod";
 
 		public static string ConfigFileRelativePath {
 			get { return JsonConfig.ConfigSubfolder + Path.DirectorySeparatorChar + StaminaConfigData.ConfigFileName; }
@@ -29,10 +29,10 @@ namespace Stamina {
 				throw new Exception( "Cannot reset to default configs outside of single player." );
 			}
 
-			var new_config = new StaminaConfigData();
-			new_config.SetDefaults();
+			var newConfig = new StaminaConfigData();
+			newConfig.SetDefaults();
 
-			StaminaMod.Instance.ConfigJson.SetData( new_config );
+			StaminaMod.Instance.ConfigJson.SetData( newConfig );
 			StaminaMod.Instance.ConfigJson.SaveFile();
 		}
 	}

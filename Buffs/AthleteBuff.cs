@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stamina.Buffs {
 	class AthleteBuff : ModBuff {
-		public static int MaxStaminaAdd { get { return 100; } }
+		public static int MaxStaminaAdd => 100;
 
 
 		////////////////
