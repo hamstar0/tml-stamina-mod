@@ -48,6 +48,8 @@ namespace Stamina {
 
 		private bool StaminaBarPlayerDraw() {
 			Player player = Main.LocalPlayer;
+			if( player.dead ) { return true; }
+
 			StaminaPlayer myplayer = player.GetModPlayer<StaminaPlayer>();
 			if( !myplayer.HasEnteredWorld ) { return true; }
 
