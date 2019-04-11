@@ -74,7 +74,7 @@ namespace Stamina.Logic {
 
 		////////////////
 
-		public void UpdateMaxStamina( Player player ) {
+		public void UpdateMaxStamina2( Player player ) {
 			var mymod = StaminaMod.Instance;
 
 			this.MaxStamina2 = this.MaxStamina;
@@ -203,24 +203,6 @@ namespace Stamina.Logic {
 				}
 			} else if( myplayer.IsJumping ) {
 				myplayer.IsJumping = false;
-			}
-		}
-
-		////////////////
-
-		public void AddStamina( Player player, float amount ) {
-			var mymod = StaminaMod.Instance;
-
-			amount *= mymod.Config.ScaleAllStaminaRates;
-
-			if( this.Stamina == 0 ) {
-				this.TiredTimer += amount / 2;
-			} else {
-				foreach( var hook in this.StaminaChangeHooks ) {
-					amount = hook( player, StaminaDrainTypes.Recover, amount );
-				}
-
-				this.Stamina += amount;
 			}
 		}
 	}

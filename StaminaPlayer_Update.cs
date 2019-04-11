@@ -8,7 +8,7 @@ namespace Stamina {
 			if( !mymod.Config.Enabled ) { return; }
 			if( this.Logic == null ) { return; }
 			
-			this.Logic.UpdateMaxStamina( this.player );
+			this.Logic.UpdateMaxStamina2( this.player );
 			
 			if( !this.player.dead ) {
 				this.Logic.PassiveFatigueRecover( this.player );

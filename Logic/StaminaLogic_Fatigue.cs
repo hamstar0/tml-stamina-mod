@@ -1,19 +1,9 @@
-﻿using HamstarHelpers.Services.Messages;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 
 
 namespace Stamina.Logic {
 	partial class StaminaLogic {
-		public int GetStaminaLossAmountNeededForExercise() {
-			var mymod = StaminaMod.Instance;
-			int threshold = (int)((float)this.MaxStamina2 * mymod.Config.FatigueAsMaxStaminaPercentAmountNeeededForExercise);
-			return threshold - mymod.Config.FatigueForExerciseAmountRemoved;
-		}
-
-		////////////////
-
 		public void PassiveFatigueRecover( Player player ) {
 			var mymod = StaminaMod.Instance;
 
@@ -37,44 +27,6 @@ namespace Stamina.Logic {
 					this.ApplyExercise( player );
 				}
 			}
-		}
-
-		////////////////
-
-		public bool ApplyExercise( Player player ) {
-			var mymod = StaminaMod.Instance;
-
-			if( this.MaxStamina >= mymod.Config.MaxStaminaAmount ) { return false; }
-
-			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			
-			this.MaxStamina += mymod.Config.ExerciseGrowthAmount;
-
-			if( myplayer.IsUsingSupplements ) {
-				this.MaxStamina += mymod.Config.ExerciseSupplementAddedGrowthAmount;
-			}
-
-			if( this.MaxStamina > mymod.Config.MaxStaminaAmount ) {
-				this.MaxStamina = mymod.Config.MaxStaminaAmount;
-			}
-
-			string msg = "+" + mymod.Config.ExerciseGrowthAmount + " Stamina";
-			PlayerMessages.AddPlayerLabel( player, msg, Color.Chartreuse, 60 * 3, true );
-
-			Main.PlaySound( SoundID.Item47.WithVolume( 0.5f ) );
-
-			return true;
-		}
-
-		////////////////
-
-		public void AddFatigue( Player player, float amount ) {
-			foreach( var hook in FatigueChangeHooks ) {
-				amount = hook( player, amount );
-			}
-
-			this.Fatigue += amount;
-			this.Fatigue = MathHelper.Clamp( this.Fatigue, 0, this.MaxStamina2 );
 		}
 	}
 }

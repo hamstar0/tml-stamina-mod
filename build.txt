@@ -1,7 +1,7 @@
 author = hamstar
-version = 2.0.6
+version = 2.0.7
 displayName = Stamina
-modReferences = HamstarHelpers@4.2.3.1
+modReferences = HamstarHelpers@4.2.7
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
 languageVersion = 6
 homepage = http://forums.terraria.org/index.php?threads/stamina.52446/

@@ -52,6 +52,8 @@ namespace Stamina {
 			return myplayer.Logic.IsExercising;
 		}
 
+		////
+
 		public static void DrainStamina( Player player, StaminaDrainTypes type ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			myplayer.Logic.DrainStamina( player, type );
@@ -74,6 +76,13 @@ namespace Stamina {
 			myplayer.Logic.AddFatigue( player, amt );
 		}
 
+
+		public static void AddMaxStamina( Player player, int amt ) {
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
+			myplayer.Logic.AddMaxStamina( player, amt );
+		}
+
+		////////////////
 
 		public static void OnStaminaChange( Player player, StaminaChangeHook hook ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();

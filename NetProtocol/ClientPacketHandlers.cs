@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -51,8 +52,8 @@ namespace Stamina.NetProtocol {
 				throw new HamstarException( "Could not deserialize settings." );
 			}
 
-			var modplayer = Main.LocalPlayer.GetModPlayer<StaminaPlayer>();
-			modplayer.OnReceiveServerSettings();
+			var myplayer = (StaminaPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, mymod, "StaminaPlayer" );
+			myplayer.OnReceiveServerSettings();
 		}
 	}
 }
