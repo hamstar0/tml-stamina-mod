@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 
 
@@ -32,7 +33,8 @@ namespace Stamina.Logic {
 
 
 		public void AddMaxStamina( Player player, int amount ) {
-			this.MaxStamina += amount;
+			this.MaxStamina = Math.Max( this.MaxStamina - amount, 0 );
+
 			this.UpdateMaxStamina2( player );
 
 			if( amount < 0 ) {
