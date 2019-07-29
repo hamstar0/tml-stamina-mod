@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using System;
 using Terraria.UI;
 using System.Collections.Generic;
-using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Components.Errors;
 
 
@@ -58,7 +58,7 @@ namespace Stamina {
 
 			try {
 				if( myplayer.Logic == null ) {
-					throw new HamstarException("Player logic failed to load.");
+					throw new ModHelpersException("Player logic failed to load.");
 				}
 
 				float alpha = myplayer.Logic.DrainingFX ? 1f : 0.65f;

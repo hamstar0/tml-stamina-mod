@@ -1,6 +1,5 @@
-﻿using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
-using HamstarHelpers.Services.Players;
+﻿using HamstarHelpers.Helpers.Players;
+using HamstarHelpers.Services.Hooks.ExtendedHooks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,7 +18,7 @@ namespace Stamina.Items.Accessories {
 			this.DisplayName.SetDefault( "Exercise Supplements" );
 			this.Tooltip.SetDefault( "Makes exercise easier" );
 
-			PlayerState.AddArmorEquipAction( "Stamina:ExerciseSupplementsEquip", delegate ( Player player, int slot, Item myitem ) {
+			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:ExerciseSupplementsEquip", delegate ( Player player, int slot, Item myitem ) {
 				if( myitem.type != this.mod.ItemType<ExerciseSupplementsItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
@@ -27,7 +26,7 @@ namespace Stamina.Items.Accessories {
 				myplayer.IsUsingSupplements = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:ExerciseSupplementsUnequip", delegate ( Player player, int slot, int itemType ) {
+			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:ExerciseSupplementsUnequip", delegate ( Player player, int slot, int itemType ) {
 				if( itemType != this.mod.ItemType<ExerciseSupplementsItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 

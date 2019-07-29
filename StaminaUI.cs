@@ -7,7 +7,8 @@ using Terraria;
 
 namespace Stamina {
 	public static class StaminaUI {
-		public static void DrawShortStaminaBar( SpriteBatch sb, float x, float y, int stamina, int maxStamina, int fatigue, int exerciseThreshold, bool isExercising, float alpha, float scale = 1f ) {
+		public static void DrawShortStaminaBar( SpriteBatch sb, float x, float y, int stamina, int maxStamina, int fatigue,
+				int exerciseThreshold, bool isExercising, float alpha, float scale = 1f ) {
 			Texture2D bar = Main.hbTexture1;
 			Texture2D maxbar = Main.hbTexture2;
 			int texWidth = maxbar.Width;

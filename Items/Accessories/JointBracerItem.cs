@@ -1,6 +1,5 @@
-﻿using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
-using HamstarHelpers.Services.Players;
+﻿using HamstarHelpers.Helpers.Players;
+using HamstarHelpers.Services.Hooks.ExtendedHooks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,7 +20,7 @@ namespace Stamina.Items.Accessories {
 				+ '\n' + "Negates knockback"
 				+ '\n' + "'For when push comes to shove.'" );
 
-			PlayerState.AddArmorEquipAction( "Stamina:JointBracerEquip", delegate ( Player player, int slot, Item myitem ) {
+			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:JointBracerEquip", delegate ( Player player, int slot, Item myitem ) {
 				if( myitem.type != this.mod.ItemType<JointBracerItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot(player, slot) ) { return; }
 
@@ -29,7 +28,7 @@ namespace Stamina.Items.Accessories {
 				modplayer.IsWearingJointBracer = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:JointBracerUnequip", delegate ( Player player, int slot, int itemType ) {
+			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:JointBracerUnequip", delegate ( Player player, int slot, int itemType ) {
 				if( itemType != this.mod.ItemType<JointBracerItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 

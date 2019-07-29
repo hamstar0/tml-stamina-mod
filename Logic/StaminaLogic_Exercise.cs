@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Services.Messages;
+﻿using HamstarHelpers.Services.Messages.Player;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

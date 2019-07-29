@@ -1,17 +1,15 @@
-﻿using HamstarHelpers.Components.Config;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Terraria.ModLoader.Config;
 
 
 namespace Stamina {
-	public class StaminaConfigData : ConfigurationDataBase {
-		public readonly static string ConfigFileName = "Stamina Config.json";
+	public class StaminaConfig : ModConfig {
+		public override ConfigScope Mode => ConfigScope.ServerSide;
+		
 
-
-		////////////////
-
-		public string VersionSinceUpdate = "";
-
+		////
+		d
 		public bool Enabled = true;
 
 		public bool DebugModeInfo = false;
@@ -92,25 +90,6 @@ namespace Stamina {
 				{ "Bug Net", 0.1f },
 				{ "Golden Bug Net", 0.15f }
 			};
-		}
-
-		////////////////
-
-		public bool UpdateToLatestVersion() {
-			var newConfig = new StaminaConfigData();
-			newConfig.SetDefaults();
-
-			var versSince = this.VersionSinceUpdate != "" ?
-				new Version( this.VersionSinceUpdate ) :
-				new Version();
-
-			if( versSince >= StaminaMod.Instance.Version ) {
-				return false;
-			}
-
-			this.VersionSinceUpdate = StaminaMod.Instance.Version.ToString();
-
-			return true;
 		}
 	}
 }

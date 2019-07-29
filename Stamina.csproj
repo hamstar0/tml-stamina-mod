@@ -1,133 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="C:\Users\Spinach\Documents\My Games\Terraria\ModLoader\references\tModLoader.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{289D975A-BD4C-4C9E-8C6A-B4CB958C7AB3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stamina</RootNamespace>
     <AssemblyName>Stamina</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net452</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>0</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="HamstarHelpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Helpers\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\References\Libraries\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.Xna.Framework" />
-    <Reference Include="Microsoft.Xna.Framework.Game" />
-    <Reference Include="Microsoft.Xna.Framework.Graphics" />
-    <Reference Include="Terraria">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
-    </Reference>
-    <Reference Include="Terraria.Libraries.ReLogic.ReLogic">
-      <HintPath>..\..\..\References\Libraries\Terraria.Libraries.ReLogic.ReLogic.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="API_Compat.cs" />
-    <Compile Include="API.cs" />
-    <Compile Include="Buffs\AthleteBuff.cs" />
-    <Compile Include="Buffs\EnergizedBuff.cs" />
-    <Compile Include="Buffs\ExhaustionBuff.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Items\Accessories\ExerciseSupplementsItem.cs" />
-    <Compile Include="Items\Accessories\JointBracerItem.cs" />
-    <Compile Include="Items\Accessories\ExoskeletonItem.cs" />
-    <Compile Include="Items\Accessories\LegSpringItem.cs" />
-    <Compile Include="Items\Accessories\ChampionBeltItem.cs" />
-    <Compile Include="Items\Accessories\RageHeadbandItem.cs" />
-    <Compile Include="Items\Consumables\AthletePotionItem.cs" />
-    <Compile Include="Items\Consumables\EnergyPotionItem.cs" />
-    <Compile Include="Logic\StaminaLogic_Stats.cs" />
-    <Compile Include="Logic\StaminaLogic_Drain.cs" />
-    <Compile Include="Logic\StaminaLogic_Exercise.cs" />
-    <Compile Include="Logic\StaminaLogic_Fatigue.cs" />
-    <Compile Include="NetProtocol\ServerPacketHandlers.cs" />
-    <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaminaItem.cs" />
-    <Compile Include="Logic\StaminaLogic.cs" />
-    <Compile Include="StaminaMod_Meta.cs" />
-    <Compile Include="StaminaMod_Draw.cs" />
-    <Compile Include="StaminaMod.cs" />
-    <Compile Include="NetProtocol\NetProtocolTypes.cs" />
-    <Compile Include="StaminaPlayer_Draw.cs" />
-    <Compile Include="StaminaPlayer_Interactions.cs" />
-    <Compile Include="StaminaPlayer_Update.cs" />
-    <Compile Include="StaminaPlayer.cs" />
-    <Compile Include="StaminaProjectile.cs" />
-    <Compile Include="StaminaUI.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Buffs\AthleteBuff.png" />
-    <Content Include="Buffs\EnergizedBuff.png" />
-    <Content Include="Buffs\ExhaustionBuff.png" />
-    <Content Include="build.txt" />
-    <Content Include="description.txt" />
-    <Content Include="icon.png" />
-    <Content Include="Items\Accessories\ExerciseSupplementsItem.png" />
-    <Content Include="Items\Accessories\ExoskeletonItem_Back.png" />
-    <Content Include="Items\Accessories\ExoskeletonItem_Neck.png" />
-    <Content Include="Items\Accessories\ExoskeletonItem_Waist.png" />
-    <Content Include="Items\Accessories\JointBracerItem.png" />
-    <Content Include="Items\Accessories\ExoskeletonItem.png" />
-    <Content Include="Items\Accessories\LegSpringItem.png" />
-    <Content Include="Items\Accessories\ExoskeletonItem_Shoes.png" />
-    <Content Include="Items\Accessories\ChampionBeltItem.png" />
-    <Content Include="Items\Accessories\LegSpringItem_Shoes.png" />
-    <Content Include="Items\Accessories\ChampionBeltItem_Waist.png" />
-    <Content Include="Items\Accessories\RageHeadbandItem.png" />
-    <Content Include="Items\Accessories\RageHeadbandItem_Face.png" />
-    <Content Include="Items\Consumables\AthletePotionItem.png" />
-    <Content Include="Items\Consumables\EnergyPotionItem.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE" />
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\Terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="BuildMod" AfterTargets="Build">
+    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="icon.pdn" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HamstarHelpers">
+      <HintPath>..\..\Mod Helpers\v5 (tML11)\HamstarHelpers\bin\Release\net452\HamstarHelpers.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

@@ -66,7 +66,7 @@ namespace Stamina.Logic {
 				this.DrainStaminaViaGravitationPotion( player );
 				break;
 			default:
-				throw new HamstarException("No such drain type.");
+				throw new ModHelpersException("No such drain type.");
 			}
 		}
 

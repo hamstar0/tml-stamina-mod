@@ -4,11 +4,8 @@ using Terraria.ModLoader;
 using Stamina.NetProtocol;
 using System;
 using Terraria.ID;
-using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.TmlHelpers;
-using HamstarHelpers.Helpers.TmlHelpers.ModHelpers;
-
+using HamstarHelpers.Helpers.TModLoader.Mods;
 
 namespace Stamina {
 	partial class StaminaMod : Mod {
@@ -18,8 +15,7 @@ namespace Stamina {
 
 		////////////////
 
-		internal JsonConfig<StaminaConfigData> ConfigJson { get; private set; }
-		public StaminaConfigData Config => this.ConfigJson.Data;
+		public StaminaConfig Config => this.GetConfig<StaminaConfig>();
 
 
 
@@ -27,29 +23,11 @@ namespace Stamina {
 
 		public StaminaMod() {
 			StaminaMod.Instance = this;
-			
-			this.ConfigJson = new JsonConfig<StaminaConfigData>( StaminaConfigData.ConfigFileName,
-				JsonConfig.ConfigSubfolder, new StaminaConfigData() );
 		}
 
 		////////////////
 
 		public override void Load() {
-			this.LoadConfigs();
-		}
-
-		private void LoadConfigs() {
-			string depErr = TmlHelpers.ReportBadDependencyMods( this );
-			if( depErr != null ) { throw new HamstarException( depErr ); }
-
-			if( !this.ConfigJson.LoadFile() ) {
-				this.ConfigJson.SaveFile();
-			}
-
-			if( this.Config.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Stamina updated to " + this.Version.ToString() );
-				this.ConfigJson.SaveFile();
-			}
 		}
 
 		public override void Unload() {
@@ -61,17 +39,6 @@ namespace Stamina {
 
 		public override object Call( params object[] args ) {
 			return ModBoilerplateHelpers.HandleModCall( typeof( StaminaAPI ), args );
-		}
-
-
-		////////////////
-		
-		public override void HandlePacket( BinaryReader reader, int playerWho ) {
-			if( Main.netMode == 1 ) {   // Client
-				ClientPacketHandlers.HandlePacket( reader );
-			} else if( Main.netMode == 2 ) {    // Server
-				ServerPacketHandlers.HandlePacket( reader, playerWho );
-			}
 		}
 
 

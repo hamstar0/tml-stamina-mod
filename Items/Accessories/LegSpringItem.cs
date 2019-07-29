@@ -1,6 +1,5 @@
-﻿using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
-using HamstarHelpers.Services.Players;
+﻿using HamstarHelpers.Helpers.Players;
+using HamstarHelpers.Services.Hooks.ExtendedHooks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,7 +21,7 @@ namespace Stamina.Items.Accessories {
 				+ '\n' + "Negates fall damage"
 				+ '\n' + "'Puts a spring in your step.'" );
 
-			PlayerState.AddArmorEquipAction( "Stamina:LegSprintEquip", delegate ( Player player, int slot, Item myitem ) {
+			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:LegSprintEquip", delegate ( Player player, int slot, Item myitem ) {
 				if( myitem.type != this.mod.ItemType<LegSpringItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
@@ -30,7 +29,7 @@ namespace Stamina.Items.Accessories {
 				myplayer.IsWearingLegSprings = true;
 			} );
 
-			PlayerState.AddArmorUnequipAction( "Stamina:LegSprintUnequip", delegate ( Player player, int slot, int itemType ) {
+			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:LegSprintUnequip", delegate ( Player player, int slot, int itemType ) {
 				if( itemType != this.mod.ItemType<LegSpringItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 

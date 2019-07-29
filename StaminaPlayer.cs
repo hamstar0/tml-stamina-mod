@@ -1,7 +1,6 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
 using Stamina.Buffs;
 using Stamina.Logic;
-using Stamina.NetProtocol;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -65,16 +64,8 @@ namespace Stamina {
 			if( this.player.whoAmI != Main.myPlayer ) { return; }
 
 			var mymod = (StaminaMod)this.mod;
-			
-			if( Main.netMode != 2 ) {   // Not server
-				if( !mymod.ConfigJson.LoadFile() ) {
-					LogHelpers.Alert( "Configs reset." );
-					mymod.ConfigJson.SaveFile();
-				}
-			}
 
 			if( Main.netMode == 1 ) {   // Client
-				ClientPacketHandlers.SendSettingsRequestFromClient( player );
 			} else {
 				this.PostEnterWorld();
 			}
@@ -94,10 +85,6 @@ namespace Stamina {
 		public override void Load( TagCompound tags ) {
 			this.Initialize();
 			var mymod = (StaminaMod)this.mod;
-
-			if( !mymod.ConfigJson.LoadFile() ) {
-				mymod.ConfigJson.SaveFile();
-			}
 
 			int max = mymod.Config.InitialStamina;
 			bool has = true;
