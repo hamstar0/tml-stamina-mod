@@ -2,6 +2,7 @@
 using Stamina.Items.Accessories;
 using System;
 using Terraria;
+using Terraria.ModLoader.Config;
 
 
 namespace Stamina.Logic {
@@ -96,10 +97,10 @@ namespace Stamina.Logic {
 			this.DrainStaminaAmount( player, amt, StaminaDrainTypes.MagicItemUse );
 		}
 
-		public void DrainStaminaViaCustomItemUse( Player player, string itemName ) {
+		public void DrainStaminaViaCustomItemUse( Player player, ItemDefinition itemDef ) {
 			var mymod = StaminaMod.Instance;
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			float amt = mymod.Config.CustomItemUseRate[ itemName ];
+			float amt = mymod.Config.CustomItemUseRate[ itemDef ];
 			
 			if( myplayer.IsWearingMuscleBelt || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.MuscleBeltStaminaDrainScale;

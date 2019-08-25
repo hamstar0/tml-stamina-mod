@@ -1,6 +1,7 @@
 ﻿using Stamina.Logic;
 using System;
 using Terraria;
+using Terraria.ModLoader.Config;
 
 
 namespace Stamina {
@@ -46,9 +47,9 @@ namespace Stamina {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			myplayer.Logic.DrainStamina( player, type );
 		}
-		public static void DrainStaminaViaCustomItem( Player player, string itemName ) {
+		public static void DrainStaminaViaCustomItemDefinition( Player player, ItemDefinition itemDef ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			myplayer.Logic.DrainStaminaViaCustomItemUse( player, itemName );
+			myplayer.Logic.DrainStaminaViaCustomItemUse( player, itemDef );
 		}
 		public static void DrainCustomStaminaAmount( Player player, float amount, string customType ) {
 			var myplayer = player.GetModPlayer<StaminaPlayer>();

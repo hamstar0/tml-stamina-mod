@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.Serialization;
+using Terraria.ID;
 using Terraria.ModLoader.Config;
 
 
@@ -182,28 +182,15 @@ namespace Stamina {
 		public int PlayerStaminaBarOffsetY = 0;
 
 
-		public IDictionary<string, float> CustomItemUseRate = new Dictionary<string, float>();
+		public IDictionary<ItemDefinition, float> CustomItemUseRate = new Dictionary<ItemDefinition, float>{
+			{ new ItemDefinition(ItemID.BugNet), 0.1f },
+			{ new ItemDefinition(ItemID.GoldenBugNet), 0.15f }
+		};
 
 
 		[DefaultValue( true )]
 		public bool ShowMainStaminaBar = true;
 		[DefaultValue( true )]
 		public bool ShowMiniStaminaBar = true;
-
-
-
-		////////////////
-
-		[OnDeserialized]
-		internal void OnDeserializedMethod( StreamingContext context ) {
-			if( this.CustomItemUseRate != null ) {
-				return;
-			}
-
-			this.CustomItemUseRate = new Dictionary<string, float>{
-				{ "Bug Net", 0.1f },
-				{ "Golden Bug Net", 0.15f }
-			};
-		}
 	}
 }

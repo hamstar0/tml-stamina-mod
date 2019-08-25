@@ -3,7 +3,7 @@ using Stamina.Buffs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-
+using Terraria.ModLoader.Config;
 
 namespace Stamina.Logic {
 	partial class StaminaLogic {
@@ -129,14 +129,15 @@ namespace Stamina.Logic {
 				Item currItem = player.inventory[player.selectedItem];
 				if( currItem == null || currItem.IsAir ) { return; }
 
+				var currItemDef = new ItemDefinition( currItem.type );
 				bool isPewpew = currItem.type == ItemID.SpaceGun || currItem.type == ItemID.LaserRifle;
 				bool isSpaceman = player.armor[0].type == ItemID.MeteorHelmet &&
 					player.armor[1].type == ItemID.MeteorSuit &&
 					player.armor[2].type == ItemID.MeteorLeggings;
 				
-				if( mymod.Config.CustomItemUseRate.ContainsKey( currItem.Name ) ) {
-					float customRate = mymod.Config.CustomItemUseRate[currItem.Name];
-					this.DrainStaminaViaCustomItemUse( player, currItem.Name );
+				if( mymod.Config.CustomItemUseRate.ContainsKey( currItemDef ) ) {
+					float customRate = mymod.Config.CustomItemUseRate[currItemDef];
+					this.DrainStaminaViaCustomItemUse( player, currItemDef );
 				} else {
 					if( currItem.magic && !(isPewpew && isSpaceman) ) {
 						this.DrainStaminaViaMagicItemUse( player );
