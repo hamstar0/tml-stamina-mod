@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using Terraria;
 using Terraria.ModLoader;
-using Stamina.NetProtocol;
 using System;
 using Terraria.ID;
-using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.TModLoader.Mods;
+
 
 namespace Stamina {
 	partial class StaminaMod : Mod {

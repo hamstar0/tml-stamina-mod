@@ -6,7 +6,7 @@ using System;
 using Terraria.UI;
 using System.Collections.Generic;
 using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Classes.Errors;
 
 
 namespace Stamina {
