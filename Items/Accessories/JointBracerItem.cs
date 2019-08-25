@@ -71,7 +71,7 @@ namespace Stamina.Items.Accessories {
 			this.AddIngredient( ItemID.StaticHook, 1 );
 			this.AddIngredient( ItemID.Cog, 25 );
 			this.AddRecipeGroup( "Stamina:GreaterBiomeHook", 1 );
-			this.AddRecipeGroup( "HamstarHelpers:WeightPressurePlates", 4 );
+			this.AddRecipeGroup( "ModHelpers:WeightPressurePlates", 4 );
 			
 			this.SetResult( myitem );
 		}

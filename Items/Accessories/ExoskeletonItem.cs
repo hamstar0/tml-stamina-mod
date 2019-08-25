@@ -82,7 +82,7 @@ namespace Stamina.Items.Accessories {
 				this.AddIngredient( this.mod.ItemType<LegSpringItem>(), 1 );
 			}
 			this.AddIngredient( ItemID.LihzahrdPowerCell, 2 );
-			this.AddRecipeGroup( "HamstarHelpers:ConveyorBeltPair", 50 );
+			this.AddRecipeGroup( "ModHelpers:ConveyorBeltPair", 50 );
 
 			this.SetResult( myitem );
 		}

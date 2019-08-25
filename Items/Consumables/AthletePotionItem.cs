@@ -60,7 +60,7 @@ namespace Stamina.Items.Consumables {
 		public AthletePotionItemRecipe( AthletePotionItem moditem ) : base( moditem.mod ) {
 			this.AddIngredient( ItemID.BottledWater, 1 );
 			this.AddIngredient( ItemID.Bone, 1 );
-			this.AddRecipeGroup( "HamstarHelpers:StrangePlants", 1 );
+			this.AddRecipeGroup( "ModHelpers:StrangePlants", 1 );
 
 			this.AddTile( TileID.Bottles );
 
