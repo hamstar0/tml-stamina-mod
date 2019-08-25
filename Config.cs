@@ -184,7 +184,7 @@ namespace Stamina {
 		public int PlayerStaminaBarOffsetY = 0;
 
 
-		public IDictionary<ItemDefinition, float> CustomItemUseRate = new Dictionary<ItemDefinition, float>{
+		public Dictionary<ItemDefinition, float> CustomItemUseRate = new Dictionary<ItemDefinition, float>{
 			{ new ItemDefinition(ItemID.BugNet), 0.1f },
 			{ new ItemDefinition(ItemID.GoldenBugNet), 0.15f }
 		};
