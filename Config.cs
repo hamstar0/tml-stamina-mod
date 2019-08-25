@@ -16,8 +16,10 @@ namespace Stamina {
 		public bool Enabled = true;
 
 
+		[DefaultValue( false )]
 		public bool DebugModeInfo = false;
 
+		[DefaultValue( false )]
 		public bool DebugModeInfoDrainers = false;
 
 
