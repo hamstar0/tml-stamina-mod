@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
@@ -8,10 +9,10 @@ using Terraria.ModLoader.Config;
 namespace Stamina {
 	public class StaminaConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ServerSide;
-		
+
 
 		////
-		
+
 		[DefaultValue( true )]
 		public bool Enabled = true;
 
@@ -194,5 +195,17 @@ namespace Stamina {
 		public bool ShowMainStaminaBar = true;
 		[DefaultValue( true )]
 		public bool ShowMiniStaminaBar = true;
+
+
+
+		////////////////
+
+		public override ModConfig Clone() {
+			var clone = (StaminaConfig)base.Clone();
+
+			clone.CustomItemUseRate = this.CustomItemUseRate.ToDictionary( kv=>kv.Key, kv=>kv.Value );
+
+			return clone;
+		}
 	}
 }
