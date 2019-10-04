@@ -65,18 +65,36 @@ namespace Stamina {
 
 			var mymod = (StaminaMod)this.mod;
 
-			if( Main.netMode == 1 ) {   // Client
-			} else {
-				this.PostEnterWorld();
+			if( Main.netMode == 0 ) {   // single
+				this.OnSingleJoin();
 			}
 		}
 
-		public void PostEnterWorld() {
+		public override void SyncPlayer( int toWho, int fromWho, bool newPlayer ) {
+			if( Main.netMode == 1 ) {
+				if( newPlayer ) {
+					this.OnClientJoin();
+				}
+			} else if( Main.netMode == 2 ) {
+				if( toWho == -1 && fromWho == this.player.whoAmI ) {
+					this.OnServerJoin();
+				}
+			}
+		}
+
+
+		////
+
+		public void OnSingleJoin() {
 			this.HasEnteredWorld = true;
 		}
 
-		public void OnReceiveServerSettings() {
-			if( !this.HasEnteredWorld ) { this.PostEnterWorld(); }
+		public void OnClientJoin() {
+			this.HasEnteredWorld = true;
+		}
+
+		public void OnServerJoin() {
+			this.HasEnteredWorld = true;
 		}
 
 

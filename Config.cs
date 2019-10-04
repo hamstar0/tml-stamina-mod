@@ -201,7 +201,7 @@ namespace Stamina {
 		////////////////
 
 		public override ModConfig Clone() {
-			var clone = (StaminaConfig)base.Clone();
+			var clone = (StaminaConfig)this.MemberwiseClone();
 
 			clone.CustomItemUseRate = this.CustomItemUseRate.ToDictionary( kv=>kv.Key, kv=>kv.Value );
 

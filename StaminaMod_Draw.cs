@@ -11,6 +11,26 @@ using HamstarHelpers.Classes.Errors;
 
 namespace Stamina {
 	partial class StaminaMod : Mod {
+		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
+			if( !this.Config.Enabled ) { return; }
+
+			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );
+			if( idx == -1 ) { return; }
+
+			if( this.Config.ShowMainStaminaBar ) {
+				var mainUiLayer = new LegacyGameInterfaceLayer( "Stamina: Main Meter", this.StaminaBarUIDraw, InterfaceScaleType.UI );
+				layers.Insert( idx + 1, mainUiLayer );
+			}
+
+			if( this.Config.ShowMiniStaminaBar ) {
+				var plrUiLayer = new LegacyGameInterfaceLayer( "Stamina: Player Meter", this.StaminaBarPlayerDraw, InterfaceScaleType.Game );
+				layers.Insert( idx + 1, plrUiLayer );
+			}
+		}
+
+
+		////////////////
+
 		private bool StaminaBarUIDraw() {
 			Player player = Main.LocalPlayer;
 			StaminaPlayer myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -37,7 +57,9 @@ namespace Stamina {
 				}
 
 				StaminaUI.DrawLongStaminaBar( sb, scrX, scrY, stamina, maxStamina, (int)fatigue, threshold, isExercising, alpha, 1f );
-			} catch( Exception e ) { ErrorLogger.Log( e.ToString() ); }
+			} catch( Exception e ) {
+				this.Logger.Info( e.ToString() );
+			}
 
 			if( this.Config.DebugModeInfoDrainers ) {
 				this.PrintStaminaDrainers( sb, myplayer );
@@ -58,7 +80,7 @@ namespace Stamina {
 
 			try {
 				if( myplayer.Logic == null ) {
-					throw new ModHelpersException("Player logic failed to load.");
+					throw new ModHelpersException( "Player logic failed to load." );
 				}
 
 				float alpha = myplayer.Logic.DrainingFX ? 1f : 0.65f;
@@ -85,24 +107,6 @@ namespace Stamina {
 
 		////////////////
 
-		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
-			if( !this.Config.Enabled ) { return; }
-
-			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );
-			if( idx == -1 ) { return; }
-
-			if( this.Config.ShowMainStaminaBar ) {
-				var mainUiLayer = new LegacyGameInterfaceLayer( "Stamina: Main Meter", this.StaminaBarUIDraw, InterfaceScaleType.UI );
-				layers.Insert( idx + 1, mainUiLayer );
-			}
-
-			if( this.Config.ShowMiniStaminaBar ) {
-				var plrUiLayer = new LegacyGameInterfaceLayer( "Stamina: Player Meter", this.StaminaBarPlayerDraw, InterfaceScaleType.Game );
-				layers.Insert( idx + 1, plrUiLayer );
-			}
-		}
-
-
 		private void PrintStaminaDrainers( SpriteBatch sb, StaminaPlayer myplayer ) {
 			var dict = myplayer.Logic.CurrentDrainTypes;
 			int i = 0;
@@ -114,7 +118,7 @@ namespace Stamina {
 				//sb.DrawString( Main.fontMouseText, msg, new Vector2( 8, (Main.screenHeight - 32) - (i * 24) ), Color.White );
 				DebugHelpers.Print( kv.Key.ToString(), "" + kv.Value, 30 );
 
-				dict[ kv.Key ] = 0f;
+				dict[kv.Key] = 0f;
 				i++;
 			}
 		}
