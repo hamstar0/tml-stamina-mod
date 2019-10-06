@@ -72,6 +72,22 @@ namespace Stamina.Logic {
 			this.TiredTimer = 0d;
 		}
 
+		internal StaminaLogic Clone() {
+			var logic = new StaminaLogic( this.MaxStamina, this.HasStaminaSet );
+			logic.Fatigue = this.Fatigue;
+			logic.FatigueRecoverTimer = this.FatigueRecoverTimer;
+			logic.CurrentDrain = this.CurrentDrain;
+			logic.CurrentDrainMost = this.CurrentDrainMost;
+			logic.CurrentDrainCount = this.CurrentDrainCount;
+			logic.DrainingFX = this.DrainingFX;
+			logic.ItemUseDrainDuration = this.ItemUseDrainDuration;
+			logic.IsExercising = this.IsExercising;
+			logic.Stamina = this.Stamina;
+			logic.TiredTimer = this.TiredTimer;
+
+			return logic;
+		}
+
 		////////////////
 
 		public void UpdateMaxStamina2( Player player ) {

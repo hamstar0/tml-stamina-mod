@@ -9,7 +9,6 @@ using Terraria.ModLoader.IO;
 namespace Stamina {
 	partial class StaminaPlayer : ModPlayer {
 		public StaminaLogic Logic { get; internal set; }
-		public bool HasEnteredWorld { get; private set; }
 
 		public bool WillApplyExhaustion = false;
 		public bool IsDashing = false;
@@ -37,14 +36,13 @@ namespace Stamina {
 		
 		public override void Initialize() {
 			this.Logic = new StaminaLogic( -1, false );
-			this.HasEnteredWorld = false;
 		}
 
 		public override void clientClone( ModPlayer clone ) {
 			base.clientClone( clone );
 			var myclone = (StaminaPlayer)clone;
 
-			myclone.Logic = this.Logic;
+			myclone.Logic = this.Logic.Clone();
 			myclone.WillApplyExhaustion = this.WillApplyExhaustion;
 			myclone.IsDashing = this.IsDashing;
 			myclone.IsJumping = this.IsJumping;
@@ -56,6 +54,7 @@ namespace Stamina {
 			myclone.IsWearingMuscleBelt = this.IsWearingMuscleBelt;
 			myclone.IsWearingJointBracer = this.IsWearingJointBracer;
 		}
+
 
 		////////////////
 
@@ -86,15 +85,15 @@ namespace Stamina {
 		////
 
 		public void OnSingleJoin() {
-			this.HasEnteredWorld = true;
+			//this.HasEnteredWorld = true;
 		}
 
 		public void OnClientJoin() {
-			this.HasEnteredWorld = true;
+			//this.HasEnteredWorld = true;
 		}
 
 		public void OnServerJoin() {
-			this.HasEnteredWorld = true;
+			//this.HasEnteredWorld = true;
 		}
 
 

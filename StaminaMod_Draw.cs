@@ -18,12 +18,26 @@ namespace Stamina {
 			if( idx == -1 ) { return; }
 
 			if( this.Config.ShowMainStaminaBar ) {
-				var mainUiLayer = new LegacyGameInterfaceLayer( "Stamina: Main Meter", this.StaminaBarUIDraw, InterfaceScaleType.UI );
+				var mainUiLayer = new LegacyGameInterfaceLayer(
+					"Stamina: Main Meter",
+					() => {
+						this.StaminaBarUIDraw();
+						return true;
+					},
+					InterfaceScaleType.UI
+				);
 				layers.Insert( idx + 1, mainUiLayer );
 			}
 
 			if( this.Config.ShowMiniStaminaBar ) {
-				var plrUiLayer = new LegacyGameInterfaceLayer( "Stamina: Player Meter", this.StaminaBarPlayerDraw, InterfaceScaleType.Game );
+				var plrUiLayer = new LegacyGameInterfaceLayer(
+					"Stamina: Player Meter",
+					() => {
+						this.StaminaBarPlayerDraw();
+						return true;
+					},
+					InterfaceScaleType.Game
+				);
 				layers.Insert( idx + 1, plrUiLayer );
 			}
 		}
@@ -34,10 +48,9 @@ namespace Stamina {
 		private bool StaminaBarUIDraw() {
 			Player player = Main.LocalPlayer;
 			StaminaPlayer myplayer = player.GetModPlayer<StaminaPlayer>();
-			if( !myplayer.HasEnteredWorld ) { return true; }
 
 			SpriteBatch sb = Main.spriteBatch;
-			if( sb == null ) { return true; }
+			if( sb == null ) { return false; }
 
 			try {
 				int scrX = Main.screenWidth - 172;
@@ -55,32 +68,34 @@ namespace Stamina {
 				if( this.Config.CustomStaminaBarPositionY >= 0 ) {
 					scrY = this.Config.CustomStaminaBarPositionY;
 				}
-
+				
 				StaminaUI.DrawLongStaminaBar( sb, scrX, scrY, stamina, maxStamina, (int)fatigue, threshold, isExercising, alpha, 1f );
 			} catch( Exception e ) {
 				this.Logger.Info( e.ToString() );
+				return false;
 			}
 
 			if( this.Config.DebugModeInfoDrainers ) {
 				this.PrintStaminaDrainers( sb, myplayer );
 			}
+
 			return true;
 		}
 
 
 		private bool StaminaBarPlayerDraw() {
 			Player player = Main.LocalPlayer;
-			if( player.dead ) { return true; }
+			if( player.dead ) { return false; }
 
 			StaminaPlayer myplayer = player.GetModPlayer<StaminaPlayer>();
-			if( !myplayer.HasEnteredWorld ) { return true; }
 
 			SpriteBatch sb = Main.spriteBatch;
-			if( sb == null ) { return true; }
+			if( sb == null ) { return false; }
 
 			try {
 				if( myplayer.Logic == null ) {
-					throw new ModHelpersException( "Player logic failed to load." );
+					LogHelpers.WarnOnce( "Player logic failed to load." );
+					return false;
 				}
 
 				float alpha = myplayer.Logic.DrainingFX ? 1f : 0.65f;
@@ -100,7 +115,9 @@ namespace Stamina {
 				}
 			} catch( Exception e ) {
 				LogHelpers.Warn( e.ToString() );
+				return false;
 			}
+
 			return true;
 		}
 

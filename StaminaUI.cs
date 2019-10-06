@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.Helpers.Debug;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
@@ -68,7 +69,7 @@ namespace Stamina {
 			Texture2D maxbar = Main.hbTexture2;
 			int width = 256;
 			int height = maxbar.Height;
-
+			
 			float ratio = (float)stamina / (float)maxStamina;
 			if( ratio > 1f ) { ratio = 1f; }
 			int staminaBarLength = (int)((float)width * ratio);
