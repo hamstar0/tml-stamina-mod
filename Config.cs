@@ -8,10 +8,15 @@ using Terraria.ModLoader.Config;
 
 
 namespace Stamina {
+	class MyFloatInputElement : FloatInputElement { }
+
+
+
+
 	public class FloatPercentSetting {
-		[Range( 0, 10f )]
+		[Range( 0f, 10f )]
 		[DefaultValue( 1f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float Percent = 1f;
 	}
 
@@ -50,74 +55,74 @@ namespace Stamina {
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 1f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float ScaleAllStaminaRates = 1f;
 
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.45f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float RechargeRate = 0.45f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.125f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float EnergizedRate = 0.125f;
 
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 12f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float SingularExertionRate = 12f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.501f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float ItemUseRate = 0.501f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.2f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float MagicItemUseRate = 0.2f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.45f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float GrappleRate = 0.45f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.5f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float SprintRate = 0.5f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 6.5f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float JumpBegin = 6.5f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.65f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float JumpHoldRate = 0.65f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 2f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float SwimBegin = 2f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.5f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float SwimHoldRate = 0.5f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 28f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float DashRate = 28f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.1f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float GravitationPotionDrainRate = 0.1f;
 
 		[Range( 0, 60 * 60 * 60 )]
@@ -179,7 +184,7 @@ namespace Stamina {
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 5f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float RageHeadbandDamageMultiplier = 5f;
 
 		[Range( 0, 10000 )]
@@ -188,17 +193,17 @@ namespace Stamina {
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.8f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float MuscleBeltStaminaDrainScale = 0.8f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.8f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float JointBracerStaminaDrainScale = 0.8f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.8f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float LegSpringsStaminaDrainScale = 0.8f;
 
 
