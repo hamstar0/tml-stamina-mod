@@ -21,7 +21,7 @@ namespace Stamina.Items.Accessories {
 				+ '\n' + "'We are the champions!'" );
 
 			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:ChampionBeltEquip", delegate ( Player player, int slot, Item myitem ) {
-				if( myitem.type != this.mod.ItemType<ChampionBeltItem>() ) { return; }
+				if( myitem.type != ModContent.ItemType<ChampionBeltItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -29,7 +29,7 @@ namespace Stamina.Items.Accessories {
 			} );
 
 			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:ChampionBeltUnequip", delegate ( Player player, int slot, int itemType ) {
-				if( itemType != this.mod.ItemType<ChampionBeltItem>() ) { return; }
+				if( itemType != ModContent.ItemType<ChampionBeltItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();

@@ -15,7 +15,7 @@ namespace Stamina {
 
 		////////////////
 
-		public StaminaConfig Config => this.GetConfig<StaminaConfig>();
+		public StaminaConfig Config => ModContent.GetInstance<StaminaConfig>();
 
 
 

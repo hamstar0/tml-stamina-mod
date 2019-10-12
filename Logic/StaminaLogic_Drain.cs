@@ -100,7 +100,7 @@ namespace Stamina.Logic {
 		public void DrainStaminaViaCustomItemUse( Player player, ItemDefinition itemDef ) {
 			var mymod = StaminaMod.Instance;
 			var myplayer = player.GetModPlayer<StaminaPlayer>();
-			float amt = mymod.Config.CustomItemUseRate[ itemDef ];
+			float amt = mymod.Config.CustomItemUseRates[ itemDef ].Percent;
 			
 			if( myplayer.IsWearingMuscleBelt || myplayer.IsWearingExoskeleton ) {
 				amt *= mymod.Config.MuscleBeltStaminaDrainScale;

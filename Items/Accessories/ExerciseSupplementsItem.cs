@@ -19,7 +19,7 @@ namespace Stamina.Items.Accessories {
 			this.Tooltip.SetDefault( "Makes exercise easier" );
 
 			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:ExerciseSupplementsEquip", delegate ( Player player, int slot, Item myitem ) {
-				if( myitem.type != this.mod.ItemType<ExerciseSupplementsItem>() ) { return; }
+				if( myitem.type != ModContent.ItemType<ExerciseSupplementsItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -27,7 +27,7 @@ namespace Stamina.Items.Accessories {
 			} );
 
 			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:ExerciseSupplementsUnequip", delegate ( Player player, int slot, int itemType ) {
-				if( itemType != this.mod.ItemType<ExerciseSupplementsItem>() ) { return; }
+				if( itemType != ModContent.ItemType<ExerciseSupplementsItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();

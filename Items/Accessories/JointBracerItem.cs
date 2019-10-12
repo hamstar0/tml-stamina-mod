@@ -21,7 +21,7 @@ namespace Stamina.Items.Accessories {
 				+ '\n' + "'For when push comes to shove.'" );
 
 			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:JointBracerEquip", delegate ( Player player, int slot, Item myitem ) {
-				if( myitem.type != this.mod.ItemType<JointBracerItem>() ) { return; }
+				if( myitem.type != ModContent.ItemType<JointBracerItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot(player, slot) ) { return; }
 
 				var modplayer = player.GetModPlayer<StaminaPlayer>();
@@ -29,7 +29,7 @@ namespace Stamina.Items.Accessories {
 			} );
 
 			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:JointBracerUnequip", delegate ( Player player, int slot, int itemType ) {
-				if( itemType != this.mod.ItemType<JointBracerItem>() ) { return; }
+				if( itemType != ModContent.ItemType<JointBracerItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var modplayer = player.GetModPlayer<StaminaPlayer>();

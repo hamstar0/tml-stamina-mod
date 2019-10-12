@@ -3,7 +3,9 @@ using Stamina.Buffs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+
 
 namespace Stamina.Logic {
 	partial class StaminaLogic {
@@ -95,7 +97,7 @@ namespace Stamina.Logic {
 
 			this.MaxStamina2 = this.MaxStamina;
 
-			if( player.FindBuffIndex( mymod.BuffType<AthleteBuff>() ) != -1 ) {
+			if( player.FindBuffIndex( ModContent.BuffType<AthleteBuff>() ) != -1 ) {
 				this.MaxStamina2 += AthleteBuff.MaxStaminaAdd;
 			}
 		}
@@ -151,8 +153,7 @@ namespace Stamina.Logic {
 					player.armor[1].type == ItemID.MeteorSuit &&
 					player.armor[2].type == ItemID.MeteorLeggings;
 				
-				if( mymod.Config.CustomItemUseRate.ContainsKey( currItemDef ) ) {
-					float customRate = mymod.Config.CustomItemUseRate[currItemDef];
+				if( mymod.Config.CustomItemUseRates.ContainsKey( currItemDef ) ) {
 					this.DrainStaminaViaCustomItemUse( player, currItemDef );
 				} else {
 					if( currItem.magic && !(isPewpew && isSpaceman) ) {

@@ -22,7 +22,7 @@ namespace Stamina.Items.Accessories {
 				+ '\n' + "'Puts a spring in your step.'" );
 
 			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:LegSprintEquip", delegate ( Player player, int slot, Item myitem ) {
-				if( myitem.type != this.mod.ItemType<LegSpringItem>() ) { return; }
+				if( myitem.type != ModContent.ItemType<LegSpringItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -30,7 +30,7 @@ namespace Stamina.Items.Accessories {
 			} );
 
 			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:LegSprintUnequip", delegate ( Player player, int slot, int itemType ) {
-				if( itemType != this.mod.ItemType<LegSpringItem>() ) { return; }
+				if( itemType != ModContent.ItemType<LegSpringItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();

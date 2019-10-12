@@ -22,7 +22,7 @@ namespace Stamina.Items.Accessories {
 				+ '\n' + "'Oil Can not included.'" );
 
 			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:ExoskeletonEquip", delegate ( Player player, int slot, Item myitem ) {
-				if( myitem.type != this.mod.ItemType<ExoskeletonItem>() ) { return; }
+				if( myitem.type != ModContent.ItemType<ExoskeletonItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -30,7 +30,7 @@ namespace Stamina.Items.Accessories {
 			} );
 
 			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:ExoskeletonUnequip", delegate ( Player player, int slot, int itemType ) {
-				if( itemType != this.mod.ItemType<ExoskeletonItem>() ) { return; }
+				if( itemType != ModContent.ItemType<ExoskeletonItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -73,13 +73,13 @@ namespace Stamina.Items.Accessories {
 			this.AddTile( TileID.TinkerersWorkbench );
 
 			if( mymod.Config.CraftableChampionBelts ) {
-				this.AddIngredient( this.mod.ItemType<ChampionBeltItem>(), 1 );
+				this.AddIngredient( ModContent.ItemType<ChampionBeltItem>(), 1 );
 			}
 			if( mymod.Config.CraftableJointBracers ) {
-				this.AddIngredient( this.mod.ItemType<JointBracerItem>(), 1 );
+				this.AddIngredient( ModContent.ItemType<JointBracerItem>(), 1 );
 			}
 			if( mymod.Config.CraftableLegSprings ) {
-				this.AddIngredient( this.mod.ItemType<LegSpringItem>(), 1 );
+				this.AddIngredient( ModContent.ItemType<LegSpringItem>(), 1 );
 			}
 			this.AddIngredient( ItemID.LihzahrdPowerCell, 2 );
 			this.AddRecipeGroup( "ModHelpers:ConveyorBeltPair", 50 );

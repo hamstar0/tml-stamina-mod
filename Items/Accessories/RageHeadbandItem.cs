@@ -35,7 +35,7 @@ namespace Stamina.Items.Accessories {
 				+'\n'+"'Feel the burn!'" );
 
 			ExtendedPlayerHooks.AddArmorEquipAction( "Stamina:RageHeadbandEquip", delegate ( Player player, int slot, Item myitem ) {
-				if( myitem.type != this.mod.ItemType<RageHeadbandItem>() ) { return; }
+				if( myitem.type != ModContent.ItemType<RageHeadbandItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();
@@ -43,7 +43,7 @@ namespace Stamina.Items.Accessories {
 			} );
 
 			ExtendedPlayerHooks.AddArmorUnequipAction( "Stamina:RageHeadbandUnequip", delegate ( Player player, int slot, int itemType ) {
-				if( itemType != this.mod.ItemType<RageHeadbandItem>() ) { return; }
+				if( itemType != ModContent.ItemType<RageHeadbandItem>() ) { return; }
 				if( !PlayerItemHelpers.IsAccessorySlot( player, slot ) ) { return; }
 
 				var myplayer = player.GetModPlayer<StaminaPlayer>();
