@@ -1,10 +1,10 @@
-﻿using HamstarHelpers.Classes.UI.ModConfig;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
+using HamstarHelpers.Classes.UI.ModConfig;
 
 
 namespace Stamina {
@@ -18,6 +18,13 @@ namespace Stamina {
 		[DefaultValue( 1f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float Percent = 1f;
+
+
+		public FloatPercentSetting() { }
+
+		public FloatPercentSetting( float value ) {
+			this.Percent = value;
+		}
 	}
 
 
@@ -129,8 +136,9 @@ namespace Stamina {
 		[DefaultValue( 160 )]
 		public int ExhaustionDuration = 160;
 
-		[Range( 0, 60 * 60 * 60 )]
+		[Range( 0f, 60f * 60f * 60f )]
 		[DefaultValue( 18f )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float ExhaustionRecover = 18f;
 
 		[DefaultValue( true )]
@@ -258,10 +266,10 @@ namespace Stamina {
 		[DefaultValue( 0 )]
 		public int PlayerStaminaBarOffsetY = 0;
 
-		
+
 		public Dictionary<ItemDefinition, FloatPercentSetting> CustomItemUseRates = new Dictionary<ItemDefinition, FloatPercentSetting>{
-			{ new ItemDefinition(ItemID.BugNet), new FloatPercentSetting { Percent = 0.1f } },
-			{ new ItemDefinition(ItemID.GoldenBugNet), new FloatPercentSetting { Percent = 0.15f } }
+			{ new ItemDefinition(ItemID.BugNet), new FloatPercentSetting(0.1f) },
+			{ new ItemDefinition(ItemID.GoldenBugNet), new FloatPercentSetting(0.15f) }
 		};
 
 
@@ -269,13 +277,6 @@ namespace Stamina {
 		public bool ShowMainStaminaBar = true;
 		[DefaultValue( true )]
 		public bool ShowMiniStaminaBar = true;
-
-
-		[Header( "\n \nOBSOLETE SETTINGS BELOW" )]
-		public Dictionary<ItemDefinition, float> CustomItemUseRate = new Dictionary<ItemDefinition, float>{
-			{ new ItemDefinition(ItemID.BugNet), 0.1f },
-			{ new ItemDefinition(ItemID.GoldenBugNet), 0.15f }
-		};
 
 
 
