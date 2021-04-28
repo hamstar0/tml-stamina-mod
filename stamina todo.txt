@@ -1,0 +1,122 @@
+Future consideration
+-	Drain 'Well Fed' buff duration to recover some stamina
+
+
+
+v2.1
+-	Update for new HH
+-	Tone down stamina accessories
+v2.0
+-	Check stamina use from megashark
+-	Remove exoskeleton hand
+-	Add config option for player stamina bar offset
+-	Add Exoskeleton - Combines Muscle Belt, Joint Braces, and Knee Springs
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Muscle Belt, Joint Braces, Leg Springs, Power Cell, Conveyors
+-	Add Leg Springs - Jump movement draws less stamina
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Tabi OR Black Belt, Frog Legs, Iron
+-	Add Joint Bracers - Non-jump movement draws less stamina
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Dual Hook, Cogs, Any Weighted Pressure Plate
+-	Add Muscle Belt - Attacks draw less stamina
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Titan Glove, Avenger Emblem, Leather
+	-	Create graphics
+-	Add Exercise Supplements - Increases exercise rate
+	-	Create graphic
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Vitamins, Pink Gel, Stingers
+-	@Test Athlete Potion, Rage Headband
+-	Add Rage Headband - Exhaustion drains health only
+	-	Create graphics
+	-	Implement effect
+	-	Define item
+	-	@Recipe: Magma Stone, Hooks, Silk
+-	Add Athlete Potion - Increases max stamina by 100
+	-	Create graphics
+	-	Implement buff
+	-	Define item
+	-	@Recipe: Bone, Strange Plant, Bottled Water
+-	Set minimum 24% fatigue before exercise occurs
+-	Add on-player stamina indicator
+-	Set bar to layer the same as health and mana
+-	Nerf energy potion
+-	Improve exhaustion behavior
+v1.4.10
+-	Add 'Enabled' config setting
+v1.4.8
+-	Tone down drain from item use slightly
+-	Remove Jungle Grass Seeds from Energy Potion recipe
+-	Remove old config (Stamina 1.2.0.json)
+v1.4.1
+-	Set water bottle to remove more fatigue (tweak tooltip)
+v1.4
+-	Add override for positioning stamina bar
+-	Set water bottle drinking to recover fatigue
+-	Add text popup indicator of exercize
+-	Add color indicator of exercise
+-	Display stamina as number overlay
+-	Add excersize (empty + refill fatigue completely)
+-	Add fatigue
+	-	Recover 1 point fatigue every 10 seconds at full stamina
+	-	Render grey bar against stamina bar and subtract from max stamina
+	-	Animate numeric drops on fatigue gain/remove
+	-	On exhaustion increase fatigue
+-	Improve energy potion buff icon
+-	Further reduce jump drain
+-	Alter Energy Potion recipe (bad mushroom + Jungle Seed - Firefly)
+-	Set gravitation potion to reduce stamina regen
+-	Get small stamina bursts from damage
+-	Set magic weapons to use half stamina
+v1.3
+-	Make sweat FX less silly
+-	Lower max stamina
+-	Tone down jump drain
+-	Tone down energy potion regen
+-	Check OnEnterWorld applies only for current player
+-	Adjust JsonConfig.Load to NOT use ModPlayer.Initialize
+-	Check that configs are updating fields with each new version
+-	Change Energy Potion recipe to use something other than Pink Gels
+v1.2
+-	Release
+-	Animate exhausion FX
+-	Nerf Energized buff
+-	Give indicator of low stamina
+-	Stop drain from flight slow fall
+-	//Use for exhaustion: Main.buffNoTimeDisplay[buffID] = true;
+v1.1
+-	Release!
+-	Modify stars to recover stamina
+-	Add Energized buff
+-	Add Energy Potion (recovers stamina, small potion sickness)
+	-	Define potion (recipe: Water bottle, Pink gel, Purification powder, Star)
+-	Disable flight when stamina empty
+-	Add a start-of-jump stamina drain
+-	Migrate logic code into a StaminaLogic class
+-	Increase sprint stamina drain default
+v1
+-	Release!
+-	Fix pulley bug
+-	Revise to consume stamina only when simply 'controlling' an item
+-	Fix high stamina consumption for some types of melee
+-	Update durability mod for compatibility
+-	Implement low-stamina debuff
+-	Implement stamina drains
+	-	Item use
+	-	Grappling
+	-	Flying
+	-	N-jumping
+	-	Jumping
+	-	Dashing
+	-	Sprinting
+-	Implement stamina recharge (lingers momentarily when empty)
+-	Implement stamina bar rendering (beneath health bar)
