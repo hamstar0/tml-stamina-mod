@@ -12,10 +12,10 @@ namespace Stamina.Buffs {
 		}
 
 		public override void Update( Player player, ref int buffIndex ) {
-			StaminaPlayer modplayer = ModContent.GetInstance<StaminaPlayer>();
+			var myplayer = player.GetModPlayer<StaminaPlayer>();
 			var mymod = (StaminaMod)this.mod;
 
-			modplayer.Logic.AddStamina( player, mymod.Config.EnergizedRate );
+			myplayer.Logic.AddStamina( player, mymod.Config.EnergizedRate );
 		}
 	}
 }
