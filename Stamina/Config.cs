@@ -226,13 +226,13 @@ namespace Stamina {
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.08f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float PercentOfDamageAdrenalineBurst = 0.08f;
 
 
 		[Range( 0f, 1000f )]
 		[DefaultValue( 12f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float FatigueAmountFromExhaustion = 12f;
 
 		[Range( 0, 60 * 60 * 60 * 24 )]
@@ -245,7 +245,7 @@ namespace Stamina {
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.24f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float FatigueAsMaxStaminaPercentAmountNeeededForExercise = 0.24f;
 
 
